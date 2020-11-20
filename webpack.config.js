@@ -7,5 +7,9 @@ module.exports = {
     filename: `bundle.js`,
     path: path.resolve(__dirname, `public`)
   },
-  devtool: `sourse-map`
+  devtool: `sourse-map`,
+  devServer: {
+    contentBase: path.resolve(__dirname, 'public'),
+    watchContentBase: true,
+  }
 }
