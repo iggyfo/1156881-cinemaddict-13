@@ -1,4 +1,3 @@
-const { dirname } = require("path");
 const path = require(`path`);
 
 module.exports = {
@@ -7,7 +6,7 @@ module.exports = {
     filename: `bundle.js`,
     path: path.resolve(__dirname, `public`)
   },
-  devtool: `sourse-map`,
+  devtool: `source-map`,
   devServer: {
     contentBase: path.resolve(__dirname, 'public'),
     watchContentBase: true,
