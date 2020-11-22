@@ -1,7 +1,7 @@
 # Проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Игорь Игаев](https://up.htmlacademy.ru/ecmascript/13/user/1156881).
-* Наставник: `Неизвестно`.
+* Наставник: [Николай Думчев](https://htmlacademy.ru/profile/nikopol_fw).
 
 ---
 
