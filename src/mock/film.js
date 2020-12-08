@@ -1,7 +1,11 @@
 import dayjs from "dayjs";
 
 
-const MAX_NUM_SEN_COMMENT = 5;
+const MAX_NUM_SEN_SHORT_DESCRIPTION = 5;
+const MIN_NUM_SEN_FULL_DESCRIPTION = 5;
+const MAX_NUM_SEN_FULL_DESCRIPTION = 11;
+const MAX_HOURS_DURATION = 2;
+const MAX_MIN_DURATION = 59;
 const MAX_NUM_OF_COMMENTS = 5;
 const MIN_NUM_OF_RATING = 7;
 const MAX_NUM_OF_RATING = 10;
@@ -46,6 +50,50 @@ const FILMS_TITLE = [
   `Good Will Hunting`,
   `Arrival`
 ];
+const FILMS_PRODUCER = [
+  `Michael Mann`,
+  `James Cameron`,
+  `Steven Spielberg`,
+  `Spike Lee`,
+  `Tony Scott`,
+  `John Singleton`,
+  `Richard Donner`,
+  `Quentin Tarantino`,
+  `George Lucas`,
+  `Martin Scorsese`,
+  `Jerry Bruckheimer`,
+  `Jim Henson`
+];
+const FILMS_SCREENWRITER = [
+  `Billy Wilder`,
+  `Joel Coen`,
+  `Robert Towne`,
+  `Quentin Tarantino`,
+  `Francis Ford Coppola`,
+  `William Goldman`,
+  `Charlie Kaufman`,
+  `Quentin Tarantino`,
+  `Woody Allen`,
+  `Nora Ephron`,
+  `Ernest Lehman`,
+  `Jim Henson`
+];
+const FILMS_COUNTRY = [
+  `Germany`,
+  `France`,
+  `United Kingdom`,
+  `Thailand`,
+  `Italy`,
+  `South Africa`,
+  `South Korea`,
+  `Russia`,
+  `USA`
+];
+const FILMS_CAST = [
+  `Johnny Depp, Al Pacino, Robert De Niro`,
+  `Kevin Spacey, Denzel Washington, Russell Crowe`,
+  `Johnny Depp, Brad Pitt, Angelina Jolie`
+];
 
 const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -65,62 +113,18 @@ const generatePoster = () => {
 };
 
 const generateProducer = () => {
-  const FILMS_PRODUCER = [
-    `Michael Mann`,
-    `James Cameron`,
-    `Steven Spielberg`,
-    `Spike Lee`,
-    `Tony Scott`,
-    `John Singleton`,
-    `Richard Donner`,
-    `Quentin Tarantino`,
-    `George Lucas`,
-    `Martin Scorsese`,
-    `Jerry Bruckheimer`,
-    `Jim Henson`
-  ];
   return FILMS_PRODUCER[getRandomInteger(0, FILMS_PRODUCER.length - 1)];
 };
 
 const generateScreenwriter = () => {
-  const FILMS_SCREENWRITER = [
-    `Billy Wilder`,
-    `Joel Coen`,
-    `Robert Towne`,
-    `Quentin Tarantino`,
-    `Francis Ford Coppola`,
-    `William Goldman`,
-    `Charlie Kaufman`,
-    `Quentin Tarantino`,
-    `Woody Allen`,
-    `Nora Ephron`,
-    `Ernest Lehman`,
-    `Jim Henson`
-  ];
   return FILMS_SCREENWRITER[getRandomInteger(0, FILMS_SCREENWRITER.length - 1)];
 };
 
 const generateCountry = () => {
-  const FILMS_COUNTRY = [
-    `Germany`,
-    `France`,
-    `United Kingdom`,
-    `Thailand`,
-    `Italy`,
-    `South Africa`,
-    `South Korea`,
-    `Russia`,
-    `USA`
-  ];
   return FILMS_COUNTRY[getRandomInteger(0, FILMS_COUNTRY.length - 1)];
 };
 
 const generateCast = () => {
-  const FILMS_CAST = [
-    `Johnny Depp, Al Pacino, Robert De Niro`,
-    `Kevin Spacey, Denzel Washington, Russell Crowe`,
-    `Johnny Depp, Brad Pitt, Angelina Jolie`
-  ];
   return FILMS_CAST[getRandomInteger(0, FILMS_CAST.length - 1)];
 };
 
@@ -141,11 +145,11 @@ const generateAgeRating = () => {
 };
 
 const generateDuration = () => {
-  return `${getRandomInteger(0, 2)}h ${getRandomInteger(0, 59)}m`;
+  return `${getRandomInteger(0, MAX_HOURS_DURATION)}h ${getRandomInteger(0, MAX_MIN_DURATION)}m`;
 };
 
 const generateDescription = () => {
-  const numOfSentence = getRandomInteger(1, MAX_NUM_SEN_COMMENT);
+  const numOfSentence = getRandomInteger(1, MAX_NUM_SEN_SHORT_DESCRIPTION);
   let filmDescription = ``;
 
   for (let i = 0; i < numOfSentence; i++) {
@@ -153,6 +157,16 @@ const generateDescription = () => {
   }
   return filmDescription;
 };
+
+const generateFullDescription = () => {
+  const numOfSentence = getRandomInteger(MIN_NUM_SEN_FULL_DESCRIPTION, MAX_NUM_SEN_FULL_DESCRIPTION);
+  let filmDescription = ``;
+
+  for (let i = 0; i < numOfSentence; i++) {
+    filmDescription += FILM_DESCRIPTIONS[getRandomInteger(0, FILM_DESCRIPTIONS.length - 1)] + ` `;
+  }
+  return filmDescription;
+}
 
 const generateDate = () => {
   return dayjs().add(getRandomInteger(1, 5), `h`).format(`YYYY/MM/DD hh:mm`);
@@ -215,28 +229,9 @@ export const generateFilm = () => {
     genre: generateGenreCard(),
     genreDetails: generateGenreDetails(),
     shortDescription: generateDescription(),
-    fullDescription: `fullDescription`,
+    fullDescription: generateFullDescription(),
     ageRating: generateAgeRating(),
     comments: generateFilmComments(NUM_OF_COMMENTS),
     numOfComments: NUM_OF_COMMENTS,
   };
 };
-
-// Постер (картинка);
-// Название фильма;
-// Рейтинг;
-// Год производства;
-// Продолжительность в формате часы минуты (например «1h 36m»);
-// Жанр;
-// Краткое описание (не более 140 символов);
-// Количество комментариев;
-
-// Режиссёр;
-// Сценаристы;
-// Актёрский состав;
-// Дата и год релиза в формате день месяц год (например: «01 April 1995»);
-// Продолжительность в формате часы минуты (например «1h 36m»);
-// Страна;
-// Жанр (ы);
-// Полное описание;
-// Возрастной рейтинг;

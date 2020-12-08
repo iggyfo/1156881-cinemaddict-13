@@ -1,5 +1,5 @@
 export const createDetailsTemplate = (film) => {
-  let {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, release, duration, country, genreDetails, shortDescription, numOfComments} = film;
+  let {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, release, duration, country, genreDetails, fullDescription, numOfComments} = film;
   return (
     `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
@@ -53,14 +53,11 @@ export const createDetailsTemplate = (film) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Genres</td>
-                  <td class="film-details__cell">
-                    ${genreDetails}
+                  <td class="film-details__cell">${genreDetails}</td>
                 </tr>
               </table>
 
-              <p class="film-details__film-description">
-                The film opens following a murder at a cabaret in Mexico City in 1936, and then presents the events leading up to it in flashback. The Great Flamarion (Erich von Stroheim) is an arrogant, friendless, and misogynous marksman who displays his trick gunshot act in the vaudeville circuit. His show features a beautiful assistant, Connie (Mary Beth Hughes) and her drunken husband Al (Dan Duryea), Flamarion's other assistant. Flamarion falls in love with Connie, the movie's femme fatale, and is soon manipulated by her into killing her no good husband during one of their acts.
-              </p>
+              <p class="film-details__film-description">${fullDescription}</p>
             </div>
           </div>
 
@@ -78,7 +75,7 @@ export const createDetailsTemplate = (film) => {
 
         <div class="film-details__bottom-container">
           <section class="film-details__comments-wrap">
-            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">0</span></h3>
+            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${numOfComments}</span></h3>
 
             <ul class="film-details__comments-list"></ul>
 
