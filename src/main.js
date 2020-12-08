@@ -46,8 +46,8 @@ for (let film of films.slice(0, NUM_RENDER_CARDS)) {
 }
 
 render(filmsListContainerElement, createMoreButtonTemplate(), `afterend`);
-const showMoreButtonElement = filmsElement.querySelector(`.films-list__show-more`);
 
+const showMoreButtonElement = filmsElement.querySelector(`.films-list__show-more`);
 showMoreButtonElement.addEventListener(`click`, () => {
   for (let film of filmsToRender.slice(0, NUM_RENDER_CARDS)) {
     render(filmsListContainerElement, createFilmCardTemplate(film), `beforeend`);
@@ -68,7 +68,17 @@ for (let film of extraFilms) {
 
 const footerStatisticsElement = footerElement.querySelector(`.footer__statistics`);
 render(footerStatisticsElement, createFooterStatisticsTemplate(films.length), `beforeend`);
-render(document.body, createDetailsTemplate(films[1]), `beforeend`);
+render(document.body, createDetailsTemplate(films[0]), `beforeend`);
 
 const detailsElement = document.querySelector(`.film-details`);
 detailsElement.classList.add(`visually-hidden`);
+
+// Временное решение для открытия попапа
+filmsListContainerElement.firstElementChild.addEventListener(`click`, () => {
+  detailsElement.classList.remove(`visually-hidden`);
+});
+// Временное решение для закрытия попапа
+const detailsCloseButtonElement = detailsElement.querySelector(`.film-details__close-btn`);
+detailsCloseButtonElement.addEventListener(`click`, () => {
+  detailsElement.classList.add(`visually-hidden`);
+});
