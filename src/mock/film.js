@@ -233,5 +233,8 @@ export const generateFilm = () => {
     ageRating: generateAgeRating(),
     comments: generateFilmComments(NUM_OF_COMMENTS),
     numOfComments: NUM_OF_COMMENTS,
+    isWatchlist: getRandomInteger(0, 1),
+    isFavorites: getRandomInteger(0, 1),
+    isHistory: getRandomInteger(0, 1),
   };
 };

@@ -1,5 +1,5 @@
 import {createUserRankTemplate} from "./view/user-rank";
-import {createMenuTemplate} from "./view/menu";
+import {createFilterTemplate} from "./view/filter";
 import {createSortTemplate} from "./view/sort";
 import {createFilmsTemplate} from "./view/films";
 import {createFilmsListTemplate} from "./view/films-list";
@@ -9,6 +9,7 @@ import {createFilmsExtraTemplate} from "./view/films-extra";
 import {createFooterStatisticsTemplate} from "./view/footer-statistics";
 import {createDetailsTemplate} from "./view/details";
 import {generateFilm} from "./mock/film";
+import {generateFilter} from "./mock/filter";
 
 
 const NUM_CARDS_OF_EXTRA_FILM = 2;
@@ -30,7 +31,7 @@ const render = (container, template, place) => {
 };
 
 render(headerElement, createUserRankTemplate(), `beforeend`);
-render(mainElement, createMenuTemplate(), `beforeend`);
+render(mainElement, createFilterTemplate(generateFilter(films)), `beforeend`);
 render(mainElement, createSortTemplate(), `beforeend`);
 render(mainElement, createFilmsTemplate(), `beforeend`);
 
@@ -53,8 +54,8 @@ for (let film of extraFilms) {
 }
 
 const footerStatisticsElement = footerElement.querySelector(`.footer__statistics`);
-render(footerStatisticsElement, createFooterStatisticsTemplate(), `beforeend`);
+render(footerStatisticsElement, createFooterStatisticsTemplate(films.length), `beforeend`);
 render(document.body, createDetailsTemplate(films[1]), `beforeend`);
 
 const detailsElement = document.querySelector(`.film-details`);
-// detailsElement.classList.add(`visually-hidden`);
+detailsElement.classList.add(`visually-hidden`);
