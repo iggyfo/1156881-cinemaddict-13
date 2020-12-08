@@ -166,7 +166,7 @@ const generateFullDescription = () => {
     filmDescription += FILM_DESCRIPTIONS[getRandomInteger(0, FILM_DESCRIPTIONS.length - 1)] + ` `;
   }
   return filmDescription;
-}
+};
 
 const generateDate = () => {
   return dayjs().add(getRandomInteger(1, 5), `h`).format(`YYYY/MM/DD hh:mm`);

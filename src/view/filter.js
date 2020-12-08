@@ -1,5 +1,5 @@
 export const createFilterTemplate = (filmsFilter) => {
-  const {allMovies, watchlist, favorites, history} = filmsFilter;
+  const {watchlist, favorites, history} = filmsFilter;
   return (
     `<nav class="main-navigation">
       <div class="main-navigation__items">

@@ -14,18 +14,20 @@ import {generateFilter} from "./mock/filter";
 
 const NUM_CARDS_OF_EXTRA_FILM = 2;
 const NUM_OF_FILMS = 20;
+const NUM_RENDER_CARDS = 5;
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
 let films = [];
 let extraFilms = [];
+let filmsToRender = [];
 
 for (let i = 0; i < NUM_OF_FILMS; i++) {
   films.push(generateFilm());
 }
-
 extraFilms = films.slice(0, NUM_CARDS_OF_EXTRA_FILM);
-
+filmsToRender = films.slice(NUM_RENDER_CARDS, NUM_OF_FILMS);
+// debugger
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
@@ -39,11 +41,22 @@ const filmsElement = mainElement.querySelector(`.films`);
 render(filmsElement, createFilmsListTemplate(), `beforeend`);
 
 const filmsListContainerElement = filmsElement.querySelector(`.films-list__container`);
-for (let film of films) {
+for (let film of films.slice(0, NUM_RENDER_CARDS)) {
   render(filmsListContainerElement, createFilmCardTemplate(film), `beforeend`);
 }
 
 render(filmsListContainerElement, createMoreButtonTemplate(), `afterend`);
+const showMoreButtonElement = filmsElement.querySelector(`.films-list__show-more`);
+
+showMoreButtonElement.addEventListener(`click`, () => {
+  for (let film of filmsToRender.slice(0, NUM_RENDER_CARDS)) {
+    render(filmsListContainerElement, createFilmCardTemplate(film), `beforeend`);
+  }
+  filmsToRender.splice(0, NUM_RENDER_CARDS);
+  if (filmsToRender.length === 0) {
+    showMoreButtonElement.classList.add(`visually-hidden`);
+  }
+});
 
 render(filmsElement, createFilmsExtraTemplate(), `beforeend`);
 const filmsListExraElement = filmsElement.querySelector(`.films-list--extra`);
