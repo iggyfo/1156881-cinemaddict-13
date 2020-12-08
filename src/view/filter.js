@@ -1,4 +1,6 @@
 export const createFilterTemplate = (filmsFilter) => {
+
+
   const {watchlist, favorites, history} = filmsFilter;
   return (
     `<nav class="main-navigation">

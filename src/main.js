@@ -27,7 +27,6 @@ for (let i = 0; i < NUM_OF_FILMS; i++) {
 }
 extraFilms = films.slice(0, NUM_CARDS_OF_EXTRA_FILM);
 filmsToRender = films.slice(NUM_RENDER_CARDS, NUM_OF_FILMS);
-// debugger
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };

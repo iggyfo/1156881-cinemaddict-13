@@ -102,7 +102,9 @@ const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-const NUM_OF_COMMENTS = getRandomInteger(0, MAX_NUM_OF_COMMENTS);
+const generateNumOfComments = () => {
+  return getRandomInteger(0, MAX_NUM_OF_COMMENTS);
+};
 
 const generateTitle = () => {
   return FILMS_TITLE[getRandomInteger(0, FILMS_TITLE.length - 1)];
@@ -214,6 +216,7 @@ const generateFilmComments = (numOfComments) => {
 
 export const generateFilm = () => {
   let date = dayjs().day(getRandomInteger(1, 364)).subtract(getRandomInteger(1, 67), `year`);
+  const numOfComments = generateNumOfComments();
   return {
     poster: generatePoster(),
     title: generateTitle(),
@@ -231,8 +234,8 @@ export const generateFilm = () => {
     shortDescription: generateDescription(),
     fullDescription: generateFullDescription(),
     ageRating: generateAgeRating(),
-    comments: generateFilmComments(NUM_OF_COMMENTS),
-    numOfComments: NUM_OF_COMMENTS,
+    comments: generateFilmComments(numOfComments),
+    numOfComments,
     isWatchlist: getRandomInteger(0, 1),
     isFavorites: getRandomInteger(0, 1),
     isHistory: getRandomInteger(0, 1),

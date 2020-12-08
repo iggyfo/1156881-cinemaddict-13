@@ -1,4 +1,6 @@
 export const createDetailsTemplate = (film) => {
+
+
   let {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, release, duration, country, genreDetails, fullDescription, numOfComments} = film;
   return (
     `<section class="film-details">
