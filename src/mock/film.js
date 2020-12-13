@@ -2,8 +2,6 @@ import dayjs from "dayjs";
 
 
 const MAX_NUM_SEN_SHORT_DESCRIPTION = 5;
-const MIN_NUM_SEN_FULL_DESCRIPTION = 5;
-const MAX_NUM_SEN_FULL_DESCRIPTION = 11;
 const MAX_HOURS_DURATION = 2;
 const MAX_MIN_DURATION = 59;
 const MAX_NUM_OF_COMMENTS = 5;
@@ -130,7 +128,7 @@ const generateCast = () => {
   return FILMS_CAST[getRandomInteger(0, FILMS_CAST.length - 1)];
 };
 
-const generateGenreCard = () => {
+const generateGenres = () => {
   return FILMS_GENRE[getRandomInteger(1, FILMS_GENRE.length - 1)];
 };
 
@@ -152,16 +150,6 @@ const generateDuration = () => {
 
 const generateDescription = () => {
   const numOfSentence = getRandomInteger(1, MAX_NUM_SEN_SHORT_DESCRIPTION);
-  let filmDescription = ``;
-
-  for (let i = 0; i < numOfSentence; i++) {
-    filmDescription += FILM_DESCRIPTIONS[getRandomInteger(0, FILM_DESCRIPTIONS.length - 1)] + ` `;
-  }
-  return filmDescription;
-};
-
-const generateFullDescription = () => {
-  const numOfSentence = getRandomInteger(MIN_NUM_SEN_FULL_DESCRIPTION, MAX_NUM_SEN_FULL_DESCRIPTION);
   let filmDescription = ``;
 
   for (let i = 0; i < numOfSentence; i++) {
@@ -229,10 +217,9 @@ export const generateFilm = () => {
     date: date.format(`DD MMMM YYYY`),
     duration: generateDuration(),
     country: generateCountry(),
-    genre: generateGenreCard(),
+    genre: generateGenres(),
     genreDetails: generateGenreDetails(),
-    shortDescription: generateDescription(),
-    fullDescription: generateFullDescription(),
+    description: generateDescription(),
     ageRating: generateAgeRating(),
     comments: generateFilmComments(numOfComments),
     numOfComments,
