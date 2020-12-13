@@ -1,8 +1,7 @@
 export const createDetailsTemplate = (film) => {
 
 
-  let {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, release, duration, country, genreDetails, description, numOfComments} = film;
-
+  const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, release, duration, country, genres, description, comments} = film;
   return (
     `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
@@ -56,7 +55,9 @@ export const createDetailsTemplate = (film) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Genres</td>
-                  <td class="film-details__cell">${genreDetails}</td>
+                  <td class="film-details__cell">
+                    ${genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(` `)}
+                  </td>
                 </tr>
               </table>
 
@@ -78,7 +79,7 @@ export const createDetailsTemplate = (film) => {
 
         <div class="film-details__bottom-container">
           <section class="film-details__comments-wrap">
-            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${numOfComments}</span></h3>
+            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
 
             <ul class="film-details__comments-list"></ul>
 

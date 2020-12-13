@@ -100,10 +100,6 @@ const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-const generateNumOfComments = () => {
-  return getRandomInteger(0, MAX_NUM_OF_COMMENTS);
-};
-
 const generateTitle = () => {
   return FILMS_TITLE[getRandomInteger(0, FILMS_TITLE.length - 1)];
 };
@@ -128,14 +124,11 @@ const generateCast = () => {
   return FILMS_CAST[getRandomInteger(0, FILMS_CAST.length - 1)];
 };
 
-const generateGenres = () => {
-  return FILMS_GENRE[getRandomInteger(1, FILMS_GENRE.length - 1)];
-};
 
-const generateGenreDetails = () => {
-  let detailsGenre = ``;
+const generateGenres = () => {
+  let detailsGenre = [];
   for (let i = 0; i < getRandomInteger(1, MAX_NUM_OF_GENRE); i++) {
-    detailsGenre += `<span class="film-details__genre">${FILMS_GENRE[getRandomInteger(0, FILMS_GENRE.length - 1)]}</span>`;
+    detailsGenre.push(FILMS_GENRE[getRandomInteger(0, FILMS_GENRE.length - 1)]);
   }
   return detailsGenre;
 };
@@ -203,8 +196,7 @@ const generateFilmComments = (numOfComments) => {
 };
 
 export const generateFilm = () => {
-  let date = dayjs().day(getRandomInteger(1, 364)).subtract(getRandomInteger(1, 67), `year`);
-  const numOfComments = generateNumOfComments();
+  const date = dayjs().day(getRandomInteger(1, 364)).subtract(getRandomInteger(1, 67), `year`);
   return {
     poster: generatePoster(),
     title: generateTitle(),
@@ -217,14 +209,12 @@ export const generateFilm = () => {
     date: date.format(`DD MMMM YYYY`),
     duration: generateDuration(),
     country: generateCountry(),
-    genre: generateGenres(),
-    genreDetails: generateGenreDetails(),
+    genres: generateGenres(),
     description: generateDescription(),
     ageRating: generateAgeRating(),
-    comments: generateFilmComments(numOfComments),
-    numOfComments,
-    isWatchlist: getRandomInteger(0, 1),
-    isFavorites: getRandomInteger(0, 1),
-    isHistory: getRandomInteger(0, 1),
+    comments: generateFilmComments(getRandomInteger(0, MAX_NUM_OF_COMMENTS)),
+    isWatchlist: Boolean(getRandomInteger(0, 1)),
+    isFavorites: Boolean(getRandomInteger(0, 1)),
+    isHistory: Boolean(getRandomInteger(0, 1)),
   };
 };
