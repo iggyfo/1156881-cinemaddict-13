@@ -1,7 +1,7 @@
 export const createDetailsTemplate = (film) => {
 
 
-  const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, release, duration, country, genres, description, comments} = film;
+  const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, date, duration, country, genres, description, comments} = film;
   return (
     `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
@@ -43,7 +43,7 @@ export const createDetailsTemplate = (film) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Release Date</td>
-                  <td class="film-details__cell">${release}</td>
+                  <td class="film-details__cell">${date}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Runtime</td>

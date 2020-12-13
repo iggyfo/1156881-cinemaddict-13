@@ -9,6 +9,8 @@ const MIN_NUM_OF_RATING = 7;
 const MAX_NUM_OF_RATING = 10;
 const FILMS_AGE_RATING_MULTIPLY = 4;
 const MAX_NUM_OF_GENRE = 3;
+const WEEKS_OF_YEAR = 50;
+const DEEP_YEAR_FILM = 68;
 const FILMS_GENRE = [
   `Action`,
   `Comedy`,
@@ -196,7 +198,9 @@ const generateFilmComments = (numOfComments) => {
 };
 
 export const generateFilm = () => {
-  const date = dayjs().day(getRandomInteger(1, 364)).subtract(getRandomInteger(1, 67), `year`);
+
+
+  const date = dayjs().subtract(getRandomInteger(1, DEEP_YEAR_FILM), `year`).subtract(getRandomInteger(1, WEEKS_OF_YEAR), `week`);
   return {
     poster: generatePoster(),
     title: generateTitle(),
