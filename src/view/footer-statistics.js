@@ -1,3 +1,5 @@
-export const createSiteFooterStatisticsTemplate = () => {
-  return `<p>130 291 movies inside</p>`;
+export const createFooterStatisticsTemplate = (numberOfFilms) => {
+
+
+  return `<p>${numberOfFilms} movies inside</p>`;
 };
