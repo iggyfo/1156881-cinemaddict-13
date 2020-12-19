@@ -10,6 +10,7 @@ import {createFooterStatisticsTemplate} from "./view/footer-statistics";
 import {createDetailsTemplate} from "./view/details";
 import {generateFilm} from "./mock/film";
 import {generateFilter} from "./mock/filter";
+import {renderTemplate} from "./utils";
 
 
 const NUM_CARDS_OF_EXTRA_FILM = 2;
@@ -27,29 +28,29 @@ for (let i = 0; i < NUM_OF_FILMS; i++) {
 }
 extraFilms = films.slice(0, NUM_CARDS_OF_EXTRA_FILM);
 filmsToRender = films.slice(NUM_RENDER_CARDS, NUM_OF_FILMS);
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
+// const render = (container, template, place) => {
+//   container.insertAdjacentHTML(place, template);
+// };
 
-render(headerElement, createUserRankTemplate(), `beforeend`);
-render(mainElement, createFilterTemplate(generateFilter(films)), `beforeend`);
-render(mainElement, createSortTemplate(), `beforeend`);
-render(mainElement, createFilmsTemplate(), `beforeend`);
+renderTemplate(headerElement, createUserRankTemplate(), `beforeend`);
+renderTemplate(mainElement, createFilterTemplate(generateFilter(films)), `beforeend`);
+renderTemplate(mainElement, createSortTemplate(), `beforeend`);
+renderTemplate(mainElement, createFilmsTemplate(), `beforeend`);
 
 const filmsElement = mainElement.querySelector(`.films`);
-render(filmsElement, createFilmsListTemplate(), `beforeend`);
+renderTemplate(filmsElement, createFilmsListTemplate(), `beforeend`);
 
 const filmsListContainerElement = filmsElement.querySelector(`.films-list__container`);
 for (let film of films.slice(0, NUM_RENDER_CARDS)) {
-  render(filmsListContainerElement, createFilmCardTemplate(film), `beforeend`);
+  renderTemplate(filmsListContainerElement, createFilmCardTemplate(film), `beforeend`);
 }
 
-render(filmsListContainerElement, createMoreButtonTemplate(), `afterend`);
+renderTemplate(filmsListContainerElement, createMoreButtonTemplate(), `afterend`);
 
 const showMoreButtonElement = filmsElement.querySelector(`.films-list__show-more`);
 showMoreButtonElement.addEventListener(`click`, () => {
   for (let film of filmsToRender.slice(0, NUM_RENDER_CARDS)) {
-    render(filmsListContainerElement, createFilmCardTemplate(film), `beforeend`);
+    renderTemplate(filmsListContainerElement, createFilmCardTemplate(film), `beforeend`);
   }
   filmsToRender.splice(0, NUM_RENDER_CARDS);
   if (filmsToRender.length === 0) {
@@ -57,17 +58,17 @@ showMoreButtonElement.addEventListener(`click`, () => {
   }
 });
 
-render(filmsElement, createFilmsExtraTemplate(), `beforeend`);
+renderTemplate(filmsElement, createFilmsExtraTemplate(), `beforeend`);
 const filmsListExraElement = filmsElement.querySelector(`.films-list--extra`);
 const filmsListExraContainerElement = filmsListExraElement.querySelector(`.films-list__container`);
 
 for (let film of extraFilms) {
-  render(filmsListExraContainerElement, createFilmCardTemplate(film), `beforeend`);
+  renderTemplate(filmsListExraContainerElement, createFilmCardTemplate(film), `beforeend`);
 }
 
 const footerStatisticsElement = footerElement.querySelector(`.footer__statistics`);
-render(footerStatisticsElement, createFooterStatisticsTemplate(films.length), `beforeend`);
-render(document.body, createDetailsTemplate(films[0]), `beforeend`);
+renderTemplate(footerStatisticsElement, createFooterStatisticsTemplate(films.length), `beforeend`);
+renderTemplate(document.body, createDetailsTemplate(films[0]), `beforeend`);
 
 const detailsElement = document.querySelector(`.film-details`);
 detailsElement.classList.add(`visually-hidden`);
