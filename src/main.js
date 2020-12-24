@@ -1,16 +1,16 @@
-import {createUserRankTemplate} from "./view/user-rank";
-import {createFilterTemplate} from "./view/filter";
-import {createSortTemplate} from "./view/sort";
-import {createFilmsTemplate} from "./view/films";
-import {createFilmsListTemplate} from "./view/films-list";
-import {createFilmCardTemplate} from "./view/film-card";
-import {createMoreButtonTemplate} from "./view/show-more-button";
-import {createFilmsExtraTemplate} from "./view/films-extra";
-import {createFooterStatisticsTemplate} from "./view/footer-statistics";
-import {createDetailsTemplate} from "./view/details";
+import Menu from "./view/menu";
+import Filter from "./view/filter";
+import Sort from "./view/sort";
+import Films from "./view/films";
+import FilmsList from "./view/films-list";
+import FilmCard from "./view/film-card";
+import MoreButton from "./view/show-more-button";
+import FilmsExtra from "./view/films-extra";
+import FooterStatistics from "./view/footer-statistics";
+import Details from "./view/details";
 import {generateFilm} from "./mock/film";
 import {generateFilter} from "./mock/filter";
-import {renderTemplate} from "./utils";
+import {render, RenderPosition} from "./utils";
 
 
 const NUM_CARDS_OF_EXTRA_FILM = 2;
@@ -28,29 +28,27 @@ for (let i = 0; i < NUM_OF_FILMS; i++) {
 }
 extraFilms = films.slice(0, NUM_CARDS_OF_EXTRA_FILM);
 filmsToRender = films.slice(NUM_RENDER_CARDS, NUM_OF_FILMS);
-// const render = (container, template, place) => {
-//   container.insertAdjacentHTML(place, template);
-// };
 
-renderTemplate(headerElement, createUserRankTemplate(), `beforeend`);
-renderTemplate(mainElement, createFilterTemplate(generateFilter(films)), `beforeend`);
-renderTemplate(mainElement, createSortTemplate(), `beforeend`);
-renderTemplate(mainElement, createFilmsTemplate(), `beforeend`);
+render(headerElement, new Menu().getElement(), RenderPosition.BEFOREEND);
+render(mainElement, new Filter(generateFilter(films)).getElement(), RenderPosition.BEFOREEND);
+render(mainElement, new Sort().getElement(), RenderPosition.BEFOREEND);
+render(mainElement, new Films().getElement(), RenderPosition.BEFOREEND);
 
 const filmsElement = mainElement.querySelector(`.films`);
-renderTemplate(filmsElement, createFilmsListTemplate(), `beforeend`);
+render(filmsElement, new FilmsList().getElement(), RenderPosition.BEFOREEND);
 
 const filmsListContainerElement = filmsElement.querySelector(`.films-list__container`);
 for (let film of films.slice(0, NUM_RENDER_CARDS)) {
-  renderTemplate(filmsListContainerElement, createFilmCardTemplate(film), `beforeend`);
+  render(filmsListContainerElement, new FilmCard(film).getElement(), RenderPosition.BEFOREEND);
 }
 
-renderTemplate(filmsListContainerElement, createMoreButtonTemplate(), `afterend`);
+const filmsListElement = document.querySelector(`.films-list`);
+render(filmsListElement, new MoreButton().getElement(), RenderPosition.BEFOREEND);
 
 const showMoreButtonElement = filmsElement.querySelector(`.films-list__show-more`);
 showMoreButtonElement.addEventListener(`click`, () => {
   for (let film of filmsToRender.slice(0, NUM_RENDER_CARDS)) {
-    renderTemplate(filmsListContainerElement, createFilmCardTemplate(film), `beforeend`);
+    render(filmsListContainerElement, new FilmCard(film).getElement(), RenderPosition.BEFOREEND);
   }
   filmsToRender.splice(0, NUM_RENDER_CARDS);
   if (filmsToRender.length === 0) {
@@ -58,17 +56,17 @@ showMoreButtonElement.addEventListener(`click`, () => {
   }
 });
 
-renderTemplate(filmsElement, createFilmsExtraTemplate(), `beforeend`);
+render(filmsElement, new FilmsExtra().getElement(), RenderPosition.BEFOREEND);
 const filmsListExraElement = filmsElement.querySelector(`.films-list--extra`);
 const filmsListExraContainerElement = filmsListExraElement.querySelector(`.films-list__container`);
 
 for (let film of extraFilms) {
-  renderTemplate(filmsListExraContainerElement, createFilmCardTemplate(film), `beforeend`);
+  render(filmsListExraContainerElement, new FilmCard(film).getElement(), RenderPosition.BEFOREEND);
 }
 
 const footerStatisticsElement = footerElement.querySelector(`.footer__statistics`);
-renderTemplate(footerStatisticsElement, createFooterStatisticsTemplate(films.length), `beforeend`);
-renderTemplate(document.body, createDetailsTemplate(films[0]), `beforeend`);
+render(footerStatisticsElement, new FooterStatistics(films.length).getElement(), RenderPosition.BEFOREEND);
+render(document.body, new Details(films[0]).getElement(), RenderPosition.BEFOREEND);
 
 const detailsElement = document.querySelector(`.film-details`);
 detailsElement.classList.add(`visually-hidden`);
