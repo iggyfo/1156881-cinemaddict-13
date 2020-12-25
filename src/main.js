@@ -39,7 +39,18 @@ render(filmsElement, new FilmsList().getElement(), RenderPosition.BEFOREEND);
 
 const filmsListContainerElement = filmsElement.querySelector(`.films-list__container`);
 for (let film of films.slice(0, NUM_RENDER_CARDS)) {
-  render(filmsListContainerElement, new FilmCard(film).getElement(), RenderPosition.BEFOREEND);
+  const filmCardComponent = new FilmCard(film);
+  filmCardComponent.getElement().addEventListener(`click`, () => {
+    const detailsComponent = new Details(film);
+    document.body.appendChild(detailsComponent.getElement());
+    document.body.classList.add(`hide-overflow`);
+    detailsComponent.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, () => {
+      document.body.removeChild(detailsComponent.getElement());
+      document.body.classList.remove(`hide-overflow`);
+    });
+  });
+  filmCardComponent.getElement().querySelector(`.film-details__close-btn`);
+  render(filmsListContainerElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
 }
 
 const filmsListElement = document.querySelector(`.films-list`);
@@ -66,17 +77,17 @@ for (let film of extraFilms) {
 
 const footerStatisticsElement = footerElement.querySelector(`.footer__statistics`);
 render(footerStatisticsElement, new FooterStatistics(films.length).getElement(), RenderPosition.BEFOREEND);
-render(document.body, new Details(films[0]).getElement(), RenderPosition.BEFOREEND);
+// render(document.body, new Details(films[0]).getElement(), RenderPosition.BEFOREEND);
 
-const detailsElement = document.querySelector(`.film-details`);
-detailsElement.classList.add(`visually-hidden`);
+// const detailsElement = document.querySelector(`.film-details`);
+// detailsElement.classList.add(`visually-hidden`);
 
 // Временное решение для открытия попапа
-filmsListContainerElement.firstElementChild.addEventListener(`click`, () => {
-  detailsElement.classList.remove(`visually-hidden`);
-});
-// Временное решение для закрытия попапа
-const detailsCloseButtonElement = detailsElement.querySelector(`.film-details__close-btn`);
-detailsCloseButtonElement.addEventListener(`click`, () => {
-  detailsElement.classList.add(`visually-hidden`);
-});
+// filmsListContainerElement.firstElementChild.addEventListener(`click`, () => {
+//   detailsElement.classList.remove(`visually-hidden`);
+// });
+// // Временное решение для закрытия попапа
+// const detailsCloseButtonElement = detailsElement.querySelector(`.film-details__close-btn`);
+// detailsCloseButtonElement.addEventListener(`click`, () => {
+//   detailsElement.classList.add(`visually-hidden`);
+// });
