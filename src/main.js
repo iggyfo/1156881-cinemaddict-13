@@ -77,17 +77,3 @@ for (let film of extraFilms) {
 
 const footerStatisticsElement = footerElement.querySelector(`.footer__statistics`);
 render(footerStatisticsElement, new FooterStatistics(films.length).getElement(), RenderPosition.BEFOREEND);
-// render(document.body, new Details(films[0]).getElement(), RenderPosition.BEFOREEND);
-
-// const detailsElement = document.querySelector(`.film-details`);
-// detailsElement.classList.add(`visually-hidden`);
-
-// Временное решение для открытия попапа
-// filmsListContainerElement.firstElementChild.addEventListener(`click`, () => {
-//   detailsElement.classList.remove(`visually-hidden`);
-// });
-// // Временное решение для закрытия попапа
-// const detailsCloseButtonElement = detailsElement.querySelector(`.film-details__close-btn`);
-// detailsCloseButtonElement.addEventListener(`click`, () => {
-//   detailsElement.classList.add(`visually-hidden`);
-// });
