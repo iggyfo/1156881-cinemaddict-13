@@ -1,17 +1,16 @@
 import {createElement} from "../utils.js";
 
 
-export default class Sort {
+export default class Menu {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return `<ul class="sort">
-    <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
-    <li><a href="#" class="sort__button">Sort by date</a></li>
-    <li><a href="#" class="sort__button">Sort by rating</a></li>
-  </ul>`;
+    return `<section class="header__profile profile">
+    <p class="profile__rating">Movie Buff</p>
+    <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
+  </section>`;
   }
 
   getElement() {
