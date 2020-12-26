@@ -47,12 +47,22 @@ const showDetails = (film) => {
   });
 };
 
-const filmsListContainerElement = filmsElement.querySelector(`.films-list__container`);
-for (let film of films.slice(0, NUM_RENDER_CARDS)) {
-  const filmCardComponent = new FilmCard(film);
-  filmCardComponent.getElement().addEventListener(`click`, () => {
-    showDetails(film);
+const setFilmCardListeners = (component, film) => {
+  const filmElements = [];
+  filmElements.push(component.getElement().querySelector(`.film-card__title`));
+  filmElements.push(component.getElement().querySelector(`.film-card__poster`));
+  filmElements.push(component.getElement().querySelector(`.film-card__comments`));
+  filmElements.forEach((element) => {
+    element.addEventListener(`click`, () => {
+      showDetails(film);
+    });
   });
+};
+
+const filmsListContainerElement = filmsElement.querySelector(`.films-list__container`);
+for (const film of films.slice(0, NUM_RENDER_CARDS)) {
+  const filmCardComponent = new FilmCard(film);
+  setFilmCardListeners(filmCardComponent, film);
   render(filmsListContainerElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
 }
 
@@ -61,11 +71,9 @@ render(filmsListElement, new MoreButton().getElement(), RenderPosition.BEFOREEND
 
 const showMoreButtonElement = filmsElement.querySelector(`.films-list__show-more`);
 showMoreButtonElement.addEventListener(`click`, () => {
-  for (let film of filmsToRender.slice(0, NUM_RENDER_CARDS)) {
+  for (const film of filmsToRender.slice(0, NUM_RENDER_CARDS)) {
     const filmCardComponent = new FilmCard(film);
-    filmCardComponent.getElement().addEventListener(`click`, () => {
-      showDetails(film);
-    });
+    setFilmCardListeners(filmCardComponent, film);
     render(filmsListContainerElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
   }
   filmsToRender.splice(0, NUM_RENDER_CARDS);
@@ -78,11 +86,9 @@ render(filmsElement, new FilmsExtra().getElement(), RenderPosition.BEFOREEND);
 const filmsListExraElement = filmsElement.querySelector(`.films-list--extra`);
 const filmsListExraContainerElement = filmsListExraElement.querySelector(`.films-list__container`);
 
-for (let film of extraFilms) {
+for (const film of extraFilms) {
   const filmCardComponent = new FilmCard(film);
-  filmCardComponent.getElement().addEventListener(`click`, () => {
-    showDetails(film);
-  });
+  setFilmCardListeners(filmCardComponent, film);
   render(filmsListExraContainerElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
 }
 
