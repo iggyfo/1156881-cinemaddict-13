@@ -16,6 +16,7 @@ import {render, RenderPosition} from "./utils";
 const NUM_CARDS_OF_EXTRA_FILM = 2;
 const NUM_OF_FILMS = 20;
 const NUM_RENDER_CARDS = 5;
+const ESC = `Escape`;
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
@@ -37,6 +38,13 @@ render(mainElement, new Films().getElement(), RenderPosition.BEFOREEND);
 const filmsElement = mainElement.querySelector(`.films`);
 render(filmsElement, new FilmsList().getElement(), RenderPosition.BEFOREEND);
 
+const closeDetails = (evt, component) => {
+  if (evt.target === ESC || evt.target === `click`) {
+    document.body.removeChild(component.getElement());
+    document.body.classList.remove(`hide-overflow`);
+  }
+};
+
 const showDetails = (film) => {
   const detailsComponent = new Details(film);
   document.body.appendChild(detailsComponent.getElement());
@@ -45,6 +53,7 @@ const showDetails = (film) => {
     document.body.removeChild(detailsComponent.getElement());
     document.body.classList.remove(`hide-overflow`);
   });
+  document.addEventListener(`click`, closeDetails);
 };
 
 const setFilmCardListeners = (component, film) => {
