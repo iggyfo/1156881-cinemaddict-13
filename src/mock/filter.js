@@ -9,9 +9,11 @@ export const generateFilter = (films) => {
   films.forEach((film) => {
     if (film.isWatchlist) {
       filmsFilter.watchlist++;
-    } else if (film.isFavorites) {
+    }
+    if (film.isFavorites) {
       filmsFilter.favorites++;
-    } else if (film.isHistory) {
+    }
+    if (film.isHistory) {
       filmsFilter.history++;
     }
   });
