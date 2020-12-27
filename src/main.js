@@ -15,7 +15,7 @@ import {render, RenderPosition} from "./utils";
 
 
 const NUM_CARDS_OF_EXTRA_FILM = 2;
-const NUM_OF_FILMS = 0;
+const NUM_OF_FILMS = 20;
 const NUM_RENDER_CARDS = 5;
 const ESC = `Escape`;
 const headerElement = document.querySelector(`.header`);
