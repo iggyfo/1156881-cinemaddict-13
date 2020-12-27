@@ -38,30 +38,33 @@ render(mainElement, new Films().getElement(), RenderPosition.BEFOREEND);
 const filmsElement = mainElement.querySelector(`.films`);
 render(filmsElement, new FilmsList().getElement(), RenderPosition.BEFOREEND);
 
-const closeDetails = (evt, component) => {
-  if (evt.target === ESC || evt.target === `click`) {
-    document.body.removeChild(component.getElement());
-    document.body.classList.remove(`hide-overflow`);
-  }
-};
-
 const showDetails = (film) => {
   const detailsComponent = new Details(film);
   document.body.appendChild(detailsComponent.getElement());
   document.body.classList.add(`hide-overflow`);
-  detailsComponent.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, () => {
-    document.body.removeChild(detailsComponent.getElement());
+
+  const closeDetails = () => {
+    detailsComponent.getElement().remove();
+    detailsComponent.removeElement();
     document.body.classList.remove(`hide-overflow`);
+    document.removeEventListener(`keydown`, onDetailsEscKeydown);
+  };
+
+  detailsComponent.closeBtnElement.addEventListener(`click`, () => {
+    closeDetails();
   });
-  document.addEventListener(`click`, closeDetails);
+
+  const onDetailsEscKeydown = (evt) => {
+    if (evt.key === ESC) {
+      closeDetails();
+    }
+  };
+
+  document.addEventListener(`keydown`, onDetailsEscKeydown);
 };
 
-const setFilmCardListeners = (component, film) => {
-  const filmElements = [];
-  filmElements.push(component.getElement().querySelector(`.film-card__title`));
-  filmElements.push(component.getElement().querySelector(`.film-card__poster`));
-  filmElements.push(component.getElement().querySelector(`.film-card__comments`));
-  filmElements.forEach((element) => {
+const setFilmCardListeners = (elements, film) => {
+  elements.forEach((element) => {
     element.addEventListener(`click`, () => {
       showDetails(film);
     });
@@ -71,7 +74,7 @@ const setFilmCardListeners = (component, film) => {
 const filmsListContainerElement = filmsElement.querySelector(`.films-list__container`);
 for (const film of films.slice(0, NUM_RENDER_CARDS)) {
   const filmCardComponent = new FilmCard(film);
-  setFilmCardListeners(filmCardComponent, film);
+  setFilmCardListeners(filmCardComponent.filmShowDetailsElement, film);
   render(filmsListContainerElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
 }
 
@@ -82,7 +85,7 @@ const showMoreButtonElement = filmsElement.querySelector(`.films-list__show-more
 showMoreButtonElement.addEventListener(`click`, () => {
   for (const film of filmsToRender.slice(0, NUM_RENDER_CARDS)) {
     const filmCardComponent = new FilmCard(film);
-    setFilmCardListeners(filmCardComponent, film);
+    setFilmCardListeners(filmCardComponent.filmShowDetailsElement, film);
     render(filmsListContainerElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
   }
   filmsToRender.splice(0, NUM_RENDER_CARDS);
@@ -97,7 +100,7 @@ const filmsListExraContainerElement = filmsListExraElement.querySelector(`.films
 
 for (const film of extraFilms) {
   const filmCardComponent = new FilmCard(film);
-  setFilmCardListeners(filmCardComponent, film);
+  setFilmCardListeners(filmCardComponent.filmShowDetailsElement, film);
   render(filmsListExraContainerElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
 }
 
