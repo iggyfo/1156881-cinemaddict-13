@@ -34,12 +34,12 @@ filmsToRender = films.slice(NUM_RENDER_CARDS, NUM_OF_FILMS);
 render(headerElement, new Menu().getElement(), RenderPosition.BEFOREEND);
 render(mainElement, new Filter(generateFilter(films)).getElement(), RenderPosition.BEFOREEND);
 
-if (films) {
+if (!films) {
   render(mainElement, new NoMovies().getElement(), RenderPosition.BEFOREEND);
 } else {
-  const filmsElement = mainElement.querySelector(`.films`);
   render(mainElement, new Sort().getElement(), RenderPosition.BEFOREEND);
   render(mainElement, new Films().getElement(), RenderPosition.BEFOREEND);
+  const filmsElement = mainElement.querySelector(`.films`);
   render(filmsElement, new FilmsList().getElement(), RenderPosition.BEFOREEND);
   const showDetails = (film) => {
     const detailsComponent = new Details(film);
