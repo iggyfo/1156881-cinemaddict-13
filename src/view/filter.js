@@ -1,10 +1,6 @@
-import {createElement} from "../utils.js";
+import Abstract from "./abstract.js";
 
-export default class Filter {
-  constructor(filmsFilter) {
-    this._element = null;
-    this._filters = filmsFilter;
-  }
+export default class Filter extends Abstract {
 
   getTemplate() {
     const {watchlist, favorites, history} = this._filters;
@@ -17,17 +13,5 @@ export default class Filter {
     </div>
     <a href="#stats" class="main-navigation__additional">Stats</a>
   </nav>`;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
