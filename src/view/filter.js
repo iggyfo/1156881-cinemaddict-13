@@ -1,6 +1,10 @@
 import Abstract from "./abstract.js";
 
 export default class Filter extends Abstract {
+  constructor(filmsFilter) {
+    super();
+    this._filters = filmsFilter;
+  }
 
   getTemplate() {
     const {watchlist, favorites, history} = this._filters;

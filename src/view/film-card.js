@@ -1,10 +1,10 @@
-import {createElement} from "../utils.js";
+import Abstract from "./abstract.js";
 
 
-export default class FilmCard {
+export default class FilmCard extends Abstract {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
     this._filmShowDetailsElement = [];
   }
 
@@ -30,14 +30,6 @@ export default class FilmCard {
   </article>`;
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
   get filmShowDetailsElement() {
     if (this._filmShowDetailsElement) {
       this._filmShowDetailsElement.push(this.getElement().querySelector(`.film-card__title`));
@@ -45,10 +37,6 @@ export default class FilmCard {
       this._filmShowDetailsElement.push(this.getElement().querySelector(`.film-card__comments`));
     }
     return this._filmShowDetailsElement;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

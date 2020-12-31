@@ -1,10 +1,10 @@
-import {createElement} from "../utils.js";
+import Abstract from "./abstract.js";
 
 
-export default class Details {
+export default class Details extends Abstract {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
     this._closeBtnElement = null;
   }
 
@@ -128,22 +128,10 @@ export default class Details {
   </section>`;
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
   get closeBtnElement() {
     if (!this._closeBtnElement) {
       this._closeBtnElement = this.getElement().querySelector(`.film-details__close-btn`);
     }
     return this._closeBtnElement;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
