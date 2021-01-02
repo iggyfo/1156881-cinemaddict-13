@@ -5,7 +5,8 @@ export default class FilmCard extends Abstract {
   constructor(film) {
     super();
     this._film = film;
-    this._filmShowDetailsElement = [];
+    this._filmDetailsElement = [];
+    this._clickHandler = this._clickHandler.bind(this);
   }
 
   getTemplate() {
@@ -30,13 +31,25 @@ export default class FilmCard extends Abstract {
   </article>`;
   }
 
-  get filmShowDetailsElement() {
-    if (this._filmShowDetailsElement) {
-      this._filmShowDetailsElement.push(this.getElement().querySelector(`.film-card__title`));
-      this._filmShowDetailsElement.push(this.getElement().querySelector(`.film-card__poster`));
-      this._filmShowDetailsElement.push(this.getElement().querySelector(`.film-card__comments`));
+  _clickHandler(evt) {
+    this._callback.click(this._film);
+  }
+
+  setClickHandler(callback) {
+    this._callback.click = callback;
+    this._filmShowDetailsElement();
+    this._filmDetailsElement.forEach((element) => {
+      element.addEventListener(`click`, this._clickHandler);
+    });
+  }
+
+  _filmShowDetailsElement() {
+    if (this._filmDetailsElement) {
+      this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__title`));
+      this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__poster`));
+      this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__comments`));
     }
-    return this._filmShowDetailsElement;
+    return this._filmDetailsElement;
   }
 }
 
