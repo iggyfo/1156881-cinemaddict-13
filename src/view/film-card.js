@@ -31,7 +31,7 @@ export default class FilmCard extends Abstract {
   </article>`;
   }
 
-  _clickHandler(evt) {
+  _clickHandler() {
     this._callback.click(this._film);
   }
 
