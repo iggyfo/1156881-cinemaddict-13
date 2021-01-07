@@ -9,39 +9,69 @@ import FilmsExtraList from "./view/films-extra";
 import FooterStatistics from "./view/footer-statistics";
 import Details from "./view/details";
 import NoMovies from "./view/no-movies";
-import {generateFilm} from "./mock/film";
-import {generateFilter} from "./mock/filter";
 import {render, RenderPosition} from "./utils/render";
 
 export default class MovieList {
-  constructor(filmsContainer) {
-    this._filmsContainer = filmsContainer;
+  constructor(filmContainer) { // mainElement
+    this._filmsContainer = filmContainer;
+    this._filmsList = new FilmsList();
+    this._NUM_CARDS_OF_EXTRA_FILM = 2;
+    this._NUM_RENDER_CARDS = 5;
+    this._ESC = `Escape`;
+    this._extraFilms = [];
+    this._filmsToRender = [];
+  }
 
+  init(films) {
+    this._extraFilms = films.slice(0, this._NUM_CARDS_OF_EXTRA_FILM);
+    this._filmsToRender = films.slice(this._NUM_RENDER_CARDS, this._NUM_OF_FILMS);
+  }
 
+  _renderFilter() {
+
+  }
+
+  _renderNoMovies() {
+
+  }
+
+  _renderSort() {
+
+  }
+
+  _renderFilmsContainer() {
+
+  }
+
+  _renderFilmsList() {
+
+  }
+
+  _renderFilmCard() {
+
+  }
+
+  _renderShowMoreButton() {
+
+  }
+
+  _renderShowMoreButton() {
 
   }
 
 
-
 }
 
 
-const NUM_CARDS_OF_EXTRA_FILM = 2;
-const NUM_OF_FILMS = 20;
-const NUM_RENDER_CARDS = 5;
-const ESC = `Escape`;
+
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
-let films = [];
-let extraFilms = [];
-let filmsToRender = [];
 
-for (let i = 0; i < NUM_OF_FILMS; i++) {
-  films.push(generateFilm());
-}
-extraFilms = films.slice(0, NUM_CARDS_OF_EXTRA_FILM);
-filmsToRender = films.slice(NUM_RENDER_CARDS, NUM_OF_FILMS);
+// for (let i = 0; i < NUM_OF_FILMS; i++) {
+//   films.push(generateFilm());
+// }
+
 
 render(headerElement, new Menu(), RenderPosition.BEFOREEND);
 render(mainElement, new Filter(generateFilter(films)), RenderPosition.BEFOREEND);
