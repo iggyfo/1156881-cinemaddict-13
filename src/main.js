@@ -22,13 +22,15 @@ const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
 let films = [];
-let extraFilms = [];
+let topRatedFilms = [];
+let mostCommentedFilms = [];
 let filmsToRender = [];
 
 for (let i = 0; i < NUM_OF_FILMS; i++) {
   films.push(generateFilm());
 }
-extraFilms = films.slice(0, NUM_CARDS_OF_EXTRA_FILM);
+topRatedFilms = films.slice(0, NUM_CARDS_OF_EXTRA_FILM);
+mostCommentedFilms = films.slice(NUM_CARDS_OF_EXTRA_FILM, NUM_CARDS_OF_EXTRA_FILM + NUM_CARDS_OF_EXTRA_FILM);
 filmsToRender = films.slice(NUM_RENDER_CARDS, NUM_OF_FILMS);
 
 render(headerElement, new Menu(), RenderPosition.BEFOREEND);
@@ -89,14 +91,22 @@ if (films.length === 0) {
     }
   });
 
-  render(filmsElement, new FilmsExtra(), RenderPosition.BEFOREEND);
-  const filmsListExraElement = filmsElement.querySelector(`.films-list--extra`);
-  const filmsListExraContainerElement = filmsListExraElement.querySelector(`.films-list__container`);
+  const topRated = new FilmsExtra(`Top Rated`);
+  render(filmsElement, topRated, RenderPosition.BEFOREEND);
 
-  for (const film of extraFilms) {
+  for (const film of topRatedFilms) {
     const filmCardComponent = new FilmCard(film);
     filmCardComponent.setClickHandler(showDetails);
-    render(filmsListExraContainerElement, filmCardComponent, RenderPosition.BEFOREEND);
+    render(topRated.getElement().querySelector(`.films-list__container`), filmCardComponent, RenderPosition.BEFOREEND);
+  }
+
+  const mostCommented = new FilmsExtra(`Most Commented`);
+  render(filmsElement, mostCommented, RenderPosition.BEFOREEND);
+
+  for (const film of mostCommentedFilms) {
+    const filmCardComponent = new FilmCard(film);
+    filmCardComponent.setClickHandler(showDetails);
+    render(mostCommented.getElement().querySelector(`.films-list__container`), filmCardComponent, RenderPosition.BEFOREEND);
   }
 }
 const footerStatisticsElement = footerElement.querySelector(`.footer__statistics`);

@@ -2,10 +2,14 @@ import Abstract from "./abstract.js";
 
 
 export default class FilmsExtra extends Abstract {
+  constructor(listTitle) {
+    super();
+    this._listTitle = listTitle;
+  }
 
   getTemplate() {
     return `<section class="films-list films-list--extra">
-    <h2 class="films-list__title">Top rated</h2>
+    <h2 class="films-list__title">${this._listTitle}</h2>
     <div class="films-list__container"></div>
   </section>`;
   }
