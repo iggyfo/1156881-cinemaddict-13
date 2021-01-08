@@ -5,6 +5,7 @@ export default class Details {
   constructor(film) {
     this._film = film;
     this._element = null;
+    this._closeBtnElement = null;
   }
 
   getTemplate() {
@@ -133,6 +134,13 @@ export default class Details {
     }
 
     return this._element;
+  }
+
+  get closeBtnElement() {
+    if (!this._closeBtnElement) {
+      this._closeBtnElement = this.getElement().querySelector(`.film-details__close-btn`);
+    }
+    return this._closeBtnElement;
   }
 
   removeElement() {

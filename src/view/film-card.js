@@ -5,6 +5,7 @@ export default class FilmCard {
   constructor(film) {
     this._film = film;
     this._element = null;
+    this._filmShowDetailsElement = [];
   }
 
   getTemplate() {
@@ -35,6 +36,15 @@ export default class FilmCard {
     }
 
     return this._element;
+  }
+
+  get filmShowDetailsElement() {
+    if (this._filmShowDetailsElement) {
+      this._filmShowDetailsElement.push(this.getElement().querySelector(`.film-card__title`));
+      this._filmShowDetailsElement.push(this.getElement().querySelector(`.film-card__poster`));
+      this._filmShowDetailsElement.push(this.getElement().querySelector(`.film-card__comments`));
+    }
+    return this._filmShowDetailsElement;
   }
 
   removeElement() {
