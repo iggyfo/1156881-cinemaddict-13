@@ -1,25 +1,13 @@
-import {createElement} from "../utils.js";
+import Abstract from "./abstract.js";
 
 
-export default class FooterStatistics {
+export default class FooterStatistics extends Abstract {
   constructor(numberOfFilms) {
+    super();
     this._numberOfFilms = numberOfFilms;
-    this._element = null;
   }
 
   getTemplate() {
     return `<p>${this._numberOfFilms} movies inside</p>`;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

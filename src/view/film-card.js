@@ -1,11 +1,12 @@
-import {createElement} from "../utils.js";
+import Abstract from "./abstract.js";
 
 
-export default class FilmCard {
+export default class FilmCard extends Abstract {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
-    this._filmShowDetailsElement = [];
+    this._filmDetailsElement = [];
+    this._clickHandler = this._clickHandler.bind(this);
   }
 
   getTemplate() {
@@ -30,25 +31,25 @@ export default class FilmCard {
   </article>`;
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _clickHandler() {
+    this._callback.click(this._film);
   }
 
-  get filmShowDetailsElement() {
-    if (this._filmShowDetailsElement) {
-      this._filmShowDetailsElement.push(this.getElement().querySelector(`.film-card__title`));
-      this._filmShowDetailsElement.push(this.getElement().querySelector(`.film-card__poster`));
-      this._filmShowDetailsElement.push(this.getElement().querySelector(`.film-card__comments`));
-    }
-    return this._filmShowDetailsElement;
+  setClickHandler(callback) {
+    this._callback.click = callback;
+    this._filmShowDetailsElement();
+    this._filmDetailsElement.forEach((element) => {
+      element.addEventListener(`click`, this._clickHandler);
+    });
   }
 
-  removeElement() {
-    this._element = null;
+  _filmShowDetailsElement() {
+    if (this._filmDetailsElement) {
+      this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__title`));
+      this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__poster`));
+      this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__comments`));
+    }
+    return this._filmDetailsElement;
   }
 }
 

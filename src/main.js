@@ -11,7 +11,7 @@ import Details from "./view/details";
 import NoMovies from "./view/no-movies";
 import {generateFilm} from "./mock/film";
 import {generateFilter} from "./mock/filter";
-import {render, RenderPosition} from "./utils";
+import {render, RenderPosition} from "./utils/render";
 
 
 const NUM_CARDS_OF_EXTRA_FILM = 2;
@@ -31,16 +31,16 @@ for (let i = 0; i < NUM_OF_FILMS; i++) {
 extraFilms = films.slice(0, NUM_CARDS_OF_EXTRA_FILM);
 filmsToRender = films.slice(NUM_RENDER_CARDS, NUM_OF_FILMS);
 
-render(headerElement, new Menu().getElement(), RenderPosition.BEFOREEND);
-render(mainElement, new Filter(generateFilter(films)).getElement(), RenderPosition.BEFOREEND);
-
-if (!films) {
-  render(mainElement, new NoMovies().getElement(), RenderPosition.BEFOREEND);
+render(headerElement, new Menu(), RenderPosition.BEFOREEND);
+render(mainElement, new Filter(generateFilter(films)), RenderPosition.BEFOREEND);
+if (films.length === 0) {
+  render(mainElement, new NoMovies(), RenderPosition.BEFOREEND);
 } else {
-  render(mainElement, new Sort().getElement(), RenderPosition.BEFOREEND);
-  render(mainElement, new Films().getElement(), RenderPosition.BEFOREEND);
+  render(mainElement, new Sort(), RenderPosition.BEFOREEND);
+  render(mainElement, new Films(), RenderPosition.BEFOREEND);
   const filmsElement = mainElement.querySelector(`.films`);
-  render(filmsElement, new FilmsList().getElement(), RenderPosition.BEFOREEND);
+  render(filmsElement, new FilmsList(), RenderPosition.BEFOREEND);
+
   const showDetails = (film) => {
     const detailsComponent = new Details(film);
     document.body.appendChild(detailsComponent.getElement());
@@ -66,30 +66,22 @@ if (!films) {
     document.addEventListener(`keydown`, onDetailsEscKeydown);
   };
 
-  const setFilmCardListeners = (elements, film) => {
-    elements.forEach((element) => {
-      element.addEventListener(`click`, () => {
-        showDetails(film);
-      });
-    });
-  };
-
   const filmsListContainerElement = filmsElement.querySelector(`.films-list__container`);
   for (const film of films.slice(0, NUM_RENDER_CARDS)) {
     const filmCardComponent = new FilmCard(film);
-    setFilmCardListeners(filmCardComponent.filmShowDetailsElement, film);
-    render(filmsListContainerElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
+    filmCardComponent.setClickHandler(showDetails);
+    render(filmsListContainerElement, filmCardComponent, RenderPosition.BEFOREEND);
   }
 
   const filmsListElement = document.querySelector(`.films-list`);
-  render(filmsListElement, new MoreButton().getElement(), RenderPosition.BEFOREEND);
+  render(filmsListElement, new MoreButton(), RenderPosition.BEFOREEND);
 
   const showMoreButtonElement = filmsElement.querySelector(`.films-list__show-more`);
   showMoreButtonElement.addEventListener(`click`, () => {
     for (const film of filmsToRender.slice(0, NUM_RENDER_CARDS)) {
       const filmCardComponent = new FilmCard(film);
-      setFilmCardListeners(filmCardComponent.filmShowDetailsElement, film);
-      render(filmsListContainerElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
+      filmCardComponent.setClickHandler(showDetails);
+      render(filmsListContainerElement, filmCardComponent, RenderPosition.BEFOREEND);
     }
     filmsToRender.splice(0, NUM_RENDER_CARDS);
     if (filmsToRender.length === 0) {
@@ -97,15 +89,15 @@ if (!films) {
     }
   });
 
-  render(filmsElement, new FilmsExtra().getElement(), RenderPosition.BEFOREEND);
+  render(filmsElement, new FilmsExtra(), RenderPosition.BEFOREEND);
   const filmsListExraElement = filmsElement.querySelector(`.films-list--extra`);
   const filmsListExraContainerElement = filmsListExraElement.querySelector(`.films-list__container`);
 
   for (const film of extraFilms) {
     const filmCardComponent = new FilmCard(film);
-    setFilmCardListeners(filmCardComponent.filmShowDetailsElement, film);
-    render(filmsListExraContainerElement, filmCardComponent.getElement(), RenderPosition.BEFOREEND);
+    filmCardComponent.setClickHandler(showDetails);
+    render(filmsListExraContainerElement, filmCardComponent, RenderPosition.BEFOREEND);
   }
 }
 const footerStatisticsElement = footerElement.querySelector(`.footer__statistics`);
-render(footerStatisticsElement, new FooterStatistics(films.length).getElement(), RenderPosition.BEFOREEND);
+render(footerStatisticsElement, new FooterStatistics(films.length), RenderPosition.BEFOREEND);
