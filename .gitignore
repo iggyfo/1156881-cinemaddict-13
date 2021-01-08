@@ -14,4 +14,5 @@ node_modules/
 # Собранные файлы (допишите самостоятельно)
 public/bundle.js
 public/bundle.js.map
+src/main-copy.js
 

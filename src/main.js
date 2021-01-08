@@ -31,7 +31,7 @@ for (let i = 0; i < NUM_OF_FILMS; i++) {
 }
 topRatedFilms = films.slice(0, NUM_CARDS_OF_EXTRA_FILM);
 mostCommentedFilms = films.slice(NUM_CARDS_OF_EXTRA_FILM, NUM_CARDS_OF_EXTRA_FILM + NUM_CARDS_OF_EXTRA_FILM);
-filmsToRender = films.slice(NUM_RENDER_CARDS, NUM_OF_FILMS);
+filmsToRender = films.slice(0, NUM_OF_FILMS);
 
 render(headerElement, new Menu(), RenderPosition.BEFOREEND);
 render(mainElement, new Filter(generateFilter(films)), RenderPosition.BEFOREEND);
@@ -69,11 +69,12 @@ if (films.length === 0) {
   };
 
   const filmsListContainerElement = filmsElement.querySelector(`.films-list__container`);
-  for (const film of films.slice(0, NUM_RENDER_CARDS)) {
+  for (const film of filmsToRender.slice(0, NUM_RENDER_CARDS)) {
     const filmCardComponent = new FilmCard(film);
     filmCardComponent.setClickHandler(showDetails);
     render(filmsListContainerElement, filmCardComponent, RenderPosition.BEFOREEND);
   }
+  filmsToRender.splice(0, NUM_RENDER_CARDS);
 
   const filmsListElement = document.querySelector(`.films-list`);
   render(filmsListElement, new MoreButton(), RenderPosition.BEFOREEND);
