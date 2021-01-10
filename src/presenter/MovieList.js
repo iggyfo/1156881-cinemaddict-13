@@ -1,9 +1,7 @@
-
 import FilmsList from "../view/films-list";
-import FilmCard from "../view/film-card";
+import Movie from "./Movie";
 import MoreButton from "../view/show-more-button";
 import FilmsExtraList from "../view/films-extra";
-import Details from "../view/details";
 import NoMovies from "../view/no-movies";
 import {render, RenderPosition, remove} from "../utils/render";
 
@@ -51,43 +49,13 @@ export default class MovieList {
       });
     }
     for (const film of this._filmsToRender.slice(0, this._NUM_RENDER_CARDS)) {
-      this._renderFilmCard(film);
+      const movie = new Movie(this._filmsListContainerElement);
+      movie.init(film);
     }
     this._filmsToRender.splice(0, this._NUM_RENDER_CARDS);
     if (this._filmsToRender.length === 0) {
       remove(this._moreButton);
     }
-  }
-
-  _renderFilmCard(film) {
-    const showDetails = (film) => {
-      const detailsComponent = new Details(film);
-      document.body.appendChild(detailsComponent.getElement());
-      document.body.classList.add(`hide-overflow`);
-
-      const closeDetails = () => {
-        detailsComponent.getElement().remove();
-        detailsComponent.removeElement();
-        document.body.classList.remove(`hide-overflow`);
-        document.removeEventListener(`keydown`, onDetailsEscKeydown);
-      };
-
-      detailsComponent.closeBtnElement.addEventListener(`click`, () => {
-        closeDetails();
-      });
-
-      const onDetailsEscKeydown = (evt) => {
-        if (evt.key === `Escape`) {
-          closeDetails();
-        }
-      };
-
-      document.addEventListener(`keydown`, onDetailsEscKeydown);
-    };
-
-    const filmCardComponent = new FilmCard(film);
-    filmCardComponent.setClickHandler(showDetails);
-    render(this._filmsListContainerElement, filmCardComponent, RenderPosition.BEFOREEND);
   }
 
   _renderShowMoreButton() {
