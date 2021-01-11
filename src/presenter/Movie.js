@@ -12,10 +12,7 @@ export default class Movie {
     this._film = film;
     const prevFilmComponent = this._filmCardComponent;
     this._filmCardComponent = new FilmCard(this._film);
-    this._renderFilmCard(this._film);
-  }
 
-  _renderFilmCard() {
     const showDetails = () => {
       const detailsComponent = new Details(this._film);
       document.body.appendChild(detailsComponent.getElement());
@@ -40,7 +37,6 @@ export default class Movie {
 
       document.addEventListener(`keydown`, onDetailsEscKeydown);
     };
-
     this._filmCardComponent.setClickHandler(showDetails);
     render(this._container, this._filmCardComponent, RenderPosition.BEFOREEND);
   }
