@@ -10,6 +10,7 @@ export default class Movie {
 
   init(film) {
     this._film = film;
+    const prevFilmComponent = this._filmCardComponent;
     this._filmCardComponent = new FilmCard(this._film);
     this._renderFilmCard(this._film);
   }
