@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import {nanoid} from 'nanoid';
 
 
 const MAX_NUM_SEN_SHORT_DESCRIPTION = 5;
@@ -202,6 +203,7 @@ export const generateFilm = () => {
 
   const date = dayjs().subtract(getRandomInteger(1, DEEP_YEAR_FILM), `year`).subtract(getRandomInteger(1, WEEKS_OF_YEAR), `week`);
   return {
+    id: nanoid(),
     poster: generatePoster(),
     title: generateTitle(),
     originalTitle: generateTitle(),

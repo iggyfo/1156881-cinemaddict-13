@@ -30,6 +30,7 @@ export default class MovieList {
       this._topRatedFilms = films.slice(0, this._NUM_CARDS_OF_EXTRA_FILM);
       this._mostCommentedFilms = films.slice(this._NUM_CARDS_OF_EXTRA_FILM, this._NUM_CARDS_OF_EXTRA_FILM + this._NUM_CARDS_OF_EXTRA_FILM);
       this._filmsListContainerElement = this._filmsList.getElement().querySelector(`.films-list__container`);
+      this._moviePresenter = {};
       this._renderFilmsList();
       this._renderFilmsExtraList(`Top Rated`, this._topRatedFilms);
       this._renderFilmsExtraList(`Most Commented`, this._mostCommentedFilms);
@@ -49,13 +50,22 @@ export default class MovieList {
       });
     }
     for (const film of this._filmsToRender.slice(0, this._NUM_RENDER_CARDS)) {
-      const movie = new Movie(this._filmsListContainerElement);
-      movie.init(film);
+      const moviePresenter = new Movie(this._filmsListContainerElement);
+      moviePresenter.init(film);
+      this._moviePresenter[film.id] = moviePresenter;
     }
     this._filmsToRender.splice(0, this._NUM_RENDER_CARDS);
     if (this._filmsToRender.length === 0) {
       remove(this._moreButton);
     }
+  }
+
+  _clearFilmsList() {
+    Object
+      .values(this._moviePresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._moviePresenter = {};
+    remove(this._moreButton);
   }
 
   _renderShowMoreButton() {

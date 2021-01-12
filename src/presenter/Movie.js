@@ -1,11 +1,12 @@
 import FilmCard from "../view/film-card";
 import Details from "../view/details";
-import {render, RenderPosition, remove} from "../utils/render";
+import {render, RenderPosition, replace, remove} from "../utils/render";
 
 
 export default class Movie {
   constructor(container) {
     this._container = container;
+    this._filmCardComponent = null;
   }
 
   init(film) {
@@ -38,6 +39,20 @@ export default class Movie {
       document.addEventListener(`keydown`, onDetailsEscKeydown);
     };
     this._filmCardComponent.setClickHandler(showDetails);
-    render(this._container, this._filmCardComponent, RenderPosition.BEFOREEND);
+
+    if (prevFilmComponent === null) {
+      render(this._container, this._filmCardComponent, RenderPosition.BEFOREEND);
+      return;
+    }
+
+    if (this._container.getElement().contains(prevFilmComponent.getElement())) {
+      replace(this._filmCardComponent, prevFilmComponent);
+    }
+
+    remove(prevFilmComponent);
+  }
+
+  destroy() {
+    remove(this._filmCardComponent);
   }
 }
