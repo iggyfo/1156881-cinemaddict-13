@@ -4,15 +4,20 @@ import {render, RenderPosition, replace, remove} from "../utils/render";
 
 
 export default class Movie {
-  constructor(container) {
+  constructor(container, changeData) {
     this._container = container;
     this._filmCardComponent = null;
+    this._changeData = changeData;
   }
 
   init(film) {
     this._film = film;
     const prevFilmComponent = this._filmCardComponent;
     this._filmCardComponent = new FilmCard(this._film);
+    this._filmCardComponent.setOnAddWachedClick(this._onAddWachedClick);
+    // this._filmCardComponent.setArchiveClickHandler(this._onAddWachlistClick);
+    // this._filmCardComponent.setArchiveClickHandler(this._onAddFavoriteClick);
+
 
     const showDetails = () => {
       const detailsComponent = new Details(this._film);
@@ -54,5 +59,17 @@ export default class Movie {
 
   destroy() {
     remove(this._filmCardComponent);
+  }
+
+  _onAddWachedClick() {
+    this._changeData(
+        Object.assign(
+            {},
+            this._film,
+            {
+              isWatched: !this._film.isWatched
+            }
+        )
+    );
   }
 }

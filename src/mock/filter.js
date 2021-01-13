@@ -10,10 +10,10 @@ export const generateFilter = (films) => {
     if (film.isWatchlist) {
       filmsFilter.watchlist++;
     }
-    if (film.isFavorites) {
+    if (film.isWatched) {
       filmsFilter.favorites++;
     }
-    if (film.isHistory) {
+    if (film.isFavorite) {
       filmsFilter.history++;
     }
   });

@@ -7,6 +7,8 @@ export default class FilmCard extends Abstract {
     this._film = film;
     this._filmDetailsElement = [];
     this._clickHandler = this._clickHandler.bind(this);
+    this._onAddWachedClick = this._onAddWachedClick.bind(this);
+
   }
 
   getTemplate() {
@@ -31,8 +33,22 @@ export default class FilmCard extends Abstract {
   </article>`;
   }
 
+  _filmShowDetailsElement() {
+    if (this._filmDetailsElement) {
+      this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__title`));
+      this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__poster`));
+      this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__comments`));
+    }
+    return this._filmDetailsElement;
+  }
+
   _clickHandler() {
     this._callback.click(this._film);
+  }
+
+  _onAddWachedClick(evt) {
+    evt.preventDefault();
+    this._callback.addWachedClick();
   }
 
   setClickHandler(callback) {
@@ -43,13 +59,9 @@ export default class FilmCard extends Abstract {
     });
   }
 
-  _filmShowDetailsElement() {
-    if (this._filmDetailsElement) {
-      this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__title`));
-      this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__poster`));
-      this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__comments`));
-    }
-    return this._filmDetailsElement;
+  setOnAddWachedClick(callback) {
+    this._callback.addWachedClick = callback;
+    this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, this._onAddWachedClick);
   }
 }
 

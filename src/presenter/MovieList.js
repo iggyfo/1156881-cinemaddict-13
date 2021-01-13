@@ -3,7 +3,9 @@ import Movie from "./Movie";
 import MoreButton from "../view/show-more-button";
 import FilmsExtraList from "../view/films-extra";
 import NoMovies from "../view/no-movies";
-import {render, RenderPosition, remove} from "../utils/render";
+import {render, RenderPosition, remove} from "../utils/render.js";
+import {updateItem} from "../utils/common.js";
+
 
 export default class MovieList {
   constructor(container) {
@@ -11,6 +13,9 @@ export default class MovieList {
     this._filmsList = new FilmsList();
     this._moreButton = new MoreButton();
     this._noMovie = new NoMovies();
+
+    this._onFilmChange = this._onFilmChange.bind(this);
+
 
     this._NUM_CARDS_OF_EXTRA_FILM = 2;
     this._NUM_RENDER_CARDS = 5;
@@ -50,7 +55,7 @@ export default class MovieList {
       });
     }
     for (const film of this._filmsToRender.slice(0, this._NUM_RENDER_CARDS)) {
-      const moviePresenter = new Movie(this._filmsListContainerElement);
+      const moviePresenter = new Movie(this._filmsListContainerElement, this._onFilmChange);
       moviePresenter.init(film);
       this._moviePresenter[film.id] = moviePresenter;
     }
@@ -58,14 +63,6 @@ export default class MovieList {
     if (this._filmsToRender.length === 0) {
       remove(this._moreButton);
     }
-  }
-
-  _clearFilmsList() {
-    Object
-      .values(this._moviePresenter)
-      .forEach((presenter) => presenter.destroy());
-    this._moviePresenter = {};
-    remove(this._moreButton);
   }
 
   _renderShowMoreButton() {
@@ -80,5 +77,18 @@ export default class MovieList {
       const movie = new Movie(filmsExtraListContainer);
       movie.init(film);
     }
+  }
+
+  _clearFilmsList() {
+    Object
+      .values(this._moviePresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._moviePresenter = {};
+    remove(this._moreButton);
+  }
+
+  _onFilmChange(updatedFilm) {
+    this._films = updateItem(this._films, updatedFilm);
+    this._moviePresenter[updatedFilm.id].init(updatedFilm);
   }
 }
