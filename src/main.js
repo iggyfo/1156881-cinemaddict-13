@@ -9,7 +9,7 @@ import {generateFilter} from "./mock/filter";
 import {render, RenderPosition} from "./utils/render";
 
 
-const NUM_OF_FILMS = 20;
+const NUM_OF_FILMS = 24;
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);

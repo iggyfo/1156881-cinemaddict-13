@@ -6,10 +6,21 @@ export default class Details extends Abstract {
     super();
     this._film = film;
     this._closeBtnElement = null;
+    this._detailsControlsActive = {
+      favorite: ``,
+      watched: ``,
+      watchlist: ``,
+    };
+    this._clickHandler = this._clickHandler.bind(this);
+    this._onDetailsAddWatchedClick = this._onDetailsAddWatchedClick.bind(this);
+    this._onDetailsAddWatchlistClick = this._onDetailsAddWatchlistClick.bind(this);
+    this._onDetailsAddFavoriteClick = this._onDetailsAddFavoriteClick.bind(this);
   }
 
   getTemplate() {
-    const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, date, duration, country, genres, description, comments} = this._film;
+    const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, date, duration, country, genres, description, comments, isFavorite, isWatched, isWatchlist} = this._film;
+
+
 
     return `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
