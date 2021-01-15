@@ -18,7 +18,6 @@ let films = [];
 for (let i = 0; i < NUM_OF_FILMS; i++) {
   films.push(generateFilm());
 }
-debugger
 render(headerElement, new Menu(), RenderPosition.BEFOREEND);
 render(mainElement, new Filter(generateFilter(films)), RenderPosition.BEFOREEND);
 render(mainElement, new Sort(), RenderPosition.BEFOREEND);

@@ -9,7 +9,7 @@ export default class FilmCard extends Abstract {
     this._clickHandler = this._clickHandler.bind(this);
     this._onAddWatchedClick = this._onAddWatchedClick.bind(this);
     this._onAddWatchlistClick = this._onAddWatchlistClick.bind(this);
-    this._onAddFavotiteClick = this._onAddFavotiteClick.bind(this);
+    this._onAddFavoriteClick = this._onAddFavoriteClick.bind(this);
   }
 
   getTemplate() {
@@ -57,7 +57,7 @@ export default class FilmCard extends Abstract {
     this._callback.addWatchlistClick();
   }
 
-  _onAddFavotiteClick(evt) {
+  _onAddFavoriteClick(evt) {
     evt.preventDefault();
     this._callback.addFavotiteClick();
   }
@@ -80,7 +80,7 @@ export default class FilmCard extends Abstract {
     this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, this._onAddWatchlistClick);
   }
 
-  setOnAddFavotiteClick(callback) {
+  setOnAddFavoriteClick(callback) {
     this._callback.addFavotiteClick = callback;
     this.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, this._onAddFavoriteClick);
   }
