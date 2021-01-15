@@ -1,5 +1,5 @@
 import FilmsList from "../view/films-list";
-import Movie from "./Movie";
+import Movie from "./movie";
 import MoreButton from "../view/show-more-button";
 import FilmsExtraList from "../view/films-extra";
 import NoMovies from "../view/no-movies";
@@ -15,11 +15,8 @@ export default class MovieList {
     this._noMovie = new NoMovies();
 
     this._onFilmChange = this._onFilmChange.bind(this);
-
-
     this._NUM_CARDS_OF_EXTRA_FILM = 2;
     this._NUM_RENDER_CARDS = 5;
-    this._ESC = `Escape`;
     this._topRatedFilms = [];
     this._mostCommentedFilm = [];
     this._filmsToRender = [];

@@ -1,22 +1,26 @@
 import FilmCard from "../view/film-card";
 import Details from "../view/details";
 import {render, RenderPosition, replace, remove} from "../utils/render";
-
+import {constants} from "../utils/constants.js";
 
 export default class Movie {
   constructor(container, changeData) {
     this._container = container;
     this._filmCardComponent = null;
     this._changeData = changeData;
+    this._onAddWatchedClick = this._onAddWatchedClick.bind(this);
+    this._onAddWatchlistClick = this._onAddWatchlistClick.bind(this);
+    this._onAddFavotiteClick = this._onAddFavotiteClick.bind(this);
+
   }
 
   init(film) {
     this._film = film;
     const prevFilmComponent = this._filmCardComponent;
     this._filmCardComponent = new FilmCard(this._film);
-    this._filmCardComponent.setOnAddWachedClick(this._onAddWachedClick);
-    // this._filmCardComponent.setArchiveClickHandler(this._onAddWachlistClick);
-    // this._filmCardComponent.setArchiveClickHandler(this._onAddFavoriteClick);
+    this._filmCardComponent.setOnAddWachedClick(this._onAddWatchedClick);
+    this._filmCardComponent.setOnAddWatchlistClick(this._onAddWatchlistClick);
+    this._filmCardComponent.setOnAddFavotiteClick(this._onAddFavoriteClick);
 
 
     const showDetails = () => {
@@ -36,7 +40,7 @@ export default class Movie {
       });
 
       const onDetailsEscKeydown = (evt) => {
-        if (evt.key === `Escape`) {
+        if (evt.key === constants.ESC) {
           closeDetails();
         }
       };
@@ -48,9 +52,7 @@ export default class Movie {
     if (prevFilmComponent === null) {
       render(this._container, this._filmCardComponent, RenderPosition.BEFOREEND);
       return;
-    }
-
-    if (this._container.getElement().contains(prevFilmComponent.getElement())) {
+    } else {
       replace(this._filmCardComponent, prevFilmComponent);
     }
 
@@ -61,13 +63,37 @@ export default class Movie {
     remove(this._filmCardComponent);
   }
 
-  _onAddWachedClick() {
+  _onAddWatchedClick() {
     this._changeData(
         Object.assign(
             {},
             this._film,
             {
               isWatched: !this._film.isWatched
+            }
+        )
+    );
+  }
+
+  _onAddWatchlistClick() {
+    this._changeData(
+        Object.assign(
+            {},
+            this._film,
+            {
+              isWatchlist: !this._film.isWatchlist
+            }
+        )
+    );
+  }
+
+  _onAddFavotiteClick() {
+    this._changeData(
+        Object.assign(
+            {},
+            this._film,
+            {
+              isFavorite: !this._film.isFavorite
             }
         )
     );
