@@ -6,12 +6,11 @@ export default class Details extends Abstract {
     super();
     this._film = film;
     this._closeBtnElement = null;
-    this._detailsControlsActive = {
+    this._detailsControlsChecked = {
       favorite: ``,
       watched: ``,
       watchlist: ``,
     };
-    this._clickHandler = this._clickHandler.bind(this);
     this._onDetailsAddWatchedClick = this._onDetailsAddWatchedClick.bind(this);
     this._onDetailsAddWatchlistClick = this._onDetailsAddWatchlistClick.bind(this);
     this._onDetailsAddFavoriteClick = this._onDetailsAddFavoriteClick.bind(this);
@@ -19,7 +18,6 @@ export default class Details extends Abstract {
 
   getTemplate() {
     const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, date, duration, country, genres, description, comments, isFavorite, isWatched, isWatchlist} = this._film;
-
 
 
     return `<section class="film-details">
@@ -85,13 +83,13 @@ export default class Details extends Abstract {
         </div>
 
         <section class="film-details__controls">
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isWatchlist ? `checked` : ``}>
           <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isWatched ? `checked` : ``}>
           <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${isFavorite ? `checked` : ``}>
           <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
         </section>
       </div>
@@ -144,5 +142,35 @@ export default class Details extends Abstract {
       this._closeBtnElement = this.getElement().querySelector(`.film-details__close-btn`);
     }
     return this._closeBtnElement;
+  }
+
+  _onDetailsAddWatchedClick(evt) {
+    evt.preventDefault();
+    this._callback.addDetailsWatchedClick();
+  }
+
+  _onDetailsAddWatchlistClick(evt) {
+    evt.preventDefault();
+    this._callback.addDetailsWatchlistClick();
+  }
+
+  _onDetailsAddFavoriteClick(evt) {
+    evt.preventDefault();
+    this._callback.addDetailsFavotiteClick();
+  }
+
+  setOnDetailsAddWachedClick(callback) {
+    this._callback.addDetailsWatchedClick = callback;
+    this.getElement().querySelector(`.film-details__control-label--watched`).addEventListener(`click`, this._onDetailsAddWatchedClick);
+  }
+
+  setOnDetailsAddWatchlistClick(callback) {
+    this._callback.addDetailsWatchlistClick = callback;
+    this.getElement().querySelector(`.film-details__control-label--watchlist`).addEventListener(`click`, this._onDetailsAddWatchlistClick);
+  }
+
+  setOnDetailsAddFavoriteClick(callback) {
+    this._callback.addDetailsFavotiteClick = callback;
+    this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, this._onDetailsAddFavoriteClick);
   }
 }

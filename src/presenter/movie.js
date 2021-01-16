@@ -24,7 +24,14 @@ export default class Movie {
 
 
     const showDetails = () => {
-      const detailsComponent = new Details(this._film);
+      const detailsComponent = null;
+      const prevFilmComponent = detailsComponent;
+      detailsComponent = new Details(this._film);
+
+      detailsComponent.setOnDetailsAddWachedClick(this._onAddWatchedClick);
+      detailsComponent.setOnDetailsAddWatchlistClick(this._onAddWatchlistClick);
+      detailsComponent.setOnDetailsAddFavoriteClick(this._onAddFavoriteClick);
+
       document.body.appendChild(detailsComponent.getElement());
       document.body.classList.add(`hide-overflow`);
 
