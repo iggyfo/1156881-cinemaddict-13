@@ -2,7 +2,7 @@ import Menu from "./view/menu";
 import Filter from "./view/filter";
 import Sort from "./view/sort";
 import FilmsContainer from "./view/films-container";
-import MovieList from "./presenter/MovieList";
+import MovieList from "./presenter/movieList";
 import FooterStatistics from "./view/footer-statistics";
 import {generateFilm} from "./mock/film";
 import {generateFilter} from "./mock/filter";
