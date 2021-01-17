@@ -15,6 +15,7 @@ export default class MovieList {
     this._noMovie = new NoMovies();
 
     this._onFilmChange = this._onFilmChange.bind(this);
+    this._onFilmExtraChange = this._onFilmExtraChange.bind(this);
     this._closePrevDetails = this._closePrevDetails.bind(this);
     this._NUM_CARDS_OF_FILMS = 20;
     this._NUM_CARDS_OF_EXTRA_FILM = 2;
@@ -74,7 +75,7 @@ export default class MovieList {
     const filmsExtraListContainer = filmsExtraListComponent.getElement().querySelector(`.films-list__container`);
     render(this._container, filmsExtraListComponent, RenderPosition.BEFOREEND);
     for (const film of films) {
-      const moviePresenterExtra = new Movie(filmsExtraListContainer, this._onFilmExtraChange);
+      const moviePresenterExtra = new Movie(filmsExtraListContainer, this._onFilmExtraChange, this._closePrevDetails);
       moviePresenterExtra.init(film);
       this._moviePresenterExtra[film.id] = moviePresenterExtra;
     }
@@ -100,11 +101,19 @@ export default class MovieList {
 
   _closePrevDetails() {
     Object
-          .values(this._moviePresenter)
-          .forEach((movie) => {
-            if (movie._isDetailsOpened) {
-              movie._closeDetails();
-            }
-          });
+      .values(this._moviePresenter)
+      .forEach((movie) => {
+        if (movie._isDetailsOpened) {
+          movie._closeDetails();
+        }
+      });
+
+    Object
+      .values(this._moviePresenterExtra)
+      .forEach((movie) => {
+        if (movie._isDetailsOpened) {
+          movie._closeDetails();
+        }
+      });
   }
 }
