@@ -4,11 +4,12 @@ import {render, RenderPosition, replace, remove} from "../utils/render";
 import {constants} from "../utils/constants.js";
 
 export default class Movie {
-  constructor(container, changeData) {
+  constructor(container, changeData, prevDetails) {
     this._container = container;
     this._filmCardComponent = null;
     this._detailsComponent = null;
     this._changeData = changeData;
+    this._prevDetails = prevDetails;
     this._onAddWatchedClick = this._onAddWatchedClick.bind(this);
     this._onAddWatchlistClick = this._onAddWatchlistClick.bind(this);
     this._onAddFavoriteClick = this._onAddFavoriteClick.bind(this);
@@ -18,6 +19,7 @@ export default class Movie {
 
   init(film) {
     this._film = film;
+    this._isDetailsOpened = false;
     const prevFilmComponent = this._filmCardComponent;
     this._filmCardComponent = new FilmCard(this._film);
     this._filmCardComponent.setOnAddWachedClick(this._onAddWatchedClick);
@@ -40,6 +42,7 @@ export default class Movie {
   }
 
   _onDetailsClick() {
+    this._prevDetails();
     const prevDetailsComponent = this._detailsComponent;
     this._detailsComponent = new Details(this._film);
     this._detailsComponent.setOnDetailsAddWachedClick(this._onAddWatchedClick);
@@ -54,6 +57,7 @@ export default class Movie {
     if (!document.body.contains(this._detailsComponent.getElement())) {
       document.body.appendChild(this._detailsComponent.getElement());
       document.body.classList.add(`hide-overflow`);
+      this._isDetailsOpened = true;
     } else {
       replace(this._detailsComponent, prevDetailsComponent);
     }
@@ -69,6 +73,7 @@ export default class Movie {
   }
 
   _closeDetails() {
+    this._isDetailsOpened = false;
     this._detailsComponent.getElement().remove();
     this._detailsComponent.removeElement();
     document.body.classList.remove(`hide-overflow`);

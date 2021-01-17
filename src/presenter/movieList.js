@@ -15,6 +15,7 @@ export default class MovieList {
     this._noMovie = new NoMovies();
 
     this._onFilmChange = this._onFilmChange.bind(this);
+    this._closePrevDetails = this._closePrevDetails.bind(this);
     this._NUM_CARDS_OF_FILMS = 20;
     this._NUM_CARDS_OF_EXTRA_FILM = 2;
     this._NUM_RENDER_CARDS = 5;
@@ -54,7 +55,7 @@ export default class MovieList {
       });
     }
     for (const film of this._filmsToRender.slice(0, this._NUM_RENDER_CARDS)) {
-      const moviePresenter = new Movie(this._filmsListContainerElement, this._onFilmChange);
+      const moviePresenter = new Movie(this._filmsListContainerElement, this._onFilmChange, this._closePrevDetails);
       moviePresenter.init(film);
       this._moviePresenter[film.id] = moviePresenter;
     }
@@ -95,5 +96,15 @@ export default class MovieList {
   _onFilmExtraChange(updatedFilm) {
     this._films = updateItem(this._films, updatedFilm);
     this._moviePresenterExtra[updatedFilm.id].init(updatedFilm);
+  }
+
+  _closePrevDetails() {
+    Object
+          .values(this._moviePresenter)
+          .forEach((movie) => {
+            if (movie._isDetailsOpened) {
+              movie._closeDetails();
+            }
+          });
   }
 }
