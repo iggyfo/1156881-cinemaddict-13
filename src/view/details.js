@@ -6,11 +6,6 @@ export default class Details extends Abstract {
     super();
     this._film = film;
     this._closeBtnElement = null;
-    this._detailsControlsChecked = {
-      favorite: ``,
-      watched: ``,
-      watchlist: ``,
-    };
     this._onDetailsAddWatchedClick = this._onDetailsAddWatchedClick.bind(this);
     this._onDetailsAddWatchlistClick = this._onDetailsAddWatchlistClick.bind(this);
     this._onDetailsAddFavoriteClick = this._onDetailsAddFavoriteClick.bind(this);
