@@ -90,6 +90,7 @@ export default class MovieList {
       withoutsortdate.push(elem.date);
       withoutsortrating.push(elem.rating);
     });
+
     switch (sortType) {
       case SortType.DATE:
         this._films.sort(sortFilmsByDate);
