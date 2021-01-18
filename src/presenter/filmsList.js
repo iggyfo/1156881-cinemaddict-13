@@ -92,22 +92,10 @@ export default class MovieList {
     });
     switch (sortType) {
       case SortType.DATE:
-        const date = [];
-        console.log(`Without sort by date ` + withoutsortdate);
         this._films.sort(sortFilmsByDate);
-        this._films.forEach((elem) => {
-          date.push(` ` + elem.date);
-        });
-        console.log(`By date ` + date);
         break;
       case SortType.RATING:
-        const rating = [];
-        console.log(`Without sort by riting ` + withoutsortrating);
         this._films.sort(sortFilmsByRating);
-        this._films.forEach((elem) => {
-          rating.push(elem.rating);
-        });
-        console.log(`By rating ` + rating);
         break;
       default:
         this._films = this._sourcedFilms.slice();
