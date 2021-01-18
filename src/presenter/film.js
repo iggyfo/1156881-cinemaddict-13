@@ -1,9 +1,9 @@
-import FilmCard from "../view/film-card";
-import Details from "../view/details";
+import FilmCardView from "../view/film-card";
+import DetailsView from "../view/details";
 import {render, RenderPosition, replace, remove} from "../utils/render";
 import {constants} from "../utils/constants.js";
 
-export default class Movie {
+export default class Film {
   constructor(container, changeData, prevDetails) {
     this._container = container;
     this._filmCardComponent = null;
@@ -19,9 +19,8 @@ export default class Movie {
 
   init(film) {
     this._film = film;
-    this._isDetailsOpened = false;
     const prevFilmComponent = this._filmCardComponent;
-    this._filmCardComponent = new FilmCard(this._film);
+    this._filmCardComponent = new FilmCardView(this._film);
     this._filmCardComponent.setOnAddWachedClick(this._onAddWatchedClick);
     this._filmCardComponent.setOnAddWatchlistClick(this._onAddWatchlistClick);
     this._filmCardComponent.setOnAddFavoriteClick(this._onAddFavoriteClick);
@@ -44,7 +43,7 @@ export default class Movie {
   _onDetailsClick() {
     this._prevDetails();
     const prevDetailsComponent = this._detailsComponent;
-    this._detailsComponent = new Details(this._film);
+    this._detailsComponent = new DetailsView(this._film);
     this._detailsComponent.setOnDetailsAddWachedClick(this._onAddWatchedClick);
     this._detailsComponent.setOnDetailsAddWatchlistClick(this._onAddWatchlistClick);
     this._detailsComponent.setOnDetailsAddFavoriteClick(this._onAddFavoriteClick);
@@ -54,10 +53,9 @@ export default class Movie {
 
     document.addEventListener(`keydown`, this._onDetailsEscKeydown);
 
-    if (!document.body.contains(this._detailsComponent.getElement())) {
+    if (this._detailsComponent) {
       document.body.appendChild(this._detailsComponent.getElement());
       document.body.classList.add(`hide-overflow`);
-      this._isDetailsOpened = true;
     } else {
       replace(this._detailsComponent, prevDetailsComponent);
     }
@@ -73,9 +71,9 @@ export default class Movie {
   }
 
   _closeDetails() {
-    this._isDetailsOpened = false;
     this._detailsComponent.getElement().remove();
     this._detailsComponent.removeElement();
+    this._detailsComponent = null;
     document.body.classList.remove(`hide-overflow`);
     document.removeEventListener(`keydown`, this._onDetailsEscKeydown);
   }
