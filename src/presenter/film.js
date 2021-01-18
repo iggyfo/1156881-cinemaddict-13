@@ -1,7 +1,7 @@
 import FilmCardView from "../view/film-card";
 import DetailsView from "../view/details";
 import {render, RenderPosition, replace, remove} from "../utils/render";
-import {constants} from "../utils/constants.js";
+import {constants} from "../const";
 
 export default class Film {
   constructor(container, changeData, prevDetails) {
