@@ -18,7 +18,6 @@ export default class MovieList {
     this._closePrevDetails = this._closePrevDetails.bind(this);
 
     this._NUM_RENDER_CARDS = 5;
-    this._NUM_RENDER_EXTRA_CARDS = 2;
     this._NUM_RENDERED_CARDS = 0;
   }
 
@@ -28,18 +27,9 @@ export default class MovieList {
       this._renderNoFilms();
       return;
     }
-    this._filmsToRender = films.slice(0, this._NUM_CARDS_OF_FILMS);
-    this._topRatedFilms = films.slice(this._NUM_CARDS_OF_FILMS, this._NUM_CARDS_OF_FILMS + this._NUM_CARDS_OF_EXTRA_FILM);
-    this._mostCommentedFilms = films.slice(this._NUM_CARDS_OF_FILMS + this._NUM_CARDS_OF_EXTRA_FILM, this._films.length);
-    this._filmsListContainerElement = this._filmsListComponent.getElement().querySelector(`.films-list__container`);
     this._moviePresenter = {};
-
     render(this._container, this._filmsListComponent, RenderPosition.BEFOREEND);
-    this._renderShowMoreButton();
-    this._moreButtonComponent.getElement().addEventListener(`click`, () => {
-      this._renderFilmsList();
-    });
-
+    this._renderMoreButton();
     this._renderFilmsList();
     this._renderFilmsExtraList(`Top Rated`);
     this._renderFilmsExtraList(`Most Commented`);
@@ -47,7 +37,7 @@ export default class MovieList {
 
   _renderFilmsList() {
     for (const film of this._films.slice(this._NUM_RENDERED_CARDS, this._NUM_RENDERED_CARDS + this._NUM_RENDER_CARDS)) {
-      const filmsPresenter = new FilmsPresenter(this._filmsListContainerElement, this._onFilmChange, this._closePrevDetails);
+      const filmsPresenter = new FilmsPresenter(this._filmsListComponent.filmsContainer, this._onFilmChange, this._closePrevDetails);
       filmsPresenter.init(film);
       this._moviePresenter[film.id] = filmsPresenter;
     }
@@ -60,20 +50,17 @@ export default class MovieList {
   _renderFilmsExtraList(title) {
     const filmsExtraListComponent = new FilmsExtraListView(title);
     render(this._container, filmsExtraListComponent, RenderPosition.BEFOREEND);
-    // const filmsExtraListContainer = filmsExtraListComponent.getElement().querySelector(`.films-list__container`);
-    // for (const film of this._films.slice(0, this._NUM_RENDER_EXTRA_CARDS)) {
-    //   const moviePresenterExtra = new MoviePresenter(filmsExtraListContainer, this._onFilmExtraChange, this._closePrevDetails);
-    //   moviePresenterExtra.init(film);
-    //   this._moviePresenterExtra[film.id] = moviePresenterExtra;
-    // }
   }
 
   _renderNoFilms() {
     render(this._container, this._noFilmsComponent, RenderPosition.BEFOREEND);
   }
 
-  _renderShowMoreButton() {
+  _renderMoreButton() {
     render(this._filmsListComponent.getElement(), this._moreButtonComponent, RenderPosition.BEFOREEND);
+    this._moreButtonComponent.getElement().addEventListener(`click`, () => {
+      this._renderFilmsList();
+    });
   }
 
   _clearFilmsList() {

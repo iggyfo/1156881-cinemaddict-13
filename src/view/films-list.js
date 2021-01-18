@@ -9,4 +9,8 @@ export default class FilmsList extends Abstract {
     <div class="films-list__container"></div>
   </section>`;
   }
+
+  get filmsContainer() {
+    return this.getElement().querySelector(`.films-list__container`);
+  }
 }
