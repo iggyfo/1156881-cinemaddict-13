@@ -1,4 +1,6 @@
 import dayjs from "dayjs";
+import {nanoid} from 'nanoid';
+import {getRandomInteger} from "../utils/common.js";
 
 
 const MAX_NUM_SEN_SHORT_DESCRIPTION = 5;
@@ -94,13 +96,6 @@ const FILMS_CAST = [
   `Kevin Spacey, Denzel Washington, Russell Crowe`,
   `Johnny Depp, Brad Pitt, Angelina Jolie`
 ];
-
-const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
 
 const generateTitle = () => {
   return FILMS_TITLE[getRandomInteger(0, FILMS_TITLE.length - 1)];
@@ -202,6 +197,7 @@ export const generateFilm = () => {
 
   const date = dayjs().subtract(getRandomInteger(1, DEEP_YEAR_FILM), `year`).subtract(getRandomInteger(1, WEEKS_OF_YEAR), `week`);
   return {
+    id: nanoid(),
     poster: generatePoster(),
     title: generateTitle(),
     originalTitle: generateTitle(),
@@ -218,7 +214,7 @@ export const generateFilm = () => {
     ageRating: generateAgeRating(),
     comments: generateFilmComments(getRandomInteger(0, MAX_NUM_OF_COMMENTS)),
     isWatchlist: Boolean(getRandomInteger(0, 1)),
-    isFavorites: Boolean(getRandomInteger(0, 1)),
-    isHistory: Boolean(getRandomInteger(0, 1)),
+    isWatched: Boolean(getRandomInteger(0, 1)),
+    isFavorite: Boolean(getRandomInteger(0, 1)),
   };
 };
