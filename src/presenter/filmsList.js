@@ -84,13 +84,6 @@ export default class MovieList {
   }
 
   _sortFilms(sortType) {
-    const withoutsortdate = [];
-    const withoutsortrating = [];
-    this._films.forEach((elem) => {
-      withoutsortdate.push(elem.date);
-      withoutsortrating.push(elem.rating);
-    });
-
     switch (sortType) {
       case SortType.DATE:
         this._films.sort(sortFilmsByDate);
