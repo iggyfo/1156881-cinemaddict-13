@@ -23,9 +23,7 @@ export default class Sort extends Abstract {
     }
     evt.preventDefault();
     this.getElement().querySelectorAll(`.sort__button`).forEach((element) => {
-      if (element.classList.contains(`sort__button--active`)) {
-        element.classList.remove(`sort__button--active`);
-      }
+      element.classList.remove(`sort__button--active`);
     });
     evt.target.classList.add(`sort__button--active`);
     this._callback.sortTypeChange(evt.target.dataset.sortType);
