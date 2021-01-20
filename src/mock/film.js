@@ -4,8 +4,7 @@ import {getRandomInteger} from "../utils/common.js";
 
 
 const MAX_NUM_SEN_SHORT_DESCRIPTION = 5;
-const MAX_HOURS_DURATION = 2;
-const MAX_MIN_DURATION = 59;
+const MAX_MIN_DURATION = 167;
 const MAX_NUM_OF_COMMENTS = 5;
 const MIN_NUM_OF_RATING = 7;
 const MAX_NUM_OF_RATING = 10;
@@ -135,7 +134,7 @@ const generateAgeRating = () => {
 };
 
 const generateDuration = () => {
-  return `${getRandomInteger(0, MAX_HOURS_DURATION)}h ${getRandomInteger(0, MAX_MIN_DURATION)}m`;
+  return `${getRandomInteger(0, MAX_MIN_DURATION)}`;
 };
 
 const generateDescription = () => {
@@ -182,10 +181,11 @@ const generateFilmComments = (numOfComments) => {
 
   for (let i = 0; i < numOfComments; i++) {
     const filmComment = {
-      text: commentText[getRandomInteger(0, commentText.length - 1)],
-      emotion: commentEmotionals[getRandomInteger(0, commentEmotionals.length - 1)],
+      id: getRandomInteger(0, commentText.length - 1),
       author: commentAuthors[getRandomInteger(0, commentAuthors.length - 1)],
-      date: commentDates[getRandomInteger(0, commentDates.length - 1)]
+      comment: commentText[getRandomInteger(0, commentText.length - 1)],
+      date: commentDates[getRandomInteger(0, commentDates.length - 1)],
+      emotion: commentEmotionals[getRandomInteger(0, commentEmotionals.length - 1)],
     };
     filmComments.push(filmComment);
   }
@@ -205,10 +205,11 @@ export const generateFilm = () => {
     producer: generateProducer(),
     screenwriters: generateScreenwriter(),
     cast: generateCast(),
-    release: date.format(`YYYY`),
-    date: date.format(`DD MMMM YYYY`),
-    duration: generateDuration(),
-    country: generateCountry(),
+    release: {
+      date: date.format(),
+      releaseCountry: generateCountry(),
+    },
+    runtime: generateDuration(),
     genres: generateGenres(),
     description: generateDescription(),
     ageRating: generateAgeRating(),

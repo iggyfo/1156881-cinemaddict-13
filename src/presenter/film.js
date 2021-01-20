@@ -1,5 +1,6 @@
 import FilmCardView from "../view/film-card";
 import DetailsView from "../view/details";
+import CommentView from "../view/comment";
 import {render, RenderPosition, replace, remove} from "../utils/render";
 import {constants} from "../const";
 
@@ -52,6 +53,7 @@ export default class Film {
     this._detailsComponent.setOnFormSubmit(this._onFormSubmit);
     this._detailsComponent.setOnCloseBtn(this._closeDetails);
     document.addEventListener(`keydown`, this._onDetailsEscKeydown);
+    this._renderComments();
 
     if (this._detailsComponent) {
       document.body.appendChild(this._detailsComponent.getElement());
@@ -62,6 +64,12 @@ export default class Film {
     if (prevDetailsComponent) {
       remove(prevDetailsComponent);
     }
+  }
+
+  _renderComments() {
+    this._film.comments.forEach((comment) => {
+      render(this._detailsComponent.commentList, new CommentView(comment), RenderPosition.BEFOREEND);
+    });
   }
 
   _onDetailsEscKeydown(evt) {
