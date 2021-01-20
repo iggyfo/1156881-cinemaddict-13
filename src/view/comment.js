@@ -9,7 +9,7 @@ export default class Comment extends Abstract {
   }
 
   getTemplate() {
-    const {id, author, comment, date, emotion} = this._comment;
+    const {author, comment, date, emotion} = this._comment;
 
     return `<li class="film-details__comment">
     <span class="film-details__comment-emoji">
