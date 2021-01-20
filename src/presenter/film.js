@@ -15,6 +15,8 @@ export default class Film {
     this._onAddFavoriteClick = this._onAddFavoriteClick.bind(this);
     this._onDetailsClick = this._onDetailsClick.bind(this);
     this._onDetailsEscKeydown = this._onDetailsEscKeydown.bind(this);
+    this._onFormSubmit = this._onFormSubmit.bind(this);
+    this._closeDetails = this._closeDetails.bind(this);
   }
 
   init(film) {
@@ -47,9 +49,11 @@ export default class Film {
     this._detailsComponent.setOnDetailsAddWachedClick(this._onAddWatchedClick);
     this._detailsComponent.setOnDetailsAddWatchlistClick(this._onAddWatchlistClick);
     this._detailsComponent.setOnDetailsAddFavoriteClick(this._onAddFavoriteClick);
-    this._detailsComponent.closeBtnElement.addEventListener(`click`, () => {
-      this._closeDetails();
-    });
+    this._detailsComponent.setOnFormSubmit(this._onFormSubmit);
+    // this._detailsComponent.closeBtnElement.addEventListener(`click`, () => {
+    //   this._closeDetails();
+    // });
+    this._detailsComponent.setOnCloseBtn(this._closeDetails);
 
     document.addEventListener(`keydown`, this._onDetailsEscKeydown);
 
@@ -112,6 +116,11 @@ export default class Film {
             }
         )
     );
+  }
+
+  _onFormSubmit(film) {
+    this._changeData(film);
+    this._closeDetails();
   }
 
   destroy() {
