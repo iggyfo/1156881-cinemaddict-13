@@ -50,11 +50,7 @@ export default class Film {
     this._detailsComponent.setOnDetailsAddWatchlistClick(this._onAddWatchlistClick);
     this._detailsComponent.setOnDetailsAddFavoriteClick(this._onAddFavoriteClick);
     this._detailsComponent.setOnFormSubmit(this._onFormSubmit);
-    // this._detailsComponent.closeBtnElement.addEventListener(`click`, () => {
-    //   this._closeDetails();
-    // });
     this._detailsComponent.setOnCloseBtn(this._closeDetails);
-
     document.addEventListener(`keydown`, this._onDetailsEscKeydown);
 
     if (this._detailsComponent) {

@@ -191,13 +191,6 @@ export default class Details extends SmartView {
     this._callback.formSubmit(Details.parseDataToFilm);
   }
 
-  get closeBtnElement() {
-    if (!this._closeBtnElement) {
-      this._closeBtnElement = this.getElement().querySelector(`.film-details__close-btn`);
-    }
-    return this._closeBtnElement;
-  }
-
   _onDetailsAddWatchedClick(evt) {
     evt.preventDefault();
     this._callback.addDetailsWatchedClick();
