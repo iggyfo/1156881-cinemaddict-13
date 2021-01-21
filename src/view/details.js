@@ -1,18 +1,22 @@
-import Abstract from "./abstract.js";
+import SmartView from "../view/smart";
 
 
-export default class Details extends Abstract {
+export default class Details extends SmartView {
   constructor(film) {
     super();
-    this._film = film;
+    this._data = Details.parseFilmToData(film);
     this._closeBtnElement = null;
     this._onDetailsAddWatchedClick = this._onDetailsAddWatchedClick.bind(this);
     this._onDetailsAddWatchlistClick = this._onDetailsAddWatchlistClick.bind(this);
     this._onDetailsAddFavoriteClick = this._onDetailsAddFavoriteClick.bind(this);
+    this._onEmojiClick = this._onEmojiClick.bind(this);
+    this._onCloseDetails = this._onCloseDetails.bind(this);
+    this._setInnerHandlers();
+    this._currentScrollTop = 0;
   }
 
   getTemplate() {
-    const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, date, duration, country, genres, description, comments, isFavorite, isWatched, isWatchlist} = this._film;
+    const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, date, duration, country, genres, description, comments, isFavorite, isWatched, isWatchlist, emotion} = this._data;
 
 
     return `<section class="film-details">
@@ -97,7 +101,7 @@ export default class Details extends Abstract {
 
           <div class="film-details__new-comment">
             <div class="film-details__add-emoji-label">
-              <img src="images/emoji/smile.png" width="55" height="55" alt="emoji-smile">
+              <img src="images/emoji/${emotion}.png" width="55" height="55" alt="emoji-smile">
             </div>
 
             <label class="film-details__comment-label">
@@ -132,11 +136,59 @@ export default class Details extends Abstract {
   </section>`;
   }
 
-  get closeBtnElement() {
-    if (!this._closeBtnElement) {
-      this._closeBtnElement = this.getElement().querySelector(`.film-details__close-btn`);
-    }
-    return this._closeBtnElement;
+  static parseFilmToData(film) {
+    return Object.assign(
+        {},
+        film,
+        {
+          emotion: `smile`,
+        }
+    );
+  }
+
+  static parseDataToFilm(data) {
+    const film = Object.assign({}, data);
+    delete film.emotion;
+
+    return film;
+  }
+
+  restoreHandlers() {
+    this.getElement().scrollTop = this._currentCoords;
+    this._setInnerHandlers();
+    this.setOnFormSubmit(this._callback.formSubmit);
+    this.setOnDetailsAddWachedClick(this._callback.addDetailsWatchedClick);
+    this.setOnDetailsAddWatchlistClick(this._callback.addDetailsWatchlistClick);
+    this.setOnDetailsAddFavoriteClick(this._callback.addDetailsFavotiteClick);
+    this.setOnCloseBtn(this._callback.closeDetails);
+  }
+
+  _setInnerHandlers() {
+    this.getElement()
+    .querySelectorAll(`.film-details__emoji-item`)
+    .forEach((element) => {
+      element.addEventListener(`click`, this._onEmojiClick);
+    });
+  }
+
+  _onEmojiClick(evt) {
+    evt.preventDefault();
+    this._currentCoords = this.getElement().scrollTop;
+    this.updateData({
+      emotion: evt.target.value,
+    });
+    this.getElement().querySelectorAll(`.film-details__emoji-item`).forEach((element) => {
+      if (element.value === evt.target.value) {
+        element.checked = true;
+      } else {
+        element.checked = false;
+      }
+    });
+  }
+
+  _onFormSubmit(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit(Details.parseDataToFilm);
   }
 
   _onDetailsAddWatchedClick(evt) {
@@ -154,6 +206,11 @@ export default class Details extends Abstract {
     this._callback.addDetailsFavotiteClick();
   }
 
+  _onCloseDetails(evt) {
+    evt.preventDefault();
+    this._callback.closeDetails();
+  }
+
   setOnDetailsAddWachedClick(callback) {
     this._callback.addDetailsWatchedClick = callback;
     this.getElement().querySelector(`.film-details__control-label--watched`).addEventListener(`click`, this._onDetailsAddWatchedClick);
@@ -167,5 +224,15 @@ export default class Details extends Abstract {
   setOnDetailsAddFavoriteClick(callback) {
     this._callback.addDetailsFavotiteClick = callback;
     this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, this._onDetailsAddFavoriteClick);
+  }
+
+  setOnFormSubmit(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector(`form`).addEventListener(`submit`, this._onFormSubmit);
+  }
+
+  setOnCloseBtn(callback) {
+    this._callback.closeDetails = callback;
+    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._onCloseDetails);
   }
 }
