@@ -13,8 +13,9 @@ import {sortFilmsByDate, sortFilmsByRating} from "../utils/sort";
 
 
 export default class MovieList {
-  constructor(container, filters) {
+  constructor(container, filmsModel, filters) {
     this._container = container;
+    this._filmsModel = filmsModel;
     this._filters = filters;
     this._filmsListComponent = new FilmsListView();
     this._moreButtonComponent = new MoreButtonView();
@@ -48,6 +49,18 @@ export default class MovieList {
     this._renderFilmsList();
     this._renderFilmsExtraList(`Top Rated`);
     this._renderFilmsExtraList(`Most Commented`);
+  }
+
+  _getFilms() {
+    switch (this._currentSortType) {
+      case SortType.DATE:
+        this._filmsModel.films.sort(sortFilmsByDate);
+        break;
+      case SortType.RATING:
+        this._filmsModel.films.sort(sortFilmsByRating);
+        break;
+    }
+    return this._filmsModel.films;
   }
 
   _renderFilmsList() {

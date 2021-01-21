@@ -1,6 +1,7 @@
 import MenuView from "./view/menu";
-import FilmsListPresenter from "./presenter/filmsList";
+import FilmsListPresenter from "./presenter/films-list";
 import FooterStatisticsView from "./view/footer-statistics";
+import FilmModel from "./model/films";
 import {generateFilm} from "./mock/film";
 import {generateFilter} from "./mock/filter";
 import {render, RenderPosition} from "./utils/render";
@@ -18,7 +19,10 @@ for (let i = 0; i < NUM_OF_FILMS; i++) {
 }
 render(headerElement, new MenuView(), RenderPosition.BEFOREEND);
 
-const movieList = new FilmsListPresenter(mainElement, filters);
+const filmModel = new FilmModel();
+filmModel.films = films;
+
+const movieList = new FilmsListPresenter(mainElement, filmModel, filters);
 movieList.init(films);
 
 const footerStatisticsElement = footerElement.querySelector(`.footer__statistics`);
