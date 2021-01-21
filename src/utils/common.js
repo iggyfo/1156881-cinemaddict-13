@@ -18,3 +18,8 @@ export const updateItem = (items, update) => {
     ...items.slice(index + 1)
   ];
 };
+
+export const parseToMinAndHours = (minutes) => {
+  const hours = Math.floor(minutes / 60);
+  return `${hours}h ${minutes - hours * 60}m`;
+};

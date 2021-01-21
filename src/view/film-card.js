@@ -1,4 +1,6 @@
 import Abstract from "./abstract.js";
+import dayjs from "dayjs";
+import {parseToMinAndHours} from "../utils/common";
 
 
 export default class FilmCard extends Abstract {
@@ -13,14 +15,14 @@ export default class FilmCard extends Abstract {
   }
 
   getTemplate() {
-    const {poster, title, rating, release, duration, genres, description, comments, isFavorite, isWatched, isWatchlist} = this._film;
+    const {poster, title, rating, release, runtime, genres, description, comments, isFavorite, isWatched, isWatchlist} = this._film;
 
     return `<article class="film-card">
     <h3 class="film-card__title">${title}</h3>
     <p class="film-card__rating">${rating}</p>
     <p class="film-card__info">
-      <span class="film-card__year">${release}</span>
-      <span class="film-card__duration">${duration}</span>
+      <span class="film-card__year">${dayjs(release.date).format(`YYYY`)}</span>
+      <span class="film-card__duration">${parseToMinAndHours(runtime)}</span>
       <span class="film-card__genre">${genres[0]}</span>
     </p>
     <img src="${poster}" alt="" class="film-card__poster">

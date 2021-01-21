@@ -1,4 +1,6 @@
 import SmartView from "../view/smart";
+import dayjs from "dayjs";
+import {parseToMinAndHours} from "../utils/common";
 
 
 export default class Details extends SmartView {
@@ -16,7 +18,7 @@ export default class Details extends SmartView {
   }
 
   getTemplate() {
-    const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, date, duration, country, genres, description, comments, isFavorite, isWatched, isWatchlist, emotion} = this._data;
+    const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, release, runtime, genres, description, comments, isFavorite, isWatched, isWatchlist, emotion} = this._data;
 
 
     return `<section class="film-details">
@@ -59,15 +61,15 @@ export default class Details extends SmartView {
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Release Date</td>
-                <td class="film-details__cell">${date}</td>
+                <td class="film-details__cell">${dayjs(release.date).format(`DD MMMM YYYY`)}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Runtime</td>
-                <td class="film-details__cell">${duration}</td>
+                <td class="film-details__cell">${parseToMinAndHours(runtime)}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Country</td>
-                <td class="film-details__cell">${country}</td>
+                <td class="film-details__cell">${release.releaseCountry}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Genres</td>
@@ -161,6 +163,10 @@ export default class Details extends SmartView {
     this.setOnDetailsAddWatchlistClick(this._callback.addDetailsWatchlistClick);
     this.setOnDetailsAddFavoriteClick(this._callback.addDetailsFavotiteClick);
     this.setOnCloseBtn(this._callback.closeDetails);
+  }
+
+  get commentList() {
+    return this.getElement().querySelector(`.film-details__comments-list`);
   }
 
   _setInnerHandlers() {
