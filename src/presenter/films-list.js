@@ -7,8 +7,7 @@ import MoreButtonView from "../view/show-more-button";
 import FilmsExtraListView from "../view/films-extra";
 import NoFilmsView from "../view/no-films";
 import {render, RenderPosition, remove} from "../utils/render";
-import {updateItem} from "../utils/common";
-import {SortType} from "../const";
+import {SortType, UserAction, UpdateType} from "../const";
 import {sortFilmsByDate, sortFilmsByRating} from "../utils/sort";
 
 
@@ -29,6 +28,10 @@ export default class MovieList {
     this._onFilmChange = this._onFilmChange.bind(this);
     this._closePrevDetails = this._closePrevDetails.bind(this);
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
+    this._onModelEvent = this._onModelEvent.bind(this);
+    this._onViewAction = this._onViewAction.bind(this);
+
+    this._filmsModel.addObserver(this._onModelEvent);
 
     // const
     this._NUM_RENDER_CARDS = 5;
@@ -68,7 +71,7 @@ export default class MovieList {
     }
 
     for (const film of films.slice(this._NUM_RENDERED_CARDS, this._NUM_RENDERED_CARDS + this._NUM_RENDER_CARDS)) {
-      const filmsPresenter = new FilmsPresenter(this._filmsListComponent.filmsContainer, this._onFilmChange, this._closePrevDetails);
+      const filmsPresenter = new FilmsPresenter(this._filmsListComponent.filmsContainer, this._onViewAction, this._closePrevDetails);
       filmsPresenter.init(film);
       this._moviePresenter[film.id] = filmsPresenter;
     }
@@ -99,6 +102,15 @@ export default class MovieList {
     this._sortComponent.setOnSortTypeChange(this._onSortTypeChange);
   }
 
+  _clearFilmsList() {
+    Object
+      .values(this._moviePresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._moviePresenter = {};
+    remove(this._moreButtonComponent);
+    this._NUM_RENDERED_CARDS = 0;
+  }
+
   _onSortTypeChange(sortType) {
     if (this._currentSortType === sortType) {
       return;
@@ -109,13 +121,35 @@ export default class MovieList {
     this._renderFilmsList();
   }
 
-  _clearFilmsList() {
-    Object
-      .values(this._moviePresenter)
-      .forEach((presenter) => presenter.destroy());
-    this._moviePresenter = {};
-    remove(this._moreButtonComponent);
-    this._NUM_RENDERED_CARDS = 0;
+  _onViewAction(actionType, updateType, update) {
+    console.log(actionType, updateType, update);
+    switch (actionType) {
+      case UserAction.UPDATE_FILM:
+        this._filmsModel.updateFilm(updateType, update);
+        break;
+      case UserAction.ADD_FILM:
+        this._filmsModel.addFilm(updateType, update);
+        break;
+      case UserAction.DELETE_FILM:
+        this._filmsModel.deleteFilm(updateType, update);
+        break;
+    }
+  }
+
+  _onModelEvent(updateType, data) {
+    console.log(updateType, data);
+    switch (updateType) {
+      case UpdateType.PATCH:
+        // - обновить часть списка (например, когда поменялось описание)
+        this._taskPresenter[data.id].init(data);
+        break;
+      case UpdateType.MINOR:
+        // - обновить список (например, когда задача ушла в архив)
+        break;
+      case UpdateType.MAJOR:
+        // - обновить всю доску (например, при переключении фильтра)
+        break;
+    }
   }
 
   _onFilmChange(updatedFilm) {

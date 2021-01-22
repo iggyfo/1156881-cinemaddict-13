@@ -3,6 +3,8 @@ import DetailsView from "../view/details";
 import CommentView from "../view/comment";
 import {render, RenderPosition, replace, remove} from "../utils/render";
 import {constants} from "../const";
+import {UserAction, UpdateType} from "../const.js";
+
 
 export default class Film {
   constructor(container, changeData, prevDetails) {
@@ -14,7 +16,7 @@ export default class Film {
     this._onAddWatchedClick = this._onAddWatchedClick.bind(this);
     this._onAddWatchlistClick = this._onAddWatchlistClick.bind(this);
     this._onAddFavoriteClick = this._onAddFavoriteClick.bind(this);
-    this._onDetailsClick = this._onDetailsClick.bind(this);
+    this._renderDetails = this._renderDetails.bind(this);
     this._onDetailsEscKeydown = this._onDetailsEscKeydown.bind(this);
     this._onFormSubmit = this._onFormSubmit.bind(this);
     this._closeDetails = this._closeDetails.bind(this);
@@ -27,7 +29,7 @@ export default class Film {
     this._filmCardComponent.setOnAddWachedClick(this._onAddWatchedClick);
     this._filmCardComponent.setOnAddWatchlistClick(this._onAddWatchlistClick);
     this._filmCardComponent.setOnAddFavoriteClick(this._onAddFavoriteClick);
-    this._filmCardComponent.setClickHandler(this._onDetailsClick);
+    this._filmCardComponent.setClickHandler(this._renderDetails);
 
     if (prevFilmComponent === null) {
       render(this._container, this._filmCardComponent, RenderPosition.BEFOREEND);
@@ -37,13 +39,13 @@ export default class Film {
     }
     if (this._detailsComponent) {
       if (document.body.contains(this._detailsComponent.getElement())) {
-        this._onDetailsClick();
+        this._renderDetails();
       }
     }
     remove(prevFilmComponent);
   }
 
-  _onDetailsClick() {
+  _renderDetails() {
     this._prevDetails();
     const prevDetailsComponent = this._detailsComponent;
     this._detailsComponent = new DetailsView(this._film);
@@ -72,12 +74,6 @@ export default class Film {
     });
   }
 
-  _onDetailsEscKeydown(evt) {
-    if (evt.key === constants.ESC) {
-      this._closeDetails();
-    }
-  }
-
   _closeDetails() {
     this._detailsComponent.getElement().remove();
     this._detailsComponent.removeElement();
@@ -86,8 +82,16 @@ export default class Film {
     document.removeEventListener(`keydown`, this._onDetailsEscKeydown);
   }
 
+  _onDetailsEscKeydown(evt) {
+    if (evt.key === constants.ESC) {
+      this._closeDetails();
+    }
+  }
+
   _onAddWatchedClick() {
     this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,
@@ -100,6 +104,8 @@ export default class Film {
 
   _onAddWatchlistClick() {
     this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,
@@ -112,6 +118,8 @@ export default class Film {
 
   _onAddFavoriteClick() {
     this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,
@@ -123,7 +131,11 @@ export default class Film {
   }
 
   _onFormSubmit(film) {
-    this._changeData(film);
+    this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
+        film
+    );
     this._closeDetails();
   }
 
