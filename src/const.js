@@ -21,8 +21,8 @@ export const UpdateType = {
 };
 
 export const FilterType = {
-  ALL_MOVIES: `allMovies`,
-  WATCH_LIST: `watchlist`,
-  FAVORITES: `favorites`,
-  HISTORY: `history`,
+  ALL_MOVIES: `All movies`,
+  WATCH_LIST: `Watchlist`,
+  FAVORITES: `Favorites`,
+  HISTORY: `History`,
 };

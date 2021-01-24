@@ -6,6 +6,7 @@ import MoreButtonView from "../view/show-more-button";
 import FilmsExtraListView from "../view/films-extra";
 import NoFilmsView from "../view/no-films";
 import {render, RenderPosition, remove} from "../utils/render";
+import {filter} from "../utils/filter";
 import {SortType, UserAction, UpdateType} from "../const";
 import {sortFilmsByDate, sortFilmsByRating} from "../utils/sort";
 
@@ -35,11 +36,13 @@ export default class FilmList {
 
     // model
     this._filmsModel.addObserver(this._onModelEvent);
+    this._filtersModel.addObserver(this._onModelEvent);
 
     // const
     this._NUM_RENDER_CARDS = 5;
     this._NUM_RENDERED_CARDS = 0;
     this._currentSortType = SortType.DEFAULT;
+    this._currentfilter = `allMovies`;
   }
 
   init() {
@@ -54,13 +57,22 @@ export default class FilmList {
   }
 
   _getFilms() {
+    const filterType = this._filtersModel.getFilter();
+    if (this._currentfilter !== filterType) {
+      this._currentSortType = SortType.DEFAULT;
+      this._sortComponent.activeSortType = SortType.DEFAULT;
+      this._currentfilter = filterType;
+    }
+    const films = this._filmsModel.films;
+    const filtredFilms = filter[filterType](films);
+
     switch (this._currentSortType) {
       case SortType.DATE:
-        return this._filmsModel.films.slice().sort(sortFilmsByDate);
+        return filtredFilms.sort(sortFilmsByDate);
       case SortType.RATING:
-        return this._filmsModel.films.slice().sort(sortFilmsByRating);
+        return filtredFilms.sort(sortFilmsByRating);
     }
-    return this._filmsModel.films;
+    return filtredFilms;
   }
 
   _renderFilmsList() {
@@ -161,11 +173,6 @@ export default class FilmList {
         break;
     }
   }
-
-  // _onFilmChange(updatedFilm) {
-  //   this._films = updateItem(this._films, updatedFilm);
-  //   this._filmsPresenter[updatedFilm.id].init(updatedFilm);
-  // }
 
   _closePrevDetails() {
     Object

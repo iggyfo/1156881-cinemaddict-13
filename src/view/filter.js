@@ -1,4 +1,5 @@
-import Abstract from "./abstract.js";
+import Abstract from "./abstract";
+import {FilterType} from "../const";
 
 export default class Filter extends Abstract {
   constructor(filmsFilter, currentFilterType) {
@@ -6,6 +7,8 @@ export default class Filter extends Abstract {
     this._filters = filmsFilter;
     this._currentFilterType = currentFilterType;
     this._onfilterTypeChange = this._onfilterTypeChange.bind(this);
+    this._removeActiveFilter();
+    this._changeActiveFilter();
   }
 
   getTemplate() {
@@ -21,17 +24,34 @@ export default class Filter extends Abstract {
   </nav>`;
   }
 
+  _removeActiveFilter() {
+    this.getElement().querySelectorAll(`.main-navigation__item`).forEach((element) => {
+      element.classList.remove(`main-navigation__item--active`);
+    });
+  }
+
+  _changeActiveFilter() {
+    this.getElement().querySelectorAll(`.main-navigation__item`).forEach((element) => {
+      if (element.innerText.includes(this._currentFilterType)) {
+        element.classList.add(`main-navigation__item--active`);
+      }
+    });
+  }
+
   _onfilterTypeChange(evt) {
     evt.preventDefault();
-    if (evt.target.innerText.includes(`Watchlist`)) {
-      this._currentFilterType = `Watchlist`;
-    } else if (evt.target.innerText.includes(`History`)) {
-      this._currentFilterType = `History`;
-    } else if (evt.target.innerText.includes(`Favorites`)) {
-      this._currentFilterType = `Favorites`;
+    if (evt.target.innerText.includes(FilterType.WATCH_LIST)) {
+      this._currentFilterType = FilterType.WATCH_LIST;
+    } else if (evt.target.innerText.includes(FilterType.HISTORY)) {
+      this._currentFilterType = FilterType.HISTORY;
+    } else if (evt.target.innerText.includes(FilterType.FAVORITES)) {
+      this._currentFilterType = FilterType.FAVORITES;
     } else {
-      this._currentFilterType = `All movies`;
+      this._currentFilterType = FilterType.ALL_MOVIES;
     }
+    this._removeActiveFilter();
+    evt.target.classList.add(`main-navigation__item--active`);
+
     this._callback.filterTypeChange(this._currentFilterType);
   }
 
