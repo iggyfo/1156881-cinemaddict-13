@@ -7,7 +7,6 @@ export default class Details extends SmartView {
   constructor(film) {
     super();
     this._data = Details.parseFilmToData(film);
-    this._closeBtnElement = null;
     this._onDetailsAddWatchedClick = this._onDetailsAddWatchedClick.bind(this);
     this._onDetailsAddWatchlistClick = this._onDetailsAddWatchlistClick.bind(this);
     this._onDetailsAddFavoriteClick = this._onDetailsAddFavoriteClick.bind(this);
@@ -159,7 +158,7 @@ export default class Details extends SmartView {
     this.getElement().scrollTop = this._currentCoords;
     this._setInnerHandlers();
     this.setOnFormSubmit(this._callback.formSubmit);
-    this.setOnDetailsAddWachedClick(this._callback.addDetailsWatchedClick);
+    this.setOnDetailsAddWatchedClick(this._callback.addDetailsWatchedClick);
     this.setOnDetailsAddWatchlistClick(this._callback.addDetailsWatchlistClick);
     this.setOnDetailsAddFavoriteClick(this._callback.addDetailsFavotiteClick);
     this.setOnCloseBtn(this._callback.closeDetails);
@@ -217,7 +216,7 @@ export default class Details extends SmartView {
     this._callback.closeDetails();
   }
 
-  setOnDetailsAddWachedClick(callback) {
+  setOnDetailsAddWatchedClick(callback) {
     this._callback.addDetailsWatchedClick = callback;
     this.getElement().querySelector(`.film-details__control-label--watched`).addEventListener(`click`, this._onDetailsAddWatchedClick);
   }

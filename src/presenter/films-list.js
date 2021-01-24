@@ -1,4 +1,3 @@
-import FilterView from "../view/filter";
 import SortView from "../view/sort";
 import FilmsContainerView from "../view/films-container";
 import FilmsListView from "../view/films-list";
@@ -11,26 +10,30 @@ import {SortType, UserAction, UpdateType} from "../const";
 import {sortFilmsByDate, sortFilmsByRating} from "../utils/sort";
 
 
-export default class MovieList {
-  constructor(container, filmsModel, filters) {
+export default class FilmList {
+  constructor(container, filmsModel, filtersModel) {
     this._container = container;
+
+    // models
     this._filmsModel = filmsModel;
-    this._filters = filters;
+    this._filtersModel = filtersModel;
+
     // components
     this._filmsListComponent = new FilmsListView();
     this._moreButtonComponent = new MoreButtonView();
     this._noFilmsComponent = new NoFilmsView();
-    this._filtersComponent = new FilterView(this._filters);
     this._sortComponent = new SortView();
     this._filmsContainerComponent = new FilmsContainerView();
 
     // callback
-    this._onFilmChange = this._onFilmChange.bind(this);
+    // this._onFilmChange = this._onFilmChange.bind(this);
     this._closePrevDetails = this._closePrevDetails.bind(this);
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._onModelEvent = this._onModelEvent.bind(this);
     this._onViewAction = this._onViewAction.bind(this);
+    this._renderFilmsList = this._renderFilmsList.bind(this);
 
+    // model
     this._filmsModel.addObserver(this._onModelEvent);
 
     // const
@@ -40,8 +43,7 @@ export default class MovieList {
   }
 
   init() {
-    this._moviePresenter = {};
-    render(this._container, this._filtersComponent, RenderPosition.BEFOREEND);
+    this._filmsPresenter = {};
     this._renderSort();
     render(this._container, this._filmsContainerComponent, RenderPosition.BEFOREEND);
     render(this._filmsContainerComponent, this._filmsListComponent, RenderPosition.BEFOREEND);
@@ -54,11 +56,9 @@ export default class MovieList {
   _getFilms() {
     switch (this._currentSortType) {
       case SortType.DATE:
-        this._filmsModel.films.sort(sortFilmsByDate);
-        break;
+        return this._filmsModel.films.slice().sort(sortFilmsByDate);
       case SortType.RATING:
-        this._filmsModel.films.sort(sortFilmsByRating);
-        break;
+        return this._filmsModel.films.slice().sort(sortFilmsByRating);
     }
     return this._filmsModel.films;
   }
@@ -73,10 +73,10 @@ export default class MovieList {
     for (const film of films.slice(this._NUM_RENDERED_CARDS, this._NUM_RENDERED_CARDS + this._NUM_RENDER_CARDS)) {
       const filmsPresenter = new FilmsPresenter(this._filmsListComponent.filmsContainer, this._onViewAction, this._closePrevDetails);
       filmsPresenter.init(film);
-      this._moviePresenter[film.id] = filmsPresenter;
+      this._filmsPresenter[film.id] = filmsPresenter;
     }
     this._NUM_RENDERED_CARDS += this._NUM_RENDER_CARDS;
-    if (this._NUM_RENDERED_CARDS >= films.length) {
+    if (this._NUM_RENDERED_CARDS >= this._getFilms().length) {
       remove(this._moreButtonComponent);
     }
   }
@@ -91,22 +91,31 @@ export default class MovieList {
   }
 
   _renderMoreButton() {
+    if (this._moreButtonComponent !== null) {
+      this._moreButtonComponent = null;
+    }
+
+    this._moreButtonComponent = new MoreButtonView();
+    this._moreButtonComponent.setOnMoreButtonChange(this._renderFilmsList);
     render(this._filmsListComponent.getElement(), this._moreButtonComponent, RenderPosition.BEFOREEND);
-    this._moreButtonComponent.getElement().addEventListener(`click`, () => {
-      this._renderFilmsList();
-    });
   }
 
   _renderSort() {
-    render(this._container, this._sortComponent, RenderPosition.BEFOREEND);
+    if (this._sortComponent !== null) {
+      this._sortComponent = null;
+    }
+
+    this._sortComponent = new SortView(this._currentSortType);
     this._sortComponent.setOnSortTypeChange(this._onSortTypeChange);
+
+    render(this._container, this._sortComponent, RenderPosition.BEFOREEND);
   }
 
   _clearFilmsList() {
     Object
-      .values(this._moviePresenter)
+      .values(this._filmsPresenter)
       .forEach((presenter) => presenter.destroy());
-    this._moviePresenter = {};
+    this._filmsPresenter = {};
     remove(this._moreButtonComponent);
     this._NUM_RENDERED_CARDS = 0;
   }
@@ -122,7 +131,6 @@ export default class MovieList {
   }
 
   _onViewAction(actionType, updateType, update) {
-    console.log(actionType, updateType, update);
     switch (actionType) {
       case UserAction.UPDATE_FILM:
         this._filmsModel.updateFilm(updateType, update);
@@ -137,29 +145,31 @@ export default class MovieList {
   }
 
   _onModelEvent(updateType, data) {
-    console.log(updateType, data);
     switch (updateType) {
       case UpdateType.PATCH:
-        // - обновить часть списка (например, когда поменялось описание)
-        this._taskPresenter[data.id].init(data);
+        this._filmsPresenter[data.id].init(data);
         break;
       case UpdateType.MINOR:
-        // - обновить список (например, когда задача ушла в архив)
+        this._clearFilmsList();
+        this._renderFilmsList();
+        this._renderMoreButton();
         break;
       case UpdateType.MAJOR:
-        // - обновить всю доску (например, при переключении фильтра)
+        this._clearFilmsList();
+        this._renderFilmsList();
+        this._renderMoreButton();
         break;
     }
   }
 
-  _onFilmChange(updatedFilm) {
-    this._films = updateItem(this._films, updatedFilm);
-    this._moviePresenter[updatedFilm.id].init(updatedFilm);
-  }
+  // _onFilmChange(updatedFilm) {
+  //   this._films = updateItem(this._films, updatedFilm);
+  //   this._filmsPresenter[updatedFilm.id].init(updatedFilm);
+  // }
 
   _closePrevDetails() {
     Object
-      .values(this._moviePresenter)
+      .values(this._filmsPresenter)
       .forEach((movie) => {
         if (movie._isDetailsOpened) {
           movie._closeDetails();

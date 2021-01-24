@@ -49,7 +49,7 @@ export default class Film {
     this._prevDetails();
     const prevDetailsComponent = this._detailsComponent;
     this._detailsComponent = new DetailsView(this._film);
-    this._detailsComponent.setOnDetailsAddWachedClick(this._onAddWatchedClick);
+    this._detailsComponent.setOnDetailsAddWatchedClick(this._onAddWatchedClick);
     this._detailsComponent.setOnDetailsAddWatchlistClick(this._onAddWatchlistClick);
     this._detailsComponent.setOnDetailsAddFavoriteClick(this._onAddFavoriteClick);
     this._detailsComponent.setOnFormSubmit(this._onFormSubmit);
