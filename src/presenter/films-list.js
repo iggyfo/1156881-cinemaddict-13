@@ -7,7 +7,7 @@ import FilmsExtraListView from "../view/films-extra";
 import NoFilmsView from "../view/no-films";
 import {render, RenderPosition, remove} from "../utils/render";
 import {filter} from "../utils/filter";
-import {SortType, UserAction, UpdateType} from "../const";
+import {SortType, UserAction, UpdateType, FilterType, ExstraFilmsList} from "../const";
 import {sortFilmsByDate, sortFilmsByRating} from "../utils/sort";
 
 
@@ -41,18 +41,17 @@ export default class FilmList {
     this._NUM_RENDER_CARDS = 5;
     this._NUM_RENDERED_CARDS = 0;
     this._currentSortType = SortType.DEFAULT;
-    this._currentfilter = `allMovies`;
+    this._currentfilter = FilterType.ALL_MOVIES;
   }
 
   init() {
     this._filmsPresenter = {};
     this._renderSort();
-    render(this._container, this._filmsContainerComponent, RenderPosition.BEFOREEND);
-    render(this._filmsContainerComponent, this._filmsListComponent, RenderPosition.BEFOREEND);
+    this._renderFilmsContainer();
     this._renderFilmsList();
     this._renderMoreButton();
-    this._renderFilmsExtraList(`Top Rated`);
-    this._renderFilmsExtraList(`Most Commented`);
+    this._renderFilmsExtraList(ExstraFilmsList.TOP_RATED);
+    this._renderFilmsExtraList(ExstraFilmsList.MOST_COMMENTED);
   }
 
   _getFilms() {
@@ -72,6 +71,11 @@ export default class FilmList {
         return filtredFilms.sort(sortFilmsByRating);
     }
     return filtredFilms;
+  }
+
+  _renderFilmsContainer() {
+    render(this._container, this._filmsContainerComponent, RenderPosition.BEFOREEND);
+    render(this._filmsContainerComponent, this._filmsListComponent, RenderPosition.BEFOREEND);
   }
 
   _renderFilmsList() {
