@@ -94,10 +94,6 @@ export default class FilmList {
     if (this._NUM_RENDERED_CARDS >= this._getFilms().length) {
       remove(this._moreButtonComponent);
     }
-    if (films.length <= this._NUM_RENDER_CARDS) {
-      remove(this._moreButtonComponent);
-    }
-
   }
 
   _renderFilmsExtraList(title) {
@@ -110,10 +106,13 @@ export default class FilmList {
   }
 
   _renderMoreButton() {
+    if (this._getFilms().length <= this._NUM_RENDER_CARDS) {
+      remove(this._moreButtonComponent);
+      return;
+    }
     if (this._moreButtonComponent !== null) {
       this._moreButtonComponent = null;
     }
-
     this._moreButtonComponent = new MoreButtonView();
     this._moreButtonComponent.setOnMoreButtonChange(this._renderFilmsList);
     render(this._filmsListComponent.getElement(), this._moreButtonComponent, RenderPosition.BEFOREEND);
