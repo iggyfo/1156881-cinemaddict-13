@@ -132,14 +132,16 @@ export default class Film {
     );
   }
 
-  _onRemoveCommentButtonClick() {
+  _onRemoveCommentButtonClick(removedComment) {
     this._changeData(
         UserAction.UPDATE_FILM,
         UpdateType.PATCH,
         Object.assign(
             {},
             this._film,
-            this._film.comment
+            {
+              comments: this._film.comments.filter((comment) => comment.id !== removedComment.id)
+            }
         )
     );
   }
