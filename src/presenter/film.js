@@ -11,6 +11,7 @@ export default class Film {
     this._container = container;
     this._filmCardComponent = null;
     this._detailsComponent = null;
+    this._comments = [];
     this._changeData = changeData;
     this._prevDetails = prevDetails;
     this._onAddWatchedClick = this._onAddWatchedClick.bind(this);
@@ -20,6 +21,7 @@ export default class Film {
     this._onDetailsEscKeydown = this._onDetailsEscKeydown.bind(this);
     this._onFormSubmit = this._onFormSubmit.bind(this);
     this._closeDetails = this._closeDetails.bind(this);
+    this._onRemoveCommentButtonClick = this._onRemoveCommentButtonClick.bind(this);
   }
 
   init(film) {
@@ -67,7 +69,10 @@ export default class Film {
 
   _renderComments() {
     this._film.comments.forEach((comment) => {
-      render(this._detailsComponent.commentList, new CommentView(comment), RenderPosition.BEFOREEND);
+      const newComment = new CommentView(comment);
+      this._comments.push(newComment);
+      render(this._detailsComponent.commentList, newComment, RenderPosition.BEFOREEND);
+      newComment.setOnRemoveComment(this._onRemoveCommentButtonClick);
     });
   }
 
@@ -123,6 +128,18 @@ export default class Film {
             {
               isFavorite: !this._film.isFavorite
             }
+        )
+    );
+  }
+
+  _onRemoveCommentButtonClick() {
+    this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.PATCH,
+        Object.assign(
+            {},
+            this._film,
+            this._film.comment
         )
     );
   }

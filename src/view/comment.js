@@ -6,6 +6,7 @@ export default class Comment extends Abstract {
   constructor(comment) {
     super();
     this._comment = comment;
+    this._onRemoveComment = this._onRemoveComment.bind(this);
   }
 
   getTemplate() {
@@ -24,5 +25,15 @@ export default class Comment extends Abstract {
       </p>
     </div>
   </li>`;
+  }
+
+  _onRemoveComment(evt) {
+    evt.preventDefault();
+    this._callback.removeComment(this._comment);
+  }
+
+  setOnRemoveComment(callback) {
+    this._callback.removeComment = callback;
+    this.getElement().querySelector(`.film-details__comment-delete`).addEventListener(`click`, this._onRemoveComment);
   }
 }
