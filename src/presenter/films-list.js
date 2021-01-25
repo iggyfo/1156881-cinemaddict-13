@@ -84,7 +84,6 @@ export default class FilmList {
       this._renderNoFilms();
       return;
     }
-
     for (const film of films.slice(this._NUM_RENDERED_CARDS, this._NUM_RENDERED_CARDS + this._NUM_RENDER_CARDS)) {
       const filmsPresenter = new FilmsPresenter(this._filmsListComponent.filmsContainer, this._onViewAction, this._closePrevDetails);
       filmsPresenter.init(film);
@@ -183,9 +182,9 @@ export default class FilmList {
   _closePrevDetails() {
     Object
       .values(this._filmsPresenter)
-      .forEach((movie) => {
-        if (movie._isDetailsOpened) {
-          movie._closeDetails();
+      .forEach((film) => {
+        if (film._isDetailsOpened) {
+          film._closeDetails();
         }
       });
   }

@@ -11,13 +11,15 @@ const SortType = {
 const UserAction = {
   UPDATE_FILM: `UPDATE_FILM`,
   ADD_FILM: `ADD_FILM`,
-  DELETE_FILM: `DELETE_FILM`
+  DELETE_FILM: `DELETE_FILM`,
+  UPDATE_DETAILS: `UPDATE_DETAILS`
 };
 
 const UpdateType = {
   PATCH: `PATCH`,
   MINOR: `MINOR`,
-  MAJOR: `MAJOR`
+  MAJOR: `MAJOR`,
+  UPDATE_DETAILS: `UPDATE_DETAILS`,
 };
 
 const FilterType = {
