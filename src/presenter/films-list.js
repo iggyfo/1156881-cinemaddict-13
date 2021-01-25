@@ -94,6 +94,10 @@ export default class FilmList {
     if (this._NUM_RENDERED_CARDS >= this._getFilms().length) {
       remove(this._moreButtonComponent);
     }
+    if (films.length <= this._NUM_RENDER_CARDS) {
+      remove(this._moreButtonComponent);
+    }
+
   }
 
   _renderFilmsExtraList(title) {
