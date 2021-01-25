@@ -1,5 +1,6 @@
 import SmartView from "../view/smart";
 import dayjs from "dayjs";
+import he from "he";
 import {parseToMinAndHours} from "../utils/common";
 
 
@@ -106,7 +107,7 @@ export default class Details extends SmartView {
             </div>
 
             <label class="film-details__comment-label">
-              <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">Great movie!</textarea>
+              <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${he.encode(`Great movie!`)}</textarea>
             </label>
 
             <div class="film-details__emoji-list">
@@ -198,6 +199,7 @@ export default class Details extends SmartView {
 
   _onDetailsAddWatchedClick(evt) {
     evt.preventDefault();
+    this._currentCoords = this.getElement().scrollTop;
     this._callback.addDetailsWatchedClick();
   }
 

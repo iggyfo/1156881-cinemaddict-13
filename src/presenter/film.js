@@ -30,7 +30,6 @@ export default class Film {
     this._filmCardComponent.setOnAddWatchlistClick(this._onAddWatchlistClick);
     this._filmCardComponent.setOnAddFavoriteClick(this._onAddFavoriteClick);
     this._filmCardComponent.setClickHandler(this._renderDetails);
-
     if (prevFilmComponent === null) {
       render(this._container, this._filmCardComponent, RenderPosition.BEFOREEND);
       return;
@@ -38,9 +37,7 @@ export default class Film {
       replace(this._filmCardComponent, prevFilmComponent);
     }
     if (this._detailsComponent) {
-      if (document.body.contains(this._detailsComponent.getElement())) {
-        this._renderDetails();
-      }
+      this._renderDetails();
     }
     remove(prevFilmComponent);
   }
@@ -91,7 +88,7 @@ export default class Film {
   _onAddWatchedClick() {
     this._changeData(
         UserAction.UPDATE_FILM,
-        UpdateType.MINOR,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,
@@ -105,7 +102,7 @@ export default class Film {
   _onAddWatchlistClick() {
     this._changeData(
         UserAction.UPDATE_FILM,
-        UpdateType.MINOR,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,
@@ -119,7 +116,7 @@ export default class Film {
   _onAddFavoriteClick() {
     this._changeData(
         UserAction.UPDATE_FILM,
-        UpdateType.MINOR,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,

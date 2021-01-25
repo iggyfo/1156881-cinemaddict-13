@@ -27,7 +27,6 @@ export default class FilmList {
     this._filmsContainerComponent = new FilmsContainerView();
 
     // callback
-    // this._onFilmChange = this._onFilmChange.bind(this);
     this._closePrevDetails = this._closePrevDetails.bind(this);
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._onModelEvent = this._onModelEvent.bind(this);
