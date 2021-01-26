@@ -50,7 +50,6 @@ export default class FilmList {
 
   init() {
     this._filmsPresenter = {};
-    this._renderSort();
     this._renderFilmsList();
   }
 
@@ -79,11 +78,12 @@ export default class FilmList {
   }
 
   _renderFilmsList() {
+    this._renderSort();
+    this._renderFilmsContainer();
     if (this._isLoading) {
       this._renderLoading();
       return;
     }
-    this._renderFilmsContainer();
     if (this._getFilms().length === 0) {
       this._renderNoFilms();
       return;
@@ -117,7 +117,7 @@ export default class FilmList {
   }
 
   _renderLoading() {
-    render(this._container, this._loadingComponent, RenderPosition.AFTERBEGIN);
+    render(this._container, this._loadingComponent, RenderPosition.BEFOREEND);
   }
 
   _renderMoreButton() {
@@ -148,9 +148,10 @@ export default class FilmList {
       .forEach((presenter) => presenter.destroy());
     this._filmsPresenter = {};
     this._NUM_RENDERED_CARDS = 0;
-    remove(this._loadingComponent);
+    remove(this._sortComponent);
     remove(this._filmsContainerComponent);
     remove(this._filmsListComponent);
+    remove(this._loadingComponent);
     remove(this._moreButtonComponent);
   }
 
@@ -192,6 +193,9 @@ export default class FilmList {
         break;
       case UpdateType.INIT:
         this._isLoading = false;
+        remove(this._sortComponent);
+        remove(this._filmsContainerComponent);
+        remove(this._filmsListComponent);
         remove(this._loadingComponent);
         this._renderFilmsList();
         break;
