@@ -6,12 +6,22 @@ import FilmModel from "./model/films";
 import FilterModel from "./model/filters";
 import {generateFilm} from "./mock/film";
 import {render, RenderPosition} from "./utils/render";
+import Api from "./api/api";
 
+const AUTHORIZATION = `Basic jv12n134edvsns`;
+const END_POINT = `https://13.ecmascript.pages.academy/cinemaddict/`;
 
 const NUM_OF_FILMS = 20;
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
+
+
+const api = new Api(END_POINT, AUTHORIZATION);
+
+api.getFilms().then((films) => {
+  console.log(films);
+});
 let films = [];
 
 for (let i = 0; i < NUM_OF_FILMS; i++) {
