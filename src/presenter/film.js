@@ -3,21 +3,25 @@ import DetailsView from "../view/details";
 import CommentView from "../view/comment";
 import {render, RenderPosition, replace, remove} from "../utils/render";
 import {constants} from "../const";
+import {UserAction, UpdateType} from "../const.js";
+
 
 export default class Film {
   constructor(container, changeData, prevDetails) {
     this._container = container;
     this._filmCardComponent = null;
     this._detailsComponent = null;
+    this._comments = [];
     this._changeData = changeData;
     this._prevDetails = prevDetails;
     this._onAddWatchedClick = this._onAddWatchedClick.bind(this);
     this._onAddWatchlistClick = this._onAddWatchlistClick.bind(this);
     this._onAddFavoriteClick = this._onAddFavoriteClick.bind(this);
-    this._onDetailsClick = this._onDetailsClick.bind(this);
+    this._renderDetails = this._renderDetails.bind(this);
     this._onDetailsEscKeydown = this._onDetailsEscKeydown.bind(this);
     this._onFormSubmit = this._onFormSubmit.bind(this);
     this._closeDetails = this._closeDetails.bind(this);
+    this._onRemoveCommentButtonClick = this._onRemoveCommentButtonClick.bind(this);
   }
 
   init(film) {
@@ -27,8 +31,7 @@ export default class Film {
     this._filmCardComponent.setOnAddWachedClick(this._onAddWatchedClick);
     this._filmCardComponent.setOnAddWatchlistClick(this._onAddWatchlistClick);
     this._filmCardComponent.setOnAddFavoriteClick(this._onAddFavoriteClick);
-    this._filmCardComponent.setClickHandler(this._onDetailsClick);
-
+    this._filmCardComponent.setClickHandler(this._renderDetails);
     if (prevFilmComponent === null) {
       render(this._container, this._filmCardComponent, RenderPosition.BEFOREEND);
       return;
@@ -36,18 +39,16 @@ export default class Film {
       replace(this._filmCardComponent, prevFilmComponent);
     }
     if (this._detailsComponent) {
-      if (document.body.contains(this._detailsComponent.getElement())) {
-        this._onDetailsClick();
-      }
+      this._renderDetails();
     }
     remove(prevFilmComponent);
   }
 
-  _onDetailsClick() {
+  _renderDetails() {
     this._prevDetails();
     const prevDetailsComponent = this._detailsComponent;
     this._detailsComponent = new DetailsView(this._film);
-    this._detailsComponent.setOnDetailsAddWachedClick(this._onAddWatchedClick);
+    this._detailsComponent.setOnDetailsAddWatchedClick(this._onAddWatchedClick);
     this._detailsComponent.setOnDetailsAddWatchlistClick(this._onAddWatchlistClick);
     this._detailsComponent.setOnDetailsAddFavoriteClick(this._onAddFavoriteClick);
     this._detailsComponent.setOnFormSubmit(this._onFormSubmit);
@@ -68,14 +69,11 @@ export default class Film {
 
   _renderComments() {
     this._film.comments.forEach((comment) => {
-      render(this._detailsComponent.commentList, new CommentView(comment), RenderPosition.BEFOREEND);
+      const newComment = new CommentView(comment);
+      this._comments.push(newComment);
+      render(this._detailsComponent.commentList, newComment, RenderPosition.BEFOREEND);
+      newComment.setOnRemoveComment(this._onRemoveCommentButtonClick);
     });
-  }
-
-  _onDetailsEscKeydown(evt) {
-    if (evt.key === constants.ESC) {
-      this._closeDetails();
-    }
   }
 
   _closeDetails() {
@@ -86,8 +84,16 @@ export default class Film {
     document.removeEventListener(`keydown`, this._onDetailsEscKeydown);
   }
 
+  _onDetailsEscKeydown(evt) {
+    if (evt.key === constants.ESC) {
+      this._closeDetails();
+    }
+  }
+
   _onAddWatchedClick() {
     this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,
@@ -100,6 +106,8 @@ export default class Film {
 
   _onAddWatchlistClick() {
     this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,
@@ -112,6 +120,8 @@ export default class Film {
 
   _onAddFavoriteClick() {
     this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,
@@ -122,8 +132,26 @@ export default class Film {
     );
   }
 
+  _onRemoveCommentButtonClick(removedComment) {
+    this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.PATCH,
+        Object.assign(
+            {},
+            this._film,
+            {
+              comments: this._film.comments.filter((comment) => comment.id !== removedComment.id)
+            }
+        )
+    );
+  }
+
   _onFormSubmit(film) {
-    this._changeData(film);
+    this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
+        film
+    );
     this._closeDetails();
   }
 

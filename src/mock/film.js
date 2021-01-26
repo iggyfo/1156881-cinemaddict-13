@@ -181,7 +181,7 @@ const generateFilmComments = (numOfComments) => {
 
   for (let i = 0; i < numOfComments; i++) {
     const filmComment = {
-      id: getRandomInteger(0, commentText.length - 1),
+      id: nanoid(),
       author: commentAuthors[getRandomInteger(0, commentAuthors.length - 1)],
       comment: commentText[getRandomInteger(0, commentText.length - 1)],
       date: commentDates[getRandomInteger(0, commentDates.length - 1)],
@@ -213,7 +213,7 @@ export const generateFilm = () => {
     genres: generateGenres(),
     description: generateDescription(),
     ageRating: generateAgeRating(),
-    comments: generateFilmComments(getRandomInteger(0, MAX_NUM_OF_COMMENTS)),
+    comments: generateFilmComments(getRandomInteger(0, MAX_NUM_OF_COMMENTS)), //
     isWatchlist: Boolean(getRandomInteger(0, 1)),
     isWatched: Boolean(getRandomInteger(0, 1)),
     isFavorite: Boolean(getRandomInteger(0, 1)),

@@ -17,14 +17,27 @@ export default class Sort extends Abstract {
   </ul>`;
   }
 
+  set activeSortType(type) {
+    this.getElement().querySelectorAll(`.sort__button`).forEach((element) => {
+      element.classList.remove(`sort__button--active`);
+      if (element.dataset.sortType === type) {
+        element.classList.add(`sort__button--active`);
+      }
+    });
+  }
+
+  _removeActiveSortType() {
+    this.getElement().querySelectorAll(`.sort__button`).forEach((element) => {
+      element.classList.remove(`sort__button--active`);
+    });
+  }
+
   _onSortTypeChange(evt) {
     if (evt.target.tagName !== `A`) {
       return;
     }
     evt.preventDefault();
-    this.getElement().querySelectorAll(`.sort__button`).forEach((element) => {
-      element.classList.remove(`sort__button--active`);
-    });
+    this._removeActiveSortType();
     evt.target.classList.add(`sort__button--active`);
     this._callback.sortTypeChange(evt.target.dataset.sortType);
   }
