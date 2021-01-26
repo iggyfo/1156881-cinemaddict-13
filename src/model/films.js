@@ -93,18 +93,52 @@ export default class Films extends Observer {
         {},
         film,
         {
-          // "due_date": task.dueDate instanceof Date ? task.dueDate.toISOString() : null, // На сервере дата хранится в ISO формате
-          // "is_archived": task.isArchive,
-          // "is_favorite": task.isFavorite,
-          // "repeating_days": task.repeating
+          "id": film.id,
+          "comments": film.comments,
+          "film_info": {
+            "title": film.title,
+            "alternative_title": film.originalTitle,
+            "total_rating": film.rating,
+            "poster": film.poster,
+            "age_rating": film.ageRating,
+            "director": film.producer,
+            "writers": film.screenwriters,
+            "actors": film.cast,
+            "release": {
+              "date": film.release.date,
+              "release_country": film.release.releaseCountry,
+            },
+            "runtime": film.runtime,
+            "genre": film.genres,
+            "description": film.description,
+          },
+          "user_details": {
+            "watchlist": film.isWatchlist,
+            "already_watched": film.isWatched,
+            "watching_date": film.watchedDate,
+            "favorite": film.isFavorite,
+          }
         }
     );
 
-    // // Ненужные ключи мы удаляем
-    // delete adaptedTask.dueDate;
-    // delete adaptedTask.isArchive;
-    // delete adaptedTask.isFavorite;
-    // delete adaptedTask.repeating;
+    delete film.id;
+    delete film.comments;
+    delete film.title;
+    delete film.originalTitle;
+    delete film.rating;
+    delete film.poster;
+    delete film.ageRating;
+    delete film.producer;
+    delete film.screenwriters;
+    delete film.cast;
+    delete film.release;
+    delete film.runtime;
+    delete film.genres;
+    delete film.description;
+    delete film.isWatchlist;
+    delete film.isWatched;
+    delete film.watchedDate;
+    delete film.isFavorite;
 
     return adaptedFilm;
   }

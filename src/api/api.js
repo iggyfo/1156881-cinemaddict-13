@@ -23,7 +23,13 @@ export default class Api {
       .then((films) => films.map(FilmsModel.adaptToClient));
   }
 
-  updateTask(film) {
+  getComments(filmID) {
+    return this._load({url: `comments/${filmID}`})
+      .then(Api.toJSON)
+      .then((films) => films.map(FilmsModel.adaptToClient));
+  }
+
+  updateFilm(film) {
     return this._load({
       url: `movies/${film.id}`,
       method: Method.PUT,

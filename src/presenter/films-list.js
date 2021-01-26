@@ -13,13 +13,15 @@ import {sortFilmsByDate, sortFilmsByRating} from "../utils/sort";
 
 
 export default class FilmList {
-  constructor(container, filmsModel, filtersModel) {
+  constructor(container, filmsModel, filtersModel, api) {
     this._container = container;
 
     // models
     this._filmsModel = filmsModel;
     this._filtersModel = filtersModel;
+
     this._isLoading = true;
+    this._api = api;
 
     // components
     this._filmsListComponent = new FilmsListView();
@@ -167,7 +169,9 @@ export default class FilmList {
   _onViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_FILM:
-        this._filmsModel.updateFilm(updateType, update);
+        this._api.updateFilm(update).then((response) => {
+          this._filmsModel.updateFilm(updateType, response);
+        });
         break;
       case UserAction.ADD_FILM:
         this._filmsModel.addFilm(updateType, update);

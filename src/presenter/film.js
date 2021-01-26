@@ -3,7 +3,8 @@ import DetailsView from "../view/details";
 import CommentView from "../view/comment";
 import {render, RenderPosition, replace, remove} from "../utils/render";
 import {constants} from "../const";
-import {UserAction, UpdateType} from "../const.js";
+import {UserAction, UpdateType, NetworksList} from "../const";
+import Api from "../api/api";
 
 
 export default class Film {
@@ -26,6 +27,12 @@ export default class Film {
 
   init(film) {
     this._film = film;
+    this._api = new Api(NetworksList.END_POINT, NetworksList.AUTHORIZATION);
+
+    this._api.getComments(this._film.id)
+      .then((comments) => {
+        this._comments = comments;
+      });
     const prevFilmComponent = this._filmCardComponent;
     this._filmCardComponent = new FilmCardView(this._film);
     this._filmCardComponent.setOnAddWachedClick(this._onAddWatchedClick);

@@ -6,6 +6,7 @@ export default class Comment extends Abstract {
   constructor(comment) {
     super();
     this._comment = comment;
+    this._commentID = comment.id;
     this._onRemoveComment = this._onRemoveComment.bind(this);
   }
 
