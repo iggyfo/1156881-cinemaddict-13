@@ -35,6 +35,7 @@ export default class FilmList {
     this._onModelEvent = this._onModelEvent.bind(this);
     this._onViewAction = this._onViewAction.bind(this);
     this._renderFilmsList = this._renderFilmsList.bind(this);
+    this._renderFilms = this._renderFilms.bind(this);
 
     // model
     this._filmsModel.addObserver(this._onModelEvent);
@@ -50,11 +51,7 @@ export default class FilmList {
   init() {
     this._filmsPresenter = {};
     this._renderSort();
-    this._renderFilmsContainer();
     this._renderFilmsList();
-    this._renderMoreButton();
-    this._renderFilmsExtraList(ExstraFilmsList.TOP_RATED);
-    this._renderFilmsExtraList(ExstraFilmsList.MOST_COMMENTED);
   }
 
   _getFilms() {
@@ -86,11 +83,19 @@ export default class FilmList {
       this._renderLoading();
       return;
     }
-    const films = this._getFilms();
-    if (films.length === 0) {
+    this._renderFilmsContainer();
+    if (this._getFilms().length === 0) {
       this._renderNoFilms();
       return;
     }
+    this._renderFilms();
+    this._renderMoreButton();
+    this._renderFilmsExtraList(ExstraFilmsList.TOP_RATED);
+    this._renderFilmsExtraList(ExstraFilmsList.MOST_COMMENTED);
+  }
+
+  _renderFilms() {
+    const films = this._getFilms();
     for (const film of films.slice(this._NUM_RENDERED_CARDS, this._NUM_RENDERED_CARDS + this._NUM_RENDER_CARDS)) {
       const filmsPresenter = new FilmsPresenter(this._filmsListComponent.filmsContainer, this._onViewAction, this._closePrevDetails);
       filmsPresenter.init(film);
@@ -124,7 +129,7 @@ export default class FilmList {
       this._moreButtonComponent = null;
     }
     this._moreButtonComponent = new MoreButtonView();
-    this._moreButtonComponent.setOnMoreButtonChange(this._renderFilmsList);
+    this._moreButtonComponent.setOnMoreButtonChange(this._renderFilms);
     render(this._filmsListComponent.getElement(), this._moreButtonComponent, RenderPosition.BEFOREEND);
   }
 
@@ -132,10 +137,8 @@ export default class FilmList {
     if (this._sortComponent !== null) {
       this._sortComponent = null;
     }
-
     this._sortComponent = new SortView(this._currentSortType);
     this._sortComponent.setOnSortTypeChange(this._onSortTypeChange);
-
     render(this._container, this._sortComponent, RenderPosition.BEFOREEND);
   }
 
@@ -144,9 +147,11 @@ export default class FilmList {
       .values(this._filmsPresenter)
       .forEach((presenter) => presenter.destroy());
     this._filmsPresenter = {};
-    remove(this._moreButtonComponent);
     this._NUM_RENDERED_CARDS = 0;
     remove(this._loadingComponent);
+    remove(this._filmsContainerComponent);
+    remove(this._filmsListComponent);
+    remove(this._moreButtonComponent);
   }
 
   _onSortTypeChange(sortType) {
@@ -155,7 +160,6 @@ export default class FilmList {
     }
     this._currentSortType = sortType;
     this._clearFilmsList();
-    this._renderMoreButton();
     this._renderFilmsList();
   }
 
@@ -181,18 +185,15 @@ export default class FilmList {
       case UpdateType.MINOR:
         this._clearFilmsList();
         this._renderFilmsList();
-        this._renderMoreButton();
         break;
       case UpdateType.MAJOR:
         this._clearFilmsList();
         this._renderFilmsList();
-        this._renderMoreButton();
         break;
       case UpdateType.INIT:
         this._isLoading = false;
         remove(this._loadingComponent);
         this._renderFilmsList();
-        this._renderMoreButton();
         break;
     }
   }
