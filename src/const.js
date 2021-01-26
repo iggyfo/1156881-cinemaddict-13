@@ -20,6 +20,7 @@ const UpdateType = {
   MINOR: `MINOR`,
   MAJOR: `MAJOR`,
   UPDATE_DETAILS: `UPDATE_DETAILS`,
+  INIT: `INIT`
 };
 
 const FilterType = {

@@ -5,6 +5,7 @@ import FilmsPresenter from "./film";
 import MoreButtonView from "../view/show-more-button";
 import FilmsExtraListView from "../view/films-extra";
 import NoFilmsView from "../view/no-films";
+import LoadingView from "../view/loading.js";
 import {render, RenderPosition, remove} from "../utils/render";
 import {filter} from "../utils/filter";
 import {SortType, UserAction, UpdateType, FilterType, ExstraFilmsList} from "../const";
@@ -18,6 +19,7 @@ export default class FilmList {
     // models
     this._filmsModel = filmsModel;
     this._filtersModel = filtersModel;
+    this._isLoading = true;
 
     // components
     this._filmsListComponent = new FilmsListView();
@@ -25,6 +27,7 @@ export default class FilmList {
     this._noFilmsComponent = new NoFilmsView();
     this._sortComponent = new SortView();
     this._filmsContainerComponent = new FilmsContainerView();
+    this._loadingComponent = new LoadingView();
 
     // callback
     this._closePrevDetails = this._closePrevDetails.bind(this);
@@ -79,6 +82,10 @@ export default class FilmList {
   }
 
   _renderFilmsList() {
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
     const films = this._getFilms();
     if (films.length === 0) {
       this._renderNoFilms();
@@ -102,6 +109,10 @@ export default class FilmList {
 
   _renderNoFilms() {
     render(this._container, this._noFilmsComponent, RenderPosition.BEFOREEND);
+  }
+
+  _renderLoading() {
+    render(this._container, this._loadingComponent, RenderPosition.AFTERBEGIN);
   }
 
   _renderMoreButton() {
@@ -135,6 +146,7 @@ export default class FilmList {
     this._filmsPresenter = {};
     remove(this._moreButtonComponent);
     this._NUM_RENDERED_CARDS = 0;
+    remove(this._loadingComponent);
   }
 
   _onSortTypeChange(sortType) {
@@ -173,6 +185,12 @@ export default class FilmList {
         break;
       case UpdateType.MAJOR:
         this._clearFilmsList();
+        this._renderFilmsList();
+        this._renderMoreButton();
+        break;
+      case UpdateType.INIT:
+        this._isLoading = false;
+        remove(this._loadingComponent);
         this._renderFilmsList();
         this._renderMoreButton();
         break;

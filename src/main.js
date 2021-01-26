@@ -5,6 +5,8 @@ import FooterStatisticsView from "./view/footer-statistics";
 import FilmModel from "./model/films";
 import FilterModel from "./model/filters";
 import {render, RenderPosition} from "./utils/render";
+import {UpdateType} from "./const";
+
 import Api from "./api/api";
 
 const AUTHORIZATION = `Basic jv12n134edvsns`;
@@ -22,9 +24,13 @@ render(headerElement, new MenuView(), RenderPosition.BEFOREEND);
 const filtersModel = new FilterModel();
 const filmModel = new FilmModel();
 
-api.getFilms().then((films) => {
-  filmModel.films = films;
-});
+api.getFilms()
+  .then((films) => {
+    filmModel.setFilms(UpdateType.INIT, films);
+  })
+  .catch(() => {
+    filmModel.setFilms(UpdateType.INIT, []);
+  });
 
 // presenters
 const filtersPresenter = new FilterPresenter(mainElement, filtersModel, filmModel);

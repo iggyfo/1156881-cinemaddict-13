@@ -6,8 +6,9 @@ export default class Films extends Observer {
     this._films = [];
   }
 
-  set films(films) {
+  setFilms(updateType, films) {
     this._films = films.slice();
+    this.notify(updateType);
   }
 
   get films() {
