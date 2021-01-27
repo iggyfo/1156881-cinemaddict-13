@@ -1,6 +1,7 @@
 import FilmCardView from "../view/film-card";
 import DetailsView from "../view/details";
 import CommentView from "../view/comment";
+import CommentModel from "../model/comments";
 import {render, RenderPosition, replace, remove} from "../utils/render";
 import {constants} from "../const";
 import {UserAction, UpdateType, NetworksList} from "../const";
@@ -15,6 +16,8 @@ export default class Film {
     this._comments = [];
     this._changeData = changeData;
     this._prevDetails = prevDetails;
+    this._commentsModel = new CommentModel();
+    this._commentsModel.addObserver(this._onRemoveCommentButtonClick);
     this._onAddWatchedClick = this._onAddWatchedClick.bind(this);
     this._onAddWatchlistClick = this._onAddWatchlistClick.bind(this);
     this._onAddFavoriteClick = this._onAddFavoriteClick.bind(this);
@@ -75,9 +78,8 @@ export default class Film {
   }
 
   _renderComments() {
-    this._film.comments.forEach((comment) => {
+    this._comments.forEach((comment) => {
       const newComment = new CommentView(comment);
-      this._comments.push(newComment);
       render(this._detailsComponent.commentList, newComment, RenderPosition.BEFOREEND);
       newComment.setOnRemoveComment(this._onRemoveCommentButtonClick);
     });
@@ -140,17 +142,15 @@ export default class Film {
   }
 
   _onRemoveCommentButtonClick(removedComment) {
-    this._changeData(
-        UserAction.UPDATE_FILM,
-        UpdateType.PATCH,
+    this._api.updateComments(
         Object.assign(
             {},
-            this._film,
             {
-              comments: this._film.comments.filter((comment) => comment.id !== removedComment.id)
+              comments: this._comments.filter((comment) => comment.id !== removedComment.id)
             }
-        )
-    );
+        ), this._film.id).then((response) => {
+      this._commentsModel.updateComments(UpdateType.PATCH, response);
+    });
   }
 
   _onFormSubmit(film) {

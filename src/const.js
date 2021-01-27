@@ -12,7 +12,8 @@ const UserAction = {
   UPDATE_FILM: `UPDATE_FILM`,
   ADD_FILM: `ADD_FILM`,
   DELETE_FILM: `DELETE_FILM`,
-  UPDATE_DETAILS: `UPDATE_DETAILS`
+  UPDATE_DETAILS: `UPDATE_DETAILS`,
+  DELETE_COMMENT: `DELETE_COMMENT`,
 };
 
 const UpdateType = {
@@ -37,7 +38,7 @@ const ExstraFilmsList = {
 
 const NetworksList = {
   AUTHORIZATION: `Basic jv12n134edvsns`,
-  END_POINT: `https://13.ecmascript.pages.academy/cinemaddict/`,
+  END_POINT: `https://13.ecmascript.pages.academy/cinemaddict`,
 };
 
 export {constants, SortType, UserAction, UpdateType, FilterType, ExstraFilmsList, NetworksList};

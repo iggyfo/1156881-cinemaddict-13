@@ -1,4 +1,5 @@
 import FilmsModel from "../model/films";
+import CommentModel from "../model/comments";
 
 
 const Method = {
@@ -25,8 +26,7 @@ export default class Api {
 
   getComments(filmID) {
     return this._load({url: `comments/${filmID}`})
-      .then(Api.toJSON)
-      .then((films) => films.map(FilmsModel.adaptToClient));
+      .then(Api.toJSON);
   }
 
   updateFilm(film) {
@@ -38,6 +38,17 @@ export default class Api {
     })
       .then(Api.toJSON)
       .then(FilmsModel.adaptToClient);
+  }
+
+  updateComments(comments, filmID) {
+    return this._load({
+      url: `comments/${filmID}`,
+      method: Method.PUT,
+      body: JSON.stringify(comments),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then(Api.toJSON)
+      .then(comments);
   }
 
   _load({
