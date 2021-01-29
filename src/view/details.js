@@ -18,7 +18,7 @@ export default class Details extends SmartView {
   }
 
   getTemplate() {
-    const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, release, runtime, genres, description, comments, isFavorite, isWatched, isWatchlist, emotion} = this._data;
+    const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, release, runtime, genres, description, isFavorite, isWatched, isWatchlist, emotion} = this._data;
 
 
     return `<section class="film-details">

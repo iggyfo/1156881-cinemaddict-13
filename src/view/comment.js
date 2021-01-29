@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import {UserAction, UpdateType} from "../const";
 
 
-
 export default class Comment extends Abstract {
   constructor(comment) {
     super();

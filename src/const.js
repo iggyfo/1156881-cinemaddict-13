@@ -39,7 +39,7 @@ const ExstraFilmsList = {
 };
 
 const NetworksList = {
-  AUTHORIZATION: `Basic jv12n134edvsns`,
+  AUTHORIZATION: `Basic jv12n134edwvsns`,
   END_POINT: `https://13.ecmascript.pages.academy/cinemaddict`,
 };
 
