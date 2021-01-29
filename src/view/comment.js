@@ -1,5 +1,7 @@
 import Abstract from "./abstract.js";
 import dayjs from "dayjs";
+import {UserAction, UpdateType} from "../const";
+
 
 
 export default class Comment extends Abstract {
@@ -29,7 +31,11 @@ export default class Comment extends Abstract {
 
   _onRemoveComment(evt) {
     evt.preventDefault();
-    this._callback.removeComment(this._comment);
+    this._callback.removeComment(
+        UserAction.DELETE_COMMENT,
+        UpdateType.DELETE_COMMENT,
+        this._comment
+    );
   }
 
   setOnRemoveComment(callback) {

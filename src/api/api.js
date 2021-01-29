@@ -1,10 +1,10 @@
 import FilmsModel from "../model/films";
-import CommentModel from "../model/comments";
 
 
 const Method = {
   GET: `GET`,
-  PUT: `PUT`
+  PUT: `PUT`,
+  DELETE: `DELETE`,
 };
 
 const SuccessHTTPStatusRange = {
@@ -40,15 +40,13 @@ export default class Api {
       .then(FilmsModel.adaptToClient);
   }
 
-  updateComments(comments, filmID) {
+  deleteComments(comment) {
     return this._load({
-      url: `comments/${filmID}`,
-      method: Method.PUT,
-      body: JSON.stringify(comments),
+      url: `comments/${comment.id}`,
+      method: Method.DELETE,
+      body: JSON.stringify(comment),
       headers: new Headers({"Content-Type": `application/json`})
-    })
-      .then(Api.toJSON)
-      .then(comments);
+    });
   }
 
   _load({

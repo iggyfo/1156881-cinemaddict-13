@@ -21,7 +21,9 @@ const UpdateType = {
   MINOR: `MINOR`,
   MAJOR: `MAJOR`,
   UPDATE_DETAILS: `UPDATE_DETAILS`,
-  INIT: `INIT`
+  INIT: `INIT`,
+  DELETE_COMMENT: `DELETE_COMMENT`,
+
 };
 
 const FilterType = {
