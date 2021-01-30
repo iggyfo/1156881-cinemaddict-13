@@ -186,6 +186,7 @@ export default class FilmList {
     switch (updateType) {
       case UpdateType.PATCH:
         this._filmsPresenter[data.id].init(data);
+        this._filmsPresenter[data.id].updateDetails(data);
         break;
       case UpdateType.MINOR:
         this._clearFilmsList();

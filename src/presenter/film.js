@@ -23,6 +23,7 @@ export default class Film {
     this._onCommentViewAction = this._onCommentViewAction.bind(this);
 
     this._commentsModel.addObserver(this._onCommentModelEvent);
+    this.updateDetails = this.updateDetails.bind(this);
     this._renderComments = this._renderComments.bind(this);
     this._onAddWatchedClick = this._onAddWatchedClick.bind(this);
     this._onAddWatchlistClick = this._onAddWatchlistClick.bind(this);
@@ -116,6 +117,14 @@ export default class Film {
     document.removeEventListener(`keydown`, this._onDetailsEscKeydown);
   }
 
+  updateDetails(film) {
+    if (this._detailsComponent) {
+      this._closeDetails();
+      this.init(film);
+      this._renderDetails();
+    }
+  }
+
   _onDetailsEscKeydown(evt) {
     if (evt.key === constants.ESC) {
       this._closeDetails();
@@ -125,7 +134,7 @@ export default class Film {
   _onAddWatchedClick() {
     this._changeData(
         UserAction.UPDATE_FILM,
-        UpdateType.MINOR,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,
@@ -139,7 +148,7 @@ export default class Film {
   _onAddWatchlistClick() {
     this._changeData(
         UserAction.UPDATE_FILM,
-        UpdateType.MINOR,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,
@@ -153,7 +162,7 @@ export default class Film {
   _onAddFavoriteClick() {
     this._changeData(
         UserAction.UPDATE_FILM,
-        UpdateType.MINOR,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,
@@ -168,16 +177,21 @@ export default class Film {
     switch (actionType) {
       case UserAction.DELETE_COMMENT:
         this._api.deleteComments(update)
-      .then(() => {
-        this._commentsModel.deleteComments(UpdateType.PATCH, update);
-      });
+        .then(() => {
+          this._commentsModel.deleteComments(UpdateType.DELETE_COMMENT, update);
+        });
+        break;
+      case UserAction.ADD_COMMENT:
+        this._api.addComment(update).then((response) => {
+          this._commentsModel.addComments(updateType, response);
+        });
 
     }
   }
 
   _onCommentModelEvent(updateType) {
     switch (updateType) {
-      case UpdateType.PATCH:
+      case UpdateType.DELETE_COMMENT:
         this._removeComments();
         this._api.getComments(this._film.id)
           .then((comments) => {

@@ -1,10 +1,12 @@
 import FilmsModel from "../model/films";
+import CommentModel from "../model/comments";
 
 
 const Method = {
   GET: `GET`,
   PUT: `PUT`,
   DELETE: `DELETE`,
+  POST: `POST`,
 };
 
 const SuccessHTTPStatusRange = {
@@ -47,6 +49,17 @@ export default class Api {
       body: JSON.stringify(comment),
       headers: new Headers({"Content-Type": `application/json`})
     });
+  }
+
+  addComment(comment) {
+    return this._load({
+      url: `comments${comment.id}`,
+      method: Method.POST,
+      body: JSON.stringify(comment),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then(Api.toJSON)
+      .then(CommentModel.adaptToClient);
   }
 
   _load({
