@@ -12,7 +12,7 @@ import {SortType, UserAction, UpdateType, FilterType, ExstraFilmsList} from "../
 import {sortFilmsByDate, sortFilmsByRating} from "../utils/sort";
 
 
-export default class FilmList {
+export default class FilmListPresenter {
   constructor(container, filmsModel, filtersModel, api) {
     this._container = container;
 

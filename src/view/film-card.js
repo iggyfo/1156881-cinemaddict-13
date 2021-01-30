@@ -36,7 +36,7 @@ export default class FilmCard extends Abstract {
   </article>`;
   }
 
-  _filmShowDetailsElement() {
+  _filmOpenDetailsElement() {
     if (this._filmDetailsElement) {
       this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__title`));
       this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__poster`));
@@ -64,9 +64,9 @@ export default class FilmCard extends Abstract {
     this._callback.addFavotiteClick();
   }
 
-  setClickHandler(callback) {
+  setOpenDetailsClick(callback) {
     this._callback.click = callback;
-    this._filmShowDetailsElement();
+    this._filmOpenDetailsElement();
     this._filmDetailsElement.forEach((element) => {
       element.addEventListener(`click`, this._clickHandler);
     });

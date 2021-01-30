@@ -1,24 +1,24 @@
-import FilmCardView from "../view/film-card";
 import DetailsView from "../view/details";
 import CommentView from "../view/comment";
 import CommentsCountView from "../view/comments-count";
 import CommentModel from "../model/comments";
 import {render, RenderPosition, replace, remove} from "../utils/render";
 import {constants} from "../const";
-import {UserAction, UpdateType, API_CONFIG} from "../const";
+import {UserAction, UpdateType, NetworksList} from "../const";
 import Api from "../api/api";
 
 
-export default class FilmPresenter {
-  constructor(container, changeData, prevDetails) {
+export default class Details {
+  constructor(container, changeData) {
     this._container = container;
-    this._filmCardComponent = null;
     this._detailsComponent = null;
     this._comments = [];
     this._commentsComponents = [];
     this._changeData = changeData;
-    this._prevDetails = prevDetails;
-    this._commentsModel = new CommentModel();
+    this._prevDetails = null;
+
+    this._api = new Api(NetworksList.END_POINT, NetworksList.AUTHORIZATION);
+
     this._onCommentModelEvent = this._onCommentModelEvent.bind(this);
     this._onCommentViewAction = this._onCommentViewAction.bind(this);
 
@@ -34,31 +34,7 @@ export default class FilmPresenter {
     this._closeDetails = this._closeDetails.bind(this);
   }
 
-  init(film) {
-    this._film = film;
-    this._api = new Api(API_CONFIG.endPoint, API_CONFIG.authorization);
-
-    this._api.getComments(this._film.id)
-      .then((comments) => {
-        this._comments = comments;
-      });
-    const prevFilmComponent = this._filmCardComponent;
-    this._filmCardComponent = new FilmCardView(this._film);
-    this._filmCardComponent.setOnAddWachedClick(this._onAddWatchedClick);
-    this._filmCardComponent.setOnAddWatchlistClick(this._onAddWatchlistClick);
-    this._filmCardComponent.setOnAddFavoriteClick(this._onAddFavoriteClick);
-    this._filmCardComponent.setOpenDetailsClick(this._renderDetails);
-    if (prevFilmComponent === null) {
-      render(this._container, this._filmCardComponent, RenderPosition.BEFOREEND);
-      return;
-    } else {
-      replace(this._filmCardComponent, prevFilmComponent);
-    }
-    remove(prevFilmComponent);
-  }
-
-  _renderDetails() {
-    this._prevDetails();
+  init() {
     const prevDetailsComponent = this._detailsComponent;
     this._detailsComponent = new DetailsView(this._film);
     this._detailsComponent.setOnDetailsAddWatchedClick(this._onAddWatchedClick);
@@ -78,6 +54,26 @@ export default class FilmPresenter {
     if (prevDetailsComponent) {
       remove(prevDetailsComponent);
     }
+    this._commentsModel = new CommentModel();
+    this._getComments();
+    const prevFilmComponent = this._detailsComponent;
+    if (prevFilmComponent === null) {
+      render(this._container, this._detailsComponent, RenderPosition.BEFOREEND);
+      return;
+    } else {
+      replace(this._filmCardComponent, prevFilmComponent);
+    }
+    if (this._detailsComponent) {
+      this._renderDetails();
+    }
+    remove(prevFilmComponent);
+  }
+
+  _getComments() {
+    this._api.getComments(this._film.id)
+      .then((comments) => {
+        this._comments = comments;
+      });
   }
 
   _renderComments() {
@@ -114,11 +110,10 @@ export default class FilmPresenter {
     document.removeEventListener(`keydown`, this._onDetailsEscKeydown);
   }
 
-  updateDetails(film) {
+  updateDetails() {
     if (this._detailsComponent) {
       this._closeDetails();
-      this.init(film);
-      this._renderDetails();
+      this.init();
     }
   }
 

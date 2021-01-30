@@ -5,7 +5,7 @@ import FooterStatisticsView from "./view/footer-statistics";
 import FilmModel from "./model/films";
 import FilterModel from "./model/filters";
 import {render, RenderPosition} from "./utils/render";
-import {UpdateType, NetworksList} from "./const";
+import {UpdateType, API_CONFIG} from "./const";
 import Api from "./api/api";
 
 
@@ -14,7 +14,7 @@ const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
 
 
-const api = new Api(NetworksList.END_POINT, NetworksList.AUTHORIZATION);
+const api = new Api(API_CONFIG.endPoint, API_CONFIG.authorization);
 
 render(headerElement, new MenuView(), RenderPosition.BEFOREEND);
 

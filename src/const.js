@@ -38,9 +38,9 @@ const ExstraFilmsList = {
   MOST_COMMENTED: `Most commented`,
 };
 
-const NetworksList = {
-  AUTHORIZATION: `Basic jv12n134edwvsns`,
-  END_POINT: `https://13.ecmascript.pages.academy/cinemaddict`,
+const API_CONFIG = {
+  authorization: `Basic jv12n134edwvsns`,
+  endPoint: `https://13.ecmascript.pages.academy/cinemaddict`,
 };
 
-export {constants, SortType, UserAction, UpdateType, FilterType, ExstraFilmsList, NetworksList};
+export {constants, SortType, UserAction, UpdateType, FilterType, ExstraFilmsList, API_CONFIG};
