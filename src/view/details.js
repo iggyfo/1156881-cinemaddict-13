@@ -8,6 +8,11 @@ export default class Details extends SmartView {
   constructor(film) {
     super();
     this._data = Details.parseFilmToData(film);
+    this._localComment = {
+      comment: ``,
+      date: ``,
+      emotion: `smile`,
+    };
     this._onDetailsAddWatchedClick = this._onDetailsAddWatchedClick.bind(this);
     this._onDetailsAddWatchlistClick = this._onDetailsAddWatchlistClick.bind(this);
     this._onDetailsAddFavoriteClick = this._onDetailsAddFavoriteClick.bind(this);
@@ -18,7 +23,8 @@ export default class Details extends SmartView {
   }
 
   getTemplate() {
-    const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, release, runtime, genres, description, isFavorite, isWatched, isWatchlist, emotion} = this._data;
+    const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, release, runtime, genres, description, isFavorite, isWatched, isWatchlist} = this._data;
+    const {comment, emotion} = this._localComment;
 
 
     return `<section class="film-details">
@@ -102,11 +108,11 @@ export default class Details extends SmartView {
 
           <div class="film-details__new-comment">
             <div class="film-details__add-emoji-label">
-              <img src="images/emoji/${emotion}.png" width="55" height="55" alt="emoji-smile">
+              <img src="images/emoji/${emotion}.png" width="55" height="55" alt="emoji-${emotion}">
             </div>
 
             <label class="film-details__comment-label">
-              <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${he.encode(`Great movie!`)}</textarea>
+              <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${he.encode(comment)}</textarea>
             </label>
 
             <div class="film-details__emoji-list">
@@ -143,6 +149,7 @@ export default class Details extends SmartView {
         film,
         {
           emotion: `smile`,
+          commentText: ``,
         }
     );
   }
@@ -178,12 +185,13 @@ export default class Details extends SmartView {
     .forEach((element) => {
       element.addEventListener(`click`, this._onEmojiClick);
     });
+    // найти текстарею и повесить обработчик пользовательского ввода
   }
 
   _onEmojiClick(evt) {
     evt.preventDefault();
     this._currentCoords = this.getElement().scrollTop;
-    this.updateData({
+    this.updateLocalComment({
       emotion: evt.target.value,
     });
     this.getElement().querySelectorAll(`.film-details__emoji-item`).forEach((element) => {
@@ -238,7 +246,15 @@ export default class Details extends SmartView {
 
   setOnFormSubmit(callback) {
     this._callback.formSubmit = callback;
-    this.getElement().querySelector(`form`).addEventListener(`submit`, this._onFormSubmit);
+
+    this.getElement().querySelector(`form`).addEventListener(`keydown`, (evt) => {
+      if (evt.keyCode === 13 && evt.metaKey) {
+        const target = evt.target;
+        if (target.form) {
+          this._onFormSubmit(evt);
+        }
+      }
+    });
   }
 
   setOnCloseBtn(callback) {

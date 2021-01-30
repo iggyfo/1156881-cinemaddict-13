@@ -36,4 +36,18 @@ export default class Smart extends Abstract {
 
     this.updateElement();
   }
+
+  updateLocalComment(update) {
+    if (!update) {
+      return;
+    }
+
+    this._localComment = Object.assign(
+        {},
+        this._localComment,
+        update
+    );
+
+    this.updateElement();
+  }
 }
