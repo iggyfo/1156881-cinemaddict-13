@@ -12,7 +12,8 @@ const UserAction = {
   UPDATE_FILM: `UPDATE_FILM`,
   ADD_FILM: `ADD_FILM`,
   DELETE_FILM: `DELETE_FILM`,
-  UPDATE_DETAILS: `UPDATE_DETAILS`
+  UPDATE_DETAILS: `UPDATE_DETAILS`,
+  DELETE_COMMENT: `DELETE_COMMENT`,
 };
 
 const UpdateType = {
@@ -20,6 +21,9 @@ const UpdateType = {
   MINOR: `MINOR`,
   MAJOR: `MAJOR`,
   UPDATE_DETAILS: `UPDATE_DETAILS`,
+  INIT: `INIT`,
+  DELETE_COMMENT: `DELETE_COMMENT`,
+
 };
 
 const FilterType = {
@@ -34,4 +38,9 @@ const ExstraFilmsList = {
   MOST_COMMENTED: `Most commented`,
 };
 
-export {constants, SortType, UserAction, UpdateType, FilterType, ExstraFilmsList};
+const NetworksList = {
+  AUTHORIZATION: `Basic jv12n134edwvsns`,
+  END_POINT: `https://13.ecmascript.pages.academy/cinemaddict`,
+};
+
+export {constants, SortType, UserAction, UpdateType, FilterType, ExstraFilmsList, NetworksList};

@@ -18,7 +18,7 @@ export default class Details extends SmartView {
   }
 
   getTemplate() {
-    const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, release, runtime, genres, description, comments, isFavorite, isWatched, isWatchlist, emotion} = this._data;
+    const {poster, ageRating, title, originalTitle, rating, producer, screenwriters, cast, release, runtime, genres, description, isFavorite, isWatched, isWatchlist, emotion} = this._data;
 
 
     return `<section class="film-details">
@@ -97,7 +97,6 @@ export default class Details extends SmartView {
 
       <div class="film-details__bottom-container">
         <section class="film-details__comments-wrap">
-          <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
 
           <ul class="film-details__comments-list"></ul>
 
@@ -163,6 +162,10 @@ export default class Details extends SmartView {
     this.setOnDetailsAddWatchlistClick(this._callback.addDetailsWatchlistClick);
     this.setOnDetailsAddFavoriteClick(this._callback.addDetailsFavotiteClick);
     this.setOnCloseBtn(this._callback.closeDetails);
+  }
+
+  get commentWrap() {
+    return this.getElement().querySelector(`.film-details__comments-wrap`);
   }
 
   get commentList() {
