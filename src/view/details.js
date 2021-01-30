@@ -185,7 +185,12 @@ export default class Details extends SmartView {
     .forEach((element) => {
       element.addEventListener(`click`, this._onEmojiClick);
     });
-    // найти текстарею и повесить обработчик пользовательского ввода
+    this.getElement()
+    .querySelector(`.film-details__comment-input`).addEventListener(`imput`, this._onCommentText);
+  }
+
+  _onCommentText(evt) {
+    this._localComment.comment = evt.target.value;
   }
 
   _onEmojiClick(evt) {
