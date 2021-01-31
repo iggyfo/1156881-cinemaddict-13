@@ -13,7 +13,6 @@ export default class Details {
     this._film = film;
     this._changeData = changeData;
     this._detailsComponent = null;
-    this._prevDetails = null;
     this._commentListPresenter = null;
 
     this._onDetailsControlsClick = this._onDetailsControlsClick.bind(this);

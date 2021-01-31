@@ -83,14 +83,22 @@ export default class CommentsListPresenter {
       case UserAction.DELETE_COMMENT:
         this._api.deleteComments(update)
         .then(() => {
-          this._commentsModel.deleteComments(UpdateType.DELETE_COMMENT, update);
+          this._comments = this._comments.filter((comment) => update !== comment);
+          this._removeComments();
+          this._renderComments();
         });
         break;
       case UserAction.ADD_COMMENT:
         this._api.addComment(update).then((response) => {
           this._commentsModel.addComments(updateType, response);
         });
-
+        break;
+      case UserAction.UPDATE_COMMENTS:
+        this._api.updateFilm(update)
+        .then(() => {
+          this._commentsModel.updateFilm(UpdateType.DELETE_COMMENT, update);
+        });
+        break;
     }
   }
 

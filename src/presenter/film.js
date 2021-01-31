@@ -9,6 +9,8 @@ export default class FilmPresenter {
     this._container = container;
     this._filmCardComponent = null;
     this._detailsPresenter = null;
+    this._prevDetailsComponent = null;
+
     this._changeData = changeData;
 
     this._changeData = this._changeData.bind(this);
@@ -36,9 +38,6 @@ export default class FilmPresenter {
   }
 
   _initDetails() {
-    if (this._detailsPresenter !== null) {
-      return;
-    }
     this._detailsPresenter = new DetailsPresenter(this._film, this._changeData);
     this._detailsPresenter.init();
   }
