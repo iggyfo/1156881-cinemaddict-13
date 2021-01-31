@@ -1,11 +1,46 @@
 import Abstract from "./abstract";
+import {MenuItem} from "../const";
 
-export default class Menu extends Abstract {
+
+const FILTER_ACTIVE_CLASS = `main-navigation__item--active`;
+const STATS_ACTIVE_CLASS = `main-navigation__additional--active`;
+export default class MenuView extends Abstract {
+  constructor() {
+    super();
+
+    this._menuClickHandler = this._menuClickHandler.bind(this);
+  }
 
   getTemplate() {
-    return `<section class="header__profile profile">
-    <p class="profile__rating">Movie Buff</p>
-    <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-  </section>`;
+    return `<nav class="main-navigation">
+      <a href="#stats" data-id="${MenuItem.STATS}" class="main-navigation__additional">Stats</a>
+      </nav>`;
+  }
+
+  _onMenuClick(evt) {
+    const statsMenuItem = this.getElement().querySelector(`.main-navigation__additional`);
+    evt.preventDefault();
+    if (evt.target.tagName !== `A` && evt.target.tagName !== `SPAN`) {
+      return;
+    }
+
+    this._changeActiveClass(evt.target, statsMenuItem);
+    this._callback.menuClick(evt.target.dataset.id);
+  }
+
+  _changeActiveClass(target, statsMenuItem) {
+    const menuItems = this.getElement().querySelectorAll(`a`);
+    if (target === statsMenuItem) {
+      menuItems.forEach((item) => item.classList.remove(FILTER_ACTIVE_CLASS));
+      target.classList.add(STATS_ACTIVE_CLASS);
+    } else {
+      statsMenuItem.classList.remove(STATS_ACTIVE_CLASS);
+    }
+
+  }
+
+  setOnChangeHandler(callback) {
+    this._callback.onMenuClick = callback;
+    this.getElement().addEventListener(`click`, this._onMenuClick);
   }
 }

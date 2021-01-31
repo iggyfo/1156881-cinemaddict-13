@@ -1,7 +1,8 @@
-import MenuView from "./view/menu";
 import FilmsListPresenter from "./presenter/films-list";
 import FilterPresenter from "./presenter/filters";
 import FooterStatisticsView from "./view/footer-statistics";
+import UserRankView from "./view/user-rank";
+import MenuView from "./view/menu";
 import FilmModel from "./model/films";
 import FilterModel from "./model/filters";
 import {render, RenderPosition} from "./utils/render";
@@ -12,6 +13,11 @@ import Api from "./api/api";
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
+const userRankComponent = new UserRankView();
+const menuComponent = new MenuView();
+
+render(headerElement, userRankComponent, RenderPosition.BEFOREEND);
+render(mainElement, menuComponent, RenderPosition.AFTERBEGIN);
 
 
 const api = new Api(API_CONFIG.endPoint, API_CONFIG.authorization);
@@ -37,6 +43,6 @@ filmsList.init();
 
 // footer
 const footerStatisticsElement = footerElement.querySelector(`.footer__statistics`);
-// render(footerStatisticsElement, new FooterStatisticsView(filmModel.getFilms.length), RenderPosition.BEFOREEND);
+render(footerStatisticsElement, new FooterStatisticsView(filmModel.films.length), RenderPosition.BEFOREEND);
 
 
