@@ -1,6 +1,7 @@
 import SmartView from "./smart";
 import {UserAction, UpdateType} from "../const";
 import he from "he";
+import dayjs from "dayjs";
 
 
 export default class NewComment extends SmartView {
@@ -8,7 +9,7 @@ export default class NewComment extends SmartView {
     super();
     this._localComment = {
       comment: ``,
-      date: `2019-05-11T16:12:32.554Z`,
+      date: ``,
       emotion: `smile`,
     };
     this._onEmojiClick = this._onEmojiClick.bind(this);
@@ -66,6 +67,13 @@ export default class NewComment extends SmartView {
     this.getElement()
       .querySelector(`.film-details__comment-input`)
       .addEventListener(`input`, this._onCommentTyping);
+    this.getElement()
+      .querySelector(`.film-details__comment-input`)
+      .addEventListener(`keydown`, (evt) => {
+        if (evt.keyCode === 13 && evt.metaKey) {
+          this._onAddNewComment(evt);
+        }
+      });
   }
 
   _onCommentTyping(evt) {
@@ -79,22 +87,31 @@ export default class NewComment extends SmartView {
     this.updateLocalComment({
       emotion: evt.target.value,
     });
-    this.getElement().querySelectorAll(`.film-details__emoji-item`).forEach((element) => {
-      if (element.value === evt.target.value) {
-        element.checked = true;
-      } else {
-        element.checked = false;
-      }
-    });
+    this.getElement()
+      .querySelectorAll(`.film-details__emoji-item`)
+      .forEach((element) => {
+        if (element.value === evt.target.value) {
+          element.checked = true;
+        } else {
+          element.checked = false;
+        }
+      });
   }
 
   _onAddNewComment(evt) {
     evt.preventDefault();
+    this._localComment.date = dayjs().format(`YYYY-MM-DDTHH:mm:ss.SSS[Z]`);
     this._callback.addNewComment(
         UserAction.ADD_COMMENT,
-        UpdateType.DELETE_COMMENT,
+        UpdateType.ADD_COMMENT,
         this._localComment
     );
+    evt.target.value = ``;
+    this._localComment.date = ``;
+    this._localComment.emotion = `smile`;
+    const imgElement = this.getElement().querySelector(`img`);
+    imgElement.src = `images/emoji/${this._localComment.emotion}.png`;
+    imgElement.alt = `emoji-${this._localComment.emotion}`;
   }
 
   setOnAddNewComment(callback) {
