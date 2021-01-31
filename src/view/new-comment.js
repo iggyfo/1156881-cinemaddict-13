@@ -1,4 +1,5 @@
 import SmartView from "./smart";
+import {UserAction, UpdateType} from "../const";
 import he from "he";
 
 
@@ -7,7 +8,7 @@ export default class NewComment extends SmartView {
     super();
     this._localComment = {
       comment: ``,
-      date: ``,
+      date: `2019-05-11T16:12:32.554Z`,
       emotion: `smile`,
     };
     this._onEmojiClick = this._onEmojiClick.bind(this);
@@ -85,5 +86,25 @@ export default class NewComment extends SmartView {
         element.checked = false;
       }
     });
+  }
+
+  _onAddNewComment(evt) {
+    evt.preventDefault();
+    this._callback.addNewComment(
+        UserAction.ADD_COMMENT,
+        UpdateType.DELETE_COMMENT,
+        this._localComment
+    );
+  }
+
+  setOnAddNewComment(callback) {
+    this._callback.addNewComment = callback;
+    this.getElement()
+        .querySelector(`.film-details__comment-input`)
+        .addEventListener(`keydown`, (evt) => {
+          if (evt.keyCode === 13 && evt.metaKey) {
+            this._onAddNewComment(evt);
+          }
+        });
   }
 }

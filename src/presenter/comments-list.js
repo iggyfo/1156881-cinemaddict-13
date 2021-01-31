@@ -61,6 +61,7 @@ export default class CommentsListPresenter {
   _renderNewComment() {
     this._newCommentComponent = new NewCommentView();
     render(this._container, this._newCommentComponent, RenderPosition.BEFOREEND);
+    this._newCommentComponent.setOnAddNewComment(this._onCommentViewAction);
   }
 
   _removeComments() {
@@ -69,7 +70,6 @@ export default class CommentsListPresenter {
       this._removeComponent(comment);
     });
     this._commentsComponents = [];
-    this._comments = [];
   }
 
   _removeComponent(component) {
@@ -89,7 +89,7 @@ export default class CommentsListPresenter {
         });
         break;
       case UserAction.ADD_COMMENT:
-        this._api.addComment(update).then((response) => {
+        this._api.addComment(update, this._film.id).then((response) => {
           this._commentsModel.addComments(updateType, response);
         });
         break;
@@ -111,6 +111,9 @@ export default class CommentsListPresenter {
             this._comments = comments;
           })
           .then(this._renderComments);
+        break;
+      case UpdateType.ADD_COMMENT:
+        console.log(`comments updated`);
         break;
     }
   }

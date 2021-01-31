@@ -18,7 +18,6 @@ export default class Details {
 
     this._onDetailsControlsClick = this._onDetailsControlsClick.bind(this);
     this._onDetailsEscKeydown = this._onDetailsEscKeydown.bind(this);
-    this._onFormSubmit = this._onFormSubmit.bind(this);
     this._closeDetails = this._closeDetails.bind(this);
   }
 
@@ -28,7 +27,6 @@ export default class Details {
     this._renderDetailsControls();
     this._commentListPresenter = new CommentListPresenter(this._detailsComponent.commentWrap, this._film);
     this._commentListPresenter.init();
-    this._detailsComponent.setOnFormSubmit(this._onFormSubmit);
     this._detailsComponent.setOnCloseBtn(this._closeDetails);
     document.addEventListener(`keydown`, this._onDetailsEscKeydown);
 
@@ -71,15 +69,6 @@ export default class Details {
         UpdateType.PATCH,
         Object.assign({}, this._film)
     );
-  }
-
-  _onFormSubmit(film) {
-    this._changeData(
-        UserAction.UPDATE_FILM,
-        UpdateType.MINOR,
-        film
-    );
-    this._closeDetails();
   }
 
   destroy() {
