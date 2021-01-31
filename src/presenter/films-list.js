@@ -12,7 +12,7 @@ import {SortType, UserAction, UpdateType, FilterType, ExstraFilmsList} from "../
 import {sortFilmsByDate, sortFilmsByRating} from "../utils/sort";
 
 
-export default class FilmList {
+export default class FilmListPresenter {
   constructor(container, filmsModel, filtersModel, api) {
     this._container = container;
 
@@ -32,12 +32,12 @@ export default class FilmList {
     this._loadingComponent = new LoadingView();
 
     // callback
-    this._closePrevDetails = this._closePrevDetails.bind(this);
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._onModelEvent = this._onModelEvent.bind(this);
     this._onViewAction = this._onViewAction.bind(this);
     this._renderFilmsList = this._renderFilmsList.bind(this);
     this._renderFilms = this._renderFilms.bind(this);
+    this._closePrevDetails = this._closePrevDetails.bind(this);
 
     // model
     this._filmsModel.addObserver(this._onModelEvent);
@@ -139,7 +139,8 @@ export default class FilmList {
     if (this._sortComponent !== null) {
       this._sortComponent = null;
     }
-    this._sortComponent = new SortView(this._currentSortType);
+    this._sortComponent = new SortView();
+    this._sortComponent.activeSortType = this._currentSortType;
     this._sortComponent.setOnSortTypeChange(this._onSortTypeChange);
     render(this._container, this._sortComponent, RenderPosition.BEFOREEND);
   }
@@ -186,7 +187,6 @@ export default class FilmList {
     switch (updateType) {
       case UpdateType.PATCH:
         this._filmsPresenter[data.id].init(data);
-        this._filmsPresenter[data.id].updateDetails(data);
         break;
       case UpdateType.MINOR:
         this._clearFilmsList();
@@ -206,13 +206,13 @@ export default class FilmList {
         break;
     }
   }
-
   _closePrevDetails() {
     Object
       .values(this._filmsPresenter)
       .forEach((film) => {
         if (film._isDetailsOpened) {
-          film._closeDetails();
+          film._isDetailsOpened = false;
+          film._detailsPresenter._closeDetails();
         }
       });
   }

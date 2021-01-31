@@ -8,7 +8,7 @@ export default class FilmCard extends Abstract {
     super();
     this._film = film;
     this._filmDetailsElement = [];
-    this._clickHandler = this._clickHandler.bind(this);
+    this._onOpenDetailsElements = this._onOpenDetailsElements.bind(this);
     this._onAddWatchedClick = this._onAddWatchedClick.bind(this);
     this._onAddWatchlistClick = this._onAddWatchlistClick.bind(this);
     this._onAddFavoriteClick = this._onAddFavoriteClick.bind(this);
@@ -36,7 +36,7 @@ export default class FilmCard extends Abstract {
   </article>`;
   }
 
-  _filmShowDetailsElement() {
+  _filmOpenDetailsElement() {
     if (this._filmDetailsElement) {
       this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__title`));
       this._filmDetailsElement.push(this.getElement().querySelector(`.film-card__poster`));
@@ -45,8 +45,8 @@ export default class FilmCard extends Abstract {
     return this._filmDetailsElement;
   }
 
-  _clickHandler() {
-    this._callback.click(this._film);
+  _onOpenDetailsElements() {
+    this._callback.openDetails(this._film);
   }
 
   _onAddWatchedClick(evt) {
@@ -64,11 +64,11 @@ export default class FilmCard extends Abstract {
     this._callback.addFavotiteClick();
   }
 
-  setClickHandler(callback) {
-    this._callback.click = callback;
-    this._filmShowDetailsElement();
+  setOpenDetailsClick(callback) {
+    this._callback.openDetails = callback;
+    this._filmOpenDetailsElement();
     this._filmDetailsElement.forEach((element) => {
-      element.addEventListener(`click`, this._clickHandler);
+      element.addEventListener(`click`, this._onOpenDetailsElements);
     });
   }
 
