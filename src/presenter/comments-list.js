@@ -110,7 +110,6 @@ export default class CommentsListPresenter {
         this._removeComments();
         this._comments = this._commentsModel.comments;
         this._renderComments();
-        console.log(`comments updated`);
         break;
     }
   }

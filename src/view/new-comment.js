@@ -78,7 +78,6 @@ export default class NewComment extends SmartView {
 
   _onCommentTyping(evt) {
     this._localComment.comment = evt.target.value;
-    console.log(this._localComment.comment);
   }
 
   _onEmojiClick(evt) {
@@ -106,12 +105,11 @@ export default class NewComment extends SmartView {
         UpdateType.ADD_COMMENT,
         this._localComment
     );
-    evt.target.value = ``;
-    this._localComment.date = ``;
-    this._localComment.emotion = `smile`;
-    const imgElement = this.getElement().querySelector(`img`);
-    imgElement.src = `images/emoji/${this._localComment.emotion}.png`;
-    imgElement.alt = `emoji-${this._localComment.emotion}`;
+    this.updateLocalComment({
+      comment: ``,
+      date: ``,
+      emotion: `smile`,
+    });
   }
 
   setOnAddNewComment(callback) {
