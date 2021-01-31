@@ -27,15 +27,15 @@ const statisticComponent = new StatisticsView(filmModel);
 render(mainElement, statisticComponent, RenderPosition.BEFOREEND);
 statisticComponent.hide();
 
-menuComponent.setOnChangeHandler((menuItem) => {
+menuComponent.setOnChangeMenu((menuItem) => {
   switch (menuItem) {
     case MenuItem.FILMS:
       statisticComponent.hide();
-      pagePresenter.show();
+      filmsPresenter.show();
       break;
 
     case MenuItem.STATS:
-      pagePresenter.hide();
+      filmsPresenter.hide();
       statisticComponent.updateElement();
       statisticComponent.show();
       break;
@@ -51,9 +51,9 @@ api.getFilms()
   });
 
 // presenters
-const filtersPresenter = new FilterPresenter(mainElement, filtersModel, filmModel);
+const filtersPresenter = new FilterPresenter(menuComponent, filtersModel, filmModel);
 filtersPresenter.init();
-const filmsPresenter = new FilmsPresenter(mainElement, filmModel, filtersModel, api);
+const filmsPresenter = new FilmsPresenter(mainElement, filmModel, filtersModel, api, userRankComponent);
 filmsPresenter.init();
 
 // footer

@@ -13,8 +13,9 @@ import {sortFilmsByDate, sortFilmsByRating} from "../utils/sort";
 
 
 export default class FilmListPresenter {
-  constructor(container, filmsModel, filtersModel, api) {
+  constructor(container, filmsModel, filtersModel, api, userRankComponent) {
     this._container = container;
+    this._userRankComponent = userRankComponent;
 
     // models
     this._filmsModel = filmsModel;
@@ -187,10 +188,12 @@ export default class FilmListPresenter {
     switch (updateType) {
       case UpdateType.PATCH:
         this._filmsPresenter[data.id].init(data);
+        this._userRankComponent.setRank(this._filmsModel.films);
         break;
       case UpdateType.MINOR:
         this._clearFilmsList();
         this._renderFilmsList();
+        this._userRankComponent.setRank(this._filmsModel.films);
         break;
       case UpdateType.MAJOR:
         this._clearFilmsList();
@@ -203,6 +206,7 @@ export default class FilmListPresenter {
         remove(this._filmsListComponent);
         remove(this._loadingComponent);
         this._renderFilmsList();
+        this._userRankComponent.setRank(this._filmsModel.films);
         break;
     }
   }
@@ -215,5 +219,16 @@ export default class FilmListPresenter {
           film._detailsPresenter._closeDetails();
         }
       });
+  }
+
+  hide() {
+    this._sortComponent.activeSortType = SortType.DEFAULT;
+    this._sortComponent.hide();
+    this._filmsContainerComponent.hide();
+  }
+
+  show() {
+    this._sortComponent.show();
+    this._filmsListComponent.show();
   }
 }

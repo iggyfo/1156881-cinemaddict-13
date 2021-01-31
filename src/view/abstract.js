@@ -1,6 +1,9 @@
 import {createElement} from "../utils/render.js";
 
 
+const HIDDEN_CLASS = `visually-hidden`;
+const SHAKE_ANIMATION_TIMEOUT = 600;
+
 export default class Abstract {
   constructor() {
     if (new.target === Abstract) {
@@ -24,5 +27,25 @@ export default class Abstract {
 
   removeElement() {
     this._element = null;
+  }
+
+  show() {
+    if (this._element) {
+      this._element.classList.remove(HIDDEN_CLASS);
+    }
+  }
+
+  hide() {
+    if (this._element) {
+      this._element.classList.add(HIDDEN_CLASS);
+    }
+  }
+
+  shake(callback, element) {
+    element.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    setTimeout(() => {
+      element.style.animation = ``;
+      callback();
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 }

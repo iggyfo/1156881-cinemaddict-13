@@ -19,4 +19,6 @@ export default class UserRankView extends Smart {
     this._userRank = getUserRank(films);
     this.updateElement();
   }
+
+  restoreHandlers() {}
 }

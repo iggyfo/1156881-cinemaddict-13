@@ -8,7 +8,7 @@ export default class MenuView extends Abstract {
   constructor() {
     super();
 
-    this._menuClickHandler = this._menuClickHandler.bind(this);
+    this._onMenuClick = this._onMenuClick.bind(this);
   }
 
   getTemplate() {
@@ -18,14 +18,15 @@ export default class MenuView extends Abstract {
   }
 
   _onMenuClick(evt) {
-    const statsMenuItem = this.getElement().querySelector(`.main-navigation__additional`);
+    const statsMenuItem = this.getElement()
+      .querySelector(`.main-navigation__additional`);
     evt.preventDefault();
     if (evt.target.tagName !== `A` && evt.target.tagName !== `SPAN`) {
       return;
     }
 
     this._changeActiveClass(evt.target, statsMenuItem);
-    this._callback.menuClick(evt.target.dataset.id);
+    this._callback.onMenuClick(evt.target.dataset.id);
   }
 
   _changeActiveClass(target, statsMenuItem) {
@@ -39,7 +40,7 @@ export default class MenuView extends Abstract {
 
   }
 
-  setOnChangeHandler(callback) {
+  setOnChangeMenu(callback) {
     this._callback.onMenuClick = callback;
     this.getElement().addEventListener(`click`, this._onMenuClick);
   }
