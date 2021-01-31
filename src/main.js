@@ -1,31 +1,46 @@
-import FilmsListPresenter from "./presenter/films-list";
+import FilmsPresenter from "./presenter/films-list";
 import FilterPresenter from "./presenter/filters";
 import FooterStatisticsView from "./view/footer-statistics";
 import UserRankView from "./view/user-rank";
 import MenuView from "./view/menu";
+import StatisticsView from "./view/statistics";
 import FilmModel from "./model/films";
 import FilterModel from "./model/filters";
 import {render, RenderPosition} from "./utils/render";
-import {UpdateType, API_CONFIG} from "./const";
+import {UpdateType, API_CONFIG, MenuItem} from "./const";
 import Api from "./api/api";
 
+const api = new Api(API_CONFIG.endPoint, API_CONFIG.authorization);
 
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
 const userRankComponent = new UserRankView();
 const menuComponent = new MenuView();
+const filtersModel = new FilterModel();
+const filmModel = new FilmModel();
 
 render(headerElement, userRankComponent, RenderPosition.BEFOREEND);
 render(mainElement, menuComponent, RenderPosition.AFTERBEGIN);
 
+const statisticComponent = new StatisticsView(filmModel);
+render(mainElement, statisticComponent, RenderPosition.BEFOREEND);
+statisticComponent.hide();
 
-const api = new Api(API_CONFIG.endPoint, API_CONFIG.authorization);
+menuComponent.setOnChangeHandler((menuItem) => {
+  switch (menuItem) {
+    case MenuItem.FILMS:
+      statisticComponent.hide();
+      pagePresenter.show();
+      break;
 
-render(headerElement, new MenuView(), RenderPosition.BEFOREEND);
-
-const filtersModel = new FilterModel();
-const filmModel = new FilmModel();
+    case MenuItem.STATS:
+      pagePresenter.hide();
+      statisticComponent.updateElement();
+      statisticComponent.show();
+      break;
+  }
+});
 
 api.getFilms()
   .then((films) => {
@@ -38,8 +53,8 @@ api.getFilms()
 // presenters
 const filtersPresenter = new FilterPresenter(mainElement, filtersModel, filmModel);
 filtersPresenter.init();
-const filmsList = new FilmsListPresenter(mainElement, filmModel, filtersModel, api);
-filmsList.init();
+const filmsPresenter = new FilmsPresenter(mainElement, filmModel, filtersModel, api);
+filmsPresenter.init();
 
 // footer
 const footerStatisticsElement = footerElement.querySelector(`.footer__statistics`);

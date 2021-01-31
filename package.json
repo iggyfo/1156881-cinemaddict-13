@@ -21,6 +21,7 @@
     "node": "10"
   },
   "dependencies": {
+    "chart": "0.1.2",
     "dayjs": "1.9.7",
     "he": "1.2.0"
   }
