@@ -139,7 +139,8 @@ export default class FilmListPresenter {
     if (this._sortComponent !== null) {
       this._sortComponent = null;
     }
-    this._sortComponent = new SortView(this._currentSortType);
+    this._sortComponent = new SortView();
+    this._sortComponent.activeSortType = this._currentSortType;
     this._sortComponent.setOnSortTypeChange(this._onSortTypeChange);
     render(this._container, this._sortComponent, RenderPosition.BEFOREEND);
   }
