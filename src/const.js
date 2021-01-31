@@ -31,6 +31,7 @@ const FilterType = {
   WATCH_LIST: `Watchlist`,
   FAVORITES: `Favorites`,
   HISTORY: `History`,
+  WATCHED: `Watched`,
 };
 
 const ExstraFilmsList = {

@@ -32,7 +32,6 @@ export default class FilmListPresenter {
     this._loadingComponent = new LoadingView();
 
     // callback
-    this._closePrevDetails = this._closePrevDetails.bind(this);
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._onModelEvent = this._onModelEvent.bind(this);
     this._onViewAction = this._onViewAction.bind(this);
@@ -99,7 +98,7 @@ export default class FilmListPresenter {
   _renderFilms() {
     const films = this._getFilms();
     for (const film of films.slice(this._NUM_RENDERED_CARDS, this._NUM_RENDERED_CARDS + this._NUM_RENDER_CARDS)) {
-      const filmsPresenter = new FilmsPresenter(this._filmsListComponent.filmsContainer, this._onViewAction, this._closePrevDetails);
+      const filmsPresenter = new FilmsPresenter(this._filmsListComponent.filmsContainer, this._onViewAction);
       filmsPresenter.init(film);
       this._filmsPresenter[film.id] = filmsPresenter;
     }
@@ -186,7 +185,6 @@ export default class FilmListPresenter {
     switch (updateType) {
       case UpdateType.PATCH:
         this._filmsPresenter[data.id].init(data);
-        this._filmsPresenter[data.id].updateDetails(data);
         break;
       case UpdateType.MINOR:
         this._clearFilmsList();
@@ -205,15 +203,5 @@ export default class FilmListPresenter {
         this._renderFilmsList();
         break;
     }
-  }
-
-  _closePrevDetails() {
-    Object
-      .values(this._filmsPresenter)
-      .forEach((film) => {
-        if (film._isDetailsOpened) {
-          film._closeDetails();
-        }
-      });
   }
 }
