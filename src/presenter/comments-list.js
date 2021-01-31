@@ -3,7 +3,7 @@ import CommentView from "../view/comment";
 import CommentsCountView from "../view/comments-count";
 import NewCommentView from "../view/new-comment";
 import CommentModel from "../model/comments";
-import {render, RenderPosition, replace, remove} from "../utils/render";
+import {render, RenderPosition} from "../utils/render";
 import {UserAction, UpdateType, API_CONFIG} from "../const";
 import Api from "../api/api";
 
