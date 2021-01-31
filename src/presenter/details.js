@@ -8,12 +8,13 @@ import {UserAction, UpdateType} from "../const";
 
 
 export default class Details {
-  constructor(film, changeData) {
+  constructor(film, changeData, onDetailsClose) {
     this._container = document.body;
     this._film = film;
     this._changeData = changeData;
     this._detailsComponent = null;
     this._commentListPresenter = null;
+    this._onDetailsClose = onDetailsClose;
 
     this._onDetailsControlsClick = this._onDetailsControlsClick.bind(this);
     this._onDetailsEscKeydown = this._onDetailsEscKeydown.bind(this);
@@ -49,6 +50,7 @@ export default class Details {
   }
 
   _closeDetails() {
+    this._onDetailsClose();
     this._detailsComponent.getElement().remove();
     this._detailsComponent.removeElement();
     this._detailsComponent = null;

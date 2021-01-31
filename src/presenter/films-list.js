@@ -37,6 +37,7 @@ export default class FilmListPresenter {
     this._onViewAction = this._onViewAction.bind(this);
     this._renderFilmsList = this._renderFilmsList.bind(this);
     this._renderFilms = this._renderFilms.bind(this);
+    this._closePrevDetails = this._closePrevDetails.bind(this);
 
     // model
     this._filmsModel.addObserver(this._onModelEvent);
@@ -98,7 +99,7 @@ export default class FilmListPresenter {
   _renderFilms() {
     const films = this._getFilms();
     for (const film of films.slice(this._NUM_RENDERED_CARDS, this._NUM_RENDERED_CARDS + this._NUM_RENDER_CARDS)) {
-      const filmsPresenter = new FilmsPresenter(this._filmsListComponent.filmsContainer, this._onViewAction);
+      const filmsPresenter = new FilmsPresenter(this._filmsListComponent.filmsContainer, this._onViewAction, this._closePrevDetails);
       filmsPresenter.init(film);
       this._filmsPresenter[film.id] = filmsPresenter;
     }
@@ -203,5 +204,15 @@ export default class FilmListPresenter {
         this._renderFilmsList();
         break;
     }
+  }
+  _closePrevDetails() {
+    Object
+      .values(this._filmsPresenter)
+      .forEach((film) => {
+        if (film._isDetailsOpened) {
+          film._isDetailsOpened = false;
+          film._detailsPresenter._closeDetails();
+        }
+      });
   }
 }

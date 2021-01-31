@@ -5,18 +5,19 @@ import {UserAction, UpdateType} from "../const";
 
 
 export default class FilmPresenter {
-  constructor(container, changeData) {
+  constructor(container, changeData, prevDetailsClose) {
     this._container = container;
     this._filmCardComponent = null;
     this._detailsPresenter = null;
-    this._prevDetailsComponent = null;
-
+    this._prevDetailsClose = prevDetailsClose;
+    this._isDetailsOpened = false;
     this._changeData = changeData;
 
     this._changeData = this._changeData.bind(this);
     this._onAddWatchedClick = this._onAddWatchedClick.bind(this);
     this._onAddWatchlistClick = this._onAddWatchlistClick.bind(this);
     this._onAddFavoriteClick = this._onAddFavoriteClick.bind(this);
+    this._onDetailsClose = this._onDetailsClose.bind(this);
     this._initDetails = this._initDetails.bind(this);
   }
 
@@ -38,7 +39,9 @@ export default class FilmPresenter {
   }
 
   _initDetails() {
-    this._detailsPresenter = new DetailsPresenter(this._film, this._changeData);
+    this._prevDetailsClose();
+    this._isDetailsOpened = true;
+    this._detailsPresenter = new DetailsPresenter(this._film, this._changeData, this._onDetailsClose);
     this._detailsPresenter.init();
   }
 
@@ -82,6 +85,10 @@ export default class FilmPresenter {
             }
         )
     );
+  }
+
+  _onDetailsClose() {
+    this._isDetailsOpened = false;
   }
 
   destroy() {
