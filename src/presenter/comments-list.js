@@ -95,10 +95,7 @@ export default class CommentsListPresenter {
           this._onNumCommentsChanged();
         })
         .catch(() => {
-          this._shake(this._newCommentComponent.getElement());
-          this._newCommentComponent.getElement()
-            .querySelector(`.film-details__comment-input`)
-            .disabled = false;
+          this._shake(this._commentContainerComponent.getElement());
         });
         break;
       case UserAction.ADD_COMMENT:
