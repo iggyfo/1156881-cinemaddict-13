@@ -70,4 +70,7 @@ const RankTitle = {
   MOVIE_BUFF: `Movie Buff`
 };
 
-export {constants, SortType, UserAction, UpdateType, FilterType, ExstraFilmsList, API_CONFIG, MenuItem, RankScore, RankTitle};
+const SHAKE_ANIMATION_TIMEOUT = 600;
+
+
+export {constants, SortType, UserAction, UpdateType, FilterType, ExstraFilmsList, API_CONFIG, MenuItem, RankScore, RankTitle, SHAKE_ANIMATION_TIMEOUT};

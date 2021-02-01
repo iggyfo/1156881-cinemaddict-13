@@ -4,7 +4,7 @@ import CommentsCountView from "../view/comments-count";
 import NewCommentView from "../view/new-comment";
 import CommentModel from "../model/comments";
 import {render, RenderPosition} from "../utils/render";
-import {UserAction, UpdateType, API_CONFIG} from "../const";
+import {UserAction, UpdateType, API_CONFIG, SHAKE_ANIMATION_TIMEOUT} from "../const";
 import Api from "../api/api";
 
 
@@ -93,12 +93,25 @@ export default class CommentsListPresenter {
           this._comments = this._comments.filter((comment) => update !== comment);
           this._commentsModel.setComments(updateType, this._comments);
           this._onNumCommentsChanged();
+        })
+        .catch(() => {
+          this._shake(this._newCommentComponent.getElement());
+          this._newCommentComponent.getElement()
+            .querySelector(`.film-details__comment-input`)
+            .disabled = false;
         });
         break;
       case UserAction.ADD_COMMENT:
-        this._api.addComment(update, this._film.id).then((response) => {
-          this._commentsModel.setComments(updateType, response.comments);
-        });
+        this._api.addComment(update, this._film.id)
+          .then((response) => {
+            this._commentsModel.setComments(updateType, response.comments);
+          })
+          .catch(() => {
+            this._shake(this._newCommentComponent.getElement());
+            this._newCommentComponent.getElement()
+              .querySelector(`.film-details__comment-input`)
+              .disabled = false;
+          });
         this._onNumCommentsChanged();
         break;
     }
@@ -130,6 +143,13 @@ export default class CommentsListPresenter {
             }
         )
     );
+  }
+
+  _shake(element) {
+    element.style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    setTimeout(() => {
+      element.style.animation = ``;
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 }
 

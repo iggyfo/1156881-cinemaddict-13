@@ -20,7 +20,7 @@ export default class NewComment extends SmartView {
   }
 
   getTemplate() {
-    const {comment, emotion} = this._localComment;
+    const {emotion} = this._localComment;
     return `<div class="film-details__new-comment">
     <div class="film-details__add-emoji-label">
       <img src="images/emoji/${emotion}.png" width="55" height="55" alt="emoji-${emotion}">
@@ -105,6 +105,7 @@ export default class NewComment extends SmartView {
       date: ``,
       emotion: `smile`,
     });
+    this.getElement().querySelector(`.film-details__comment-input`).disabled = true;
   }
 
   _onNewCommentKeydown() {
