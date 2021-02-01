@@ -3,12 +3,11 @@ import FilmsContainerView from "../view/films-container-view";
 import FilmsListView from "../view/films-list-view";
 import FilmsPresenter from "./film-presenter";
 import MoreButtonView from "../view/show-more-button-view";
-import FilmsExtraListView from "../view/films-extra-view";
 import NoFilmsView from "../view/no-films-view";
 import LoadingView from "../view/loading-view";
 import {render, RenderPosition, remove} from "../utils/render";
 import {filter} from "../utils/filter";
-import {SortType, UserAction, UpdateType, FilterType, ExstraFilmsList} from "../const";
+import {SortType, UserAction, UpdateType, FilterType} from "../const";
 import {sortFilmsByDate, sortFilmsByRating} from "../utils/sort";
 
 
@@ -16,23 +15,16 @@ export default class FilmListPresenter {
   constructor(container, filmsModel, filtersModel, api, userRankComponent) {
     this._container = container;
     this._userRankComponent = userRankComponent;
-
-    // models
     this._filmsModel = filmsModel;
     this._filtersModel = filtersModel;
-
     this._isLoading = true;
     this._api = api;
-
-    // components
     this._filmsListComponent = new FilmsListView();
     this._moreButtonComponent = new MoreButtonView();
     this._noFilmsComponent = new NoFilmsView();
     this._sortComponent = new SortView();
     this._filmsContainerComponent = new FilmsContainerView();
     this._loadingComponent = new LoadingView();
-
-    // callback
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._onModelEvent = this._onModelEvent.bind(this);
     this._onViewAction = this._onViewAction.bind(this);
@@ -40,11 +32,9 @@ export default class FilmListPresenter {
     this._renderFilms = this._renderFilms.bind(this);
     this._closePrevDetails = this._closePrevDetails.bind(this);
 
-    // model
     this._filmsModel.addObserver(this._onModelEvent);
     this._filtersModel.addObserver(this._onModelEvent);
 
-    // const
     this._NUM_RENDER_CARDS = 5;
     this._NUM_RENDERED_CARDS = 0;
     this._currentSortType = SortType.DEFAULT;
@@ -96,8 +86,6 @@ export default class FilmListPresenter {
     }
     this._renderFilms();
     this._renderMoreButton();
-    this._renderFilmsExtraList(ExstraFilmsList.TOP_RATED);
-    this._renderFilmsExtraList(ExstraFilmsList.MOST_COMMENTED);
   }
 
   _renderFilms() {
@@ -111,11 +99,6 @@ export default class FilmListPresenter {
     if (this._NUM_RENDERED_CARDS >= this._getFilms().length) {
       remove(this._moreButtonComponent);
     }
-  }
-
-  _renderFilmsExtraList(title) {
-    const filmsExtraListComponent = new FilmsExtraListView(title);
-    render(this._filmsContainerComponent, filmsExtraListComponent, RenderPosition.BEFOREEND);
   }
 
   _renderNoFilms() {

@@ -161,7 +161,6 @@ export default class StatisticsView extends Smart {
     };
   }
 
-
   _renderStatitsicsChart(statisticCtx, genresList) {
     return new Chart(statisticCtx, {
       plugins: [ChartDataLabels],
