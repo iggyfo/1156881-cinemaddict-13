@@ -58,6 +58,3 @@ const filtersPresenter = new FilterPresenter(menuComponent, filtersModel, filmMo
 filtersPresenter.init();
 const filmsPresenter = new FilmsPresenter(mainElement, filmModel, filtersModel, api, userRankComponent);
 filmsPresenter.init();
-
-
-

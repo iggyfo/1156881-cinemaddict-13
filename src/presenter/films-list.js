@@ -222,7 +222,8 @@ export default class FilmListPresenter {
   }
 
   hide() {
-    this._sortComponent.activeSortType = SortType.DEFAULT;
+    // this._sortComponent.activeSortType = SortType.DEFAULT;
+    this._onSortTypeChange(SortType.DEFAULT);
     this._sortComponent.hide();
     this._filmsContainerComponent.hide();
   }

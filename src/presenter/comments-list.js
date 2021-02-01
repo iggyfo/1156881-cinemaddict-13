@@ -9,16 +9,17 @@ import Api from "../api/api";
 
 
 export default class CommentsListPresenter {
-  constructor(container, film) {
+  constructor(container, film, filmsPresenterChangeData) {
     this._container = container;
     this._film = film;
-    this._commentListComponent = null;
+    this._filmsPresenterChangeData = filmsPresenterChangeData;
+    this._commentContainerComponent = null;
     this._comments = [];
     this._commentsComponents = [];
 
     this._onCommentModelEvent = this._onCommentModelEvent.bind(this);
     this._onCommentViewAction = this._onCommentViewAction.bind(this);
-    this._renderComments = this._renderComments.bind(this);
+    this._renderCommentsList = this._renderCommentsList.bind(this);
 
     this._api = new Api(API_CONFIG.endPoint, API_CONFIG.authorization);
 
@@ -32,28 +33,32 @@ export default class CommentsListPresenter {
         this._comments = response;
       })
       .then(() => {
-        this._renderCommentsCount();
-        this._renderCommentList();
         this._renderComments();
-        this._renderNewComment();
       });
   }
 
-  _renderCommentList() {
-    this._commentListComponent = new CommentListView();
-    render(this._container, this._commentListComponent, RenderPosition.BEFOREEND);
+  _renderComments() {
+    this._renderCommentsListCount();
+    this._renderContainerComponent();
+    this._renderCommentsList();
+    this._renderNewComment();
   }
 
-  _renderComments() {
+  _renderContainerComponent() {
+    this._commentContainerComponent = new CommentListView();
+    render(this._container, this._commentContainerComponent, RenderPosition.BEFOREEND);
+  }
+
+  _renderCommentsList() {
     this._comments.forEach((comment) => {
       const newComment = new CommentView(comment);
       this._commentsComponents.push(newComment);
-      render(this._commentListComponent.getElement(), newComment, RenderPosition.BEFOREEND);
+      render(this._commentContainerComponent.getElement(), newComment, RenderPosition.BEFOREEND);
       newComment.setOnRemoveComment(this._onCommentViewAction);
     });
   }
 
-  _renderCommentsCount() {
+  _renderCommentsListCount() {
     this._commentsCountComponent = new CommentsCountView(this._comments.length);
     render(this._container, this._commentsCountComponent, RenderPosition.BEFOREEND);
   }
@@ -65,10 +70,12 @@ export default class CommentsListPresenter {
   }
 
   _removeComments() {
+    this._removeComponent(this._commentContainerComponent);
     this._removeComponent(this._commentsCountComponent);
     this._commentsComponents.forEach((comment) => {
       this._removeComponent(comment);
     });
+    this._removeComponent(this._newCommentComponent);
     this._commentsComponents = [];
   }
 
@@ -84,14 +91,15 @@ export default class CommentsListPresenter {
         this._api.deleteComments(update)
         .then(() => {
           this._comments = this._comments.filter((comment) => update !== comment);
-          this._removeComments();
-          this._renderComments();
+          this._commentsModel.setComments(updateType, this._comments);
+          this._onNumCommentsChanged();
         });
         break;
       case UserAction.ADD_COMMENT:
         this._api.addComment(update, this._film.id).then((response) => {
           this._commentsModel.setComments(updateType, response.comments);
         });
+        this._onNumCommentsChanged();
         break;
     }
   }
@@ -103,8 +111,8 @@ export default class CommentsListPresenter {
         this._api.getComments(this._film.id)
           .then((comments) => {
             this._comments = comments;
-          })
-          .then(this._renderComments);
+            this._renderComments();
+          });
         break;
       case UpdateType.ADD_COMMENT:
         this._removeComments();
@@ -112,6 +120,20 @@ export default class CommentsListPresenter {
         this._renderComments();
         break;
     }
+  }
+
+  _onNumCommentsChanged() {
+    this._filmsPresenterChangeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.PATCH,
+        Object.assign(
+            {},
+            this._film,
+            {
+              comments: this._comments.map((comment) => comment.id)
+            }
+        )
+    );
   }
 }
 
