@@ -14,6 +14,7 @@ export default class NewComment extends SmartView {
     };
     this._onEmojiClick = this._onEmojiClick.bind(this);
     this._onCommentTyping = this._onCommentTyping.bind(this);
+    this._onAddNewComment = this._onAddNewComment.bind(this);
     this._currentScrollTop = 0;
     this._setInnerHandlers();
   }
@@ -26,7 +27,7 @@ export default class NewComment extends SmartView {
     </div>
 
     <label class="film-details__comment-label">
-      <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${he.encode(comment)}</textarea>
+      <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
     </label>
 
     <div class="film-details__emoji-list">
@@ -67,17 +68,11 @@ export default class NewComment extends SmartView {
     this.getElement()
       .querySelector(`.film-details__comment-input`)
       .addEventListener(`input`, this._onCommentTyping);
-    this.getElement()
-      .querySelector(`.film-details__comment-input`)
-      .addEventListener(`keydown`, (evt) => {
-        if (evt.keyCode === 13 && evt.metaKey) {
-          this._onAddNewComment(evt);
-        }
-      });
+    this._onNewCommentKeydown();
   }
 
   _onCommentTyping(evt) {
-    this._localComment.comment = evt.target.value;
+    this._localComment.comment = he.encode(evt.target.value);
   }
 
   _onEmojiClick(evt) {
@@ -112,14 +107,17 @@ export default class NewComment extends SmartView {
     });
   }
 
+  _onNewCommentKeydown() {
+    this.getElement()
+      .querySelector(`.film-details__comment-input`)
+      .addEventListener(`keydown`, (evt) => {
+        if (evt.keyCode === 13 && (evt.metaKey || evt.ctrlKey)) {
+          this._onAddNewComment(evt);
+        }
+      });
+  }
+
   setOnAddNewComment(callback) {
     this._callback.addNewComment = callback;
-    this.getElement()
-        .querySelector(`.film-details__comment-input`)
-        .addEventListener(`keydown`, (evt) => {
-          if (evt.keyCode === 13 && evt.metaKey) {
-            this._onAddNewComment(evt);
-          }
-        });
   }
 }

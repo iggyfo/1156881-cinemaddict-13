@@ -108,11 +108,7 @@ export default class CommentsListPresenter {
     switch (updateType) {
       case UpdateType.DELETE_COMMENT:
         this._removeComments();
-        this._api.getComments(this._film.id)
-          .then((comments) => {
-            this._comments = comments;
-            this._renderComments();
-          });
+        this._renderComments();
         break;
       case UpdateType.ADD_COMMENT:
         this._removeComments();
