@@ -18,32 +18,23 @@ const StatisticPeriod = {
   MONTH: `month`,
   YEAR: `year`,
 };
+export default class StatisticsView extends Smart {
+  constructor(filmsModel) {
+    super();
+    this._filmsModel = filmsModel;
+    this._activeFilter = StatisticPeriod.ALL_TIME;
+    this._filmsChart = null;
+    this._setOnFilterChange = this._setOnFilterChange.bind(this);
+    this.restoreHandlers();
+  }
 
-const getUserRankTemplate = (rank) => {
-  return rank ? `<p class="statistic__rank">
-      Your rank
-      <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-      <span class="statistic__rank-label">${rank}</span>
-    </p>` : ``;
-};
-
-const createStatTemplate = (statPeriod, activeFilter) => {
-  const getCheckedStatus = (filter) => activeFilter === filter ? `checked` : ``;
-  return `<input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-${statPeriod}" value="${statPeriod}" ${getCheckedStatus(statPeriod)}>
-  <label for="statistic-${statPeriod}" class="statistic__filters-label">${statPeriod === StatisticPeriod.ALL_TIME ? `All time` : statPeriod[0].toUpperCase() + statPeriod.slice(1)}</label>`;
-};
-
-const createStatsTemplate = (activeFilter) => {
-  return Object.values(StatisticPeriod).map((period) => createStatTemplate(period, activeFilter)).join(``);
-};
-
-
-const createStatisticsTemplate = (statistic) => {
-  const {watchedFilmsCount, userRank, totalDuration, topGenre, activeFilter} = statistic;
-  const {hours, minutes} = dayjs.duration(totalDuration, `minutes`).$d;
-  const userRankTemplate = getUserRankTemplate(userRank);
-  const statsTemplate = createStatsTemplate(activeFilter);
-  return `<section class="statistic">
+  getTemplate() {
+    const statistic = this._getFilmsDataByFilter(this._activeFilter);
+    const {watchedFilmsCount, userRank, totalDuration, topGenre, activeFilter} = statistic;
+    const {hours, minutes} = dayjs.duration(totalDuration, `minutes`).$d;
+    const userRankTemplate = this._getUserRankTemplate(userRank);
+    const statsTemplate = this._createStatsTemplate(activeFilter);
+    return `<section class="statistic">
     ${userRankTemplate}
     <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
       <p class="statistic__filters-description">Show stats:</p>
@@ -69,28 +60,33 @@ const createStatisticsTemplate = (statistic) => {
       <canvas class="statistic__chart" width="1000"></canvas>
     </div>
 
-  </section>`;
-};
-export default class StatisticsView extends Smart {
-  constructor(filmsModel) {
-    super();
-    this._filmsModel = filmsModel;
-    this._activeFilter = StatisticPeriod.ALL_TIME;
-    this._filmsChart = null;
-    this._setFilterChangeHandler = this._setFilterChangeHandler.bind(this);
-    this.restoreHandlers();
+    </section>`;
   }
 
-  getTemplate() {
-    return createStatisticsTemplate(this._getFilmsDataByFilter(this._activeFilter));
+  _getUserRankTemplate(rank) {
+    return rank ? `<p class="statistic__rank">
+        Your rank
+        <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
+        <span class="statistic__rank-label">${rank}</span>
+      </p>` : ``;
+  }
+
+  _createStatTemplate(statPeriod, activeFilter) {
+    const getCheckedStatus = (filter) => activeFilter === filter ? `checked` : ``;
+    return `<input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-${statPeriod}" value="${statPeriod}" ${getCheckedStatus(statPeriod)}>
+    <label for="statistic-${statPeriod}" class="statistic__filters-label">${statPeriod === StatisticPeriod.ALL_TIME ? `All time` : statPeriod[0].toUpperCase() + statPeriod.slice(1)}</label>`;
+  }
+
+  _createStatsTemplate(activeFilter) {
+    return Object.values(StatisticPeriod).map((period) => this._createStatTemplate(period, activeFilter)).join(``);
   }
 
   restoreHandlers() {
-    this._setFilterChangeHandler();
+    this._setOnFilterChange();
     this._setChart();
   }
 
-  _setFilterChangeHandler() {
+  _setOnFilterChange() {
     this.getElement().querySelectorAll(`.statistic__filters-input`).forEach((element) => element.addEventListener(`change`, (evt) => {
       this._activeFilter = evt.target.value;
       this.updateElement();
@@ -113,31 +109,30 @@ export default class StatisticsView extends Smart {
 
       case StatisticPeriod.TODAY:
         filmsWatched = films
-          .filter((film) => film.isWatched && dayjs(film.watchingDate).isSame(currentDate, `day`));
+          .filter((film) => film.isWatched && dayjs(film.watchedDate).isSame(currentDate, `day`));
         break;
 
       case StatisticPeriod.WEEK:
         filmsWatched = films
-          .filter((film) => film.isWatched && dayjs(film.watchingDate).isBetween(weekAgoDate, currentDate));
+          .filter((film) => film.isWatched && dayjs(film.watchedDate).isBetween(weekAgoDate, currentDate));
         break;
 
       case StatisticPeriod.MONTH:
         filmsWatched = films
-          .filter((film) => film.isWatched && dayjs(film.watchingDate).isBetween(monthAgoDate, currentDate));
+          .filter((film) => film.isWatched && dayjs(film.watchedDate).isBetween(monthAgoDate, currentDate));
         break;
 
       case StatisticPeriod.YEAR:
         filmsWatched = films
-          .filter((film) => film.isWatched && dayjs(film.watchingDate).isBetween(yearAgoDate, currentDate));
+          .filter((film) => film.isWatched && dayjs(film.watchedDate).isBetween(yearAgoDate, currentDate));
         break;
     }
 
     const watchedFilmsCount = filmsWatched.length;
     const userRank = getUserRank(this._filmsModel.films);
-    const totalDuration = filmsWatched.reduce((count, film) => count + film.filmDuration, 0);
+    const totalDuration = filmsWatched.reduce((count, film) => count + film.runtime, 0);
     const allFilmsGenres = filmsWatched.reduce((allGenres, film) => {
       allGenres.push(...film.genres);
-
       return allGenres;
     }, []);
 

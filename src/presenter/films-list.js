@@ -229,6 +229,6 @@ export default class FilmListPresenter {
 
   show() {
     this._sortComponent.show();
-    this._filmsListComponent.show();
+    this._filmsContainerComponent.show();
   }
 }

@@ -15,6 +15,7 @@ const api = new Api(API_CONFIG.endPoint, API_CONFIG.authorization);
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const footerElement = document.querySelector(`.footer`);
+const footerStatisticsElement = footerElement.querySelector(`.footer__statistics`);
 const userRankComponent = new UserRankView();
 const menuComponent = new MenuView();
 const filtersModel = new FilterModel();
@@ -45,9 +46,11 @@ menuComponent.setOnChangeMenu((menuItem) => {
 api.getFilms()
   .then((films) => {
     filmModel.setFilms(UpdateType.INIT, films);
+    render(footerStatisticsElement, new FooterStatisticsView(filmModel.films.length), RenderPosition.BEFOREEND);
   })
   .catch(() => {
     filmModel.setFilms(UpdateType.INIT, []);
+    render(footerStatisticsElement, new FooterStatisticsView(filmModel.films.length), RenderPosition.BEFOREEND);
   });
 
 // presenters
@@ -56,8 +59,5 @@ filtersPresenter.init();
 const filmsPresenter = new FilmsPresenter(mainElement, filmModel, filtersModel, api, userRankComponent);
 filmsPresenter.init();
 
-// footer
-const footerStatisticsElement = footerElement.querySelector(`.footer__statistics`);
-render(footerStatisticsElement, new FooterStatisticsView(filmModel.films.length), RenderPosition.BEFOREEND);
 
 
