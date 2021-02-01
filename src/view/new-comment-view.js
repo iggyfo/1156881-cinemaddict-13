@@ -1,4 +1,4 @@
-import SmartView from "./smart";
+import SmartView from "./smart-view";
 import {UserAction, UpdateType} from "../const";
 import he from "he";
 import dayjs from "dayjs";

@@ -1,8 +1,8 @@
-import CommentListView from "../view/comments-list";
-import CommentView from "../view/comment";
-import CommentsCountView from "../view/comments-count";
-import NewCommentView from "../view/new-comment";
-import CommentModel from "../model/comments";
+import CommentListView from "../view/comments-list-view";
+import CommentView from "../view/comment-view";
+import CommentsCountView from "../view/comments-count-view";
+import NewCommentView from "../view/new-comment-view";
+import CommentModel from "../model/comments-model";
 import {render, RenderPosition} from "../utils/render";
 import {UserAction, UpdateType, API_CONFIG, SHAKE_ANIMATION_TIMEOUT} from "../const";
 import Api from "../api/api";

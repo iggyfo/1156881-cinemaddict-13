@@ -1,5 +1,5 @@
-import FilmsModel from "../model/films";
-import CommentModel from "../model/comments";
+import FilmsModel from "../model/films-model";
+import CommentModel from "../model/comments-model";
 
 
 const Method = {

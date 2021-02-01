@@ -1,4 +1,4 @@
-import Abstract from "./abstract";
+import Abstract from "./abstract-view";
 
 
 export default class Comment extends Abstract {

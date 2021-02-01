@@ -1,4 +1,4 @@
-import Abstract from "../view/abstract";
+import Abstract from "./abstract-view";
 import dayjs from "dayjs";
 import {parseToMinAndHours} from "../utils/common";
 

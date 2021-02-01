@@ -1,4 +1,4 @@
-import Smart from "./smart";
+import Smart from "./smart-view";
 import {getUserRank} from "../utils/common";
 
 

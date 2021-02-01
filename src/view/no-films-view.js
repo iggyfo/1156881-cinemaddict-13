@@ -1,4 +1,4 @@
-import Abstract from "./abstract.js";
+import Abstract from "./abstract-view.js";
 
 
 export default class NoFilms extends Abstract {

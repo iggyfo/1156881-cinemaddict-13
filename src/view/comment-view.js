@@ -1,4 +1,4 @@
-import Abstract from "./abstract.js";
+import Abstract from "./abstract-view.js";
 import dayjs from "dayjs";
 import {UserAction, UpdateType} from "../const";
 

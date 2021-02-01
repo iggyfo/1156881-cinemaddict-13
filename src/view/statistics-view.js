@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import duration from "dayjs/plugin/duration";
 
-import Smart from "./smart";
+import Smart from "./smart-view";
 import {getUserRank} from "../utils/common";
 
 

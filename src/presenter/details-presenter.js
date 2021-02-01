@@ -1,6 +1,6 @@
-import DetailsView from "../view/details";
-import DetailsControlsView from "../view/details-controls";
-import CommentListPresenter from "../presenter/comments-list";
+import DetailsView from "../view/details-view";
+import DetailsControlsView from "../view/details-controls-view";
+import CommentListPresenter from "./comments-list-presenter";
 
 import {render, RenderPosition, replace, remove} from "../utils/render";
 import {constants} from "../const";

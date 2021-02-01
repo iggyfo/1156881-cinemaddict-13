@@ -1,4 +1,4 @@
-import Abstract from "./abstract";
+import Abstract from "./abstract-view";
 import {FilterType, MenuItem} from "../const";
 
 export default class Filter extends Abstract {
