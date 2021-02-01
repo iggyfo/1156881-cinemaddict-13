@@ -88,6 +88,7 @@ export default class CommentsListPresenter {
   _onCommentViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.DELETE_COMMENT:
+        const commentComponent = this._commentsComponents.filter((comment) => comment._comment.id === update.id);
         this._api.deleteComments(update)
         .then(() => {
           this._comments = this._comments.filter((comment) => update !== comment);
@@ -95,7 +96,9 @@ export default class CommentsListPresenter {
           this._onNumCommentsChanged();
         })
         .catch(() => {
-          this._shake(this._commentContainerComponent.getElement());
+          this._shake(commentComponent[0].getElement());
+          commentComponent[0].getElement().querySelector(`.film-details__comment-delete`).textContent = `Delete`;
+          commentComponent[0].getElement().querySelector(`.film-details__comment-delete`).disabled = false;
         });
         break;
       case UserAction.ADD_COMMENT:

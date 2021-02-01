@@ -43,7 +43,7 @@ const ExstraFilmsList = {
 };
 
 const API_CONFIG = {
-  authorization: `Basic jv12n134edwvsns`,
+  authorization: `Basic jv1a2n134edwvsns`,
   endPoint: `https://13.ecmascript.pages.academy/cinemaddict`,
 };
 
