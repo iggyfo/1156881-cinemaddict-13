@@ -87,6 +87,9 @@ export default class FilmListPresenter {
       this._renderLoading();
       return;
     }
+    if (this._noFilmsComponent) {
+      this.destroy(this._noFilmsComponent);
+    }
     if (this._getFilms().length === 0) {
       this._renderNoFilms();
       return;
@@ -185,6 +188,9 @@ export default class FilmListPresenter {
   }
 
   _onModelEvent(updateType, data) {
+    if (this._currentfilter !== FilterType.ALL_MOVIES) {
+      updateType = UpdateType.MINOR;
+    }
     switch (updateType) {
       case UpdateType.PATCH:
         this._filmsPresenter[data.id].init(data);
@@ -210,6 +216,7 @@ export default class FilmListPresenter {
         break;
     }
   }
+
   _closePrevDetails() {
     Object
       .values(this._filmsPresenter)
@@ -222,7 +229,6 @@ export default class FilmListPresenter {
   }
 
   hide() {
-    // this._sortComponent.activeSortType = SortType.DEFAULT;
     this._onSortTypeChange(SortType.DEFAULT);
     this._sortComponent.hide();
     this._filmsContainerComponent.hide();
@@ -231,5 +237,9 @@ export default class FilmListPresenter {
   show() {
     this._sortComponent.show();
     this._filmsContainerComponent.show();
+  }
+
+  destroy(component) {
+    remove(component);
   }
 }
