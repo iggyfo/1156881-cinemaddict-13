@@ -53,7 +53,6 @@ api.getFilms()
     render(footerStatisticsElement, new FooterStatisticsView(filmModel.films.length), RenderPosition.BEFOREEND);
   });
 
-// presenters
 const filtersPresenter = new FilterPresenter(menuComponent, filtersModel, filmModel);
 filtersPresenter.init();
 const filmsPresenter = new FilmsPresenter(mainElement, filmModel, filtersModel, api, userRankComponent);

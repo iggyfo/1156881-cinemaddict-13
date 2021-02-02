@@ -1,5 +1,5 @@
 import SmartView from "./smart-view";
-import {UserAction, UpdateType} from "../const";
+import {UserAction, UpdateType, constants} from "../const";
 import he from "he";
 import dayjs from "dayjs";
 
@@ -112,7 +112,7 @@ export default class NewComment extends SmartView {
     this.getElement()
       .querySelector(`.film-details__comment-input`)
       .addEventListener(`keydown`, (evt) => {
-        if (evt.keyCode === 13 && (evt.metaKey || evt.ctrlKey)) {
+        if (evt.key === constants.ENTER && (evt.metaKey || evt.ctrlKey)) {
           this._onAddNewComment(evt);
         }
       });

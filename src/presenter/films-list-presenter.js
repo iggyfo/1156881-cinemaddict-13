@@ -215,11 +215,13 @@ export default class FilmListPresenter {
     this._onSortTypeChange(SortType.DEFAULT);
     this._sortComponent.hide();
     this._filmsContainerComponent.hide();
+    this._noFilmsComponent.hide();
   }
 
   show() {
     this._sortComponent.show();
     this._filmsContainerComponent.show();
+    this._noFilmsComponent.show();
   }
 
   destroy(component) {

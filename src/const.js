@@ -1,5 +1,6 @@
 const constants = {
   ESC: `Escape`,
+  ENTER: `Enter`,
 };
 
 const SortType = {

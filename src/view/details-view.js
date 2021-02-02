@@ -8,7 +8,6 @@ export default class Details extends Abstract {
     super();
     this._film = film;
     this._onCloseDetails = this._onCloseDetails.bind(this);
-    // this.setOnFormSubmit(this._callback.formSubmit);
     this.setOnCloseBtn(this._callback.closeDetails);
   }
 
@@ -96,28 +95,10 @@ export default class Details extends Abstract {
     return this.getElement().querySelector(`.film-details__comments-list`);
   }
 
-  // _onFormSubmit(evt) {
-  //   evt.preventDefault();
-  //   this._callback.formSubmit(Details.parseDataToFilm);
-  // }
-
   _onCloseDetails(evt) {
     evt.preventDefault();
     this._callback.closeDetails();
   }
-
-  // setOnFormSubmit(callback) {
-  //   this._callback.formSubmit = callback;
-
-  //   this.getElement().querySelector(`form`).addEventListener(`keydown`, (evt) => {
-  //     if (evt.keyCode === 13 && evt.metaKey) {
-  //       const target = evt.target;
-  //       if (target.form) {
-  //         this._onFormSubmit(evt);
-  //       }
-  //     }
-  //   });
-  // }
 
   setOnCloseBtn(callback) {
     this._callback.closeDetails = callback;
