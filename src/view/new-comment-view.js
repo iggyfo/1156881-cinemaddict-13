@@ -1,4 +1,4 @@
-import SmartView from "./smart";
+import SmartView from "./smart-view";
 import {UserAction, UpdateType} from "../const";
 import he from "he";
 import dayjs from "dayjs";
@@ -14,19 +14,20 @@ export default class NewComment extends SmartView {
     };
     this._onEmojiClick = this._onEmojiClick.bind(this);
     this._onCommentTyping = this._onCommentTyping.bind(this);
+    this._onAddNewComment = this._onAddNewComment.bind(this);
     this._currentScrollTop = 0;
     this._setInnerHandlers();
   }
 
   getTemplate() {
-    const {comment, emotion} = this._localComment;
+    const {emotion} = this._localComment;
     return `<div class="film-details__new-comment">
     <div class="film-details__add-emoji-label">
       <img src="images/emoji/${emotion}.png" width="55" height="55" alt="emoji-${emotion}">
     </div>
 
     <label class="film-details__comment-label">
-      <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${he.encode(comment)}</textarea>
+      <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
     </label>
 
     <div class="film-details__emoji-list">
@@ -67,17 +68,11 @@ export default class NewComment extends SmartView {
     this.getElement()
       .querySelector(`.film-details__comment-input`)
       .addEventListener(`input`, this._onCommentTyping);
-    this.getElement()
-      .querySelector(`.film-details__comment-input`)
-      .addEventListener(`keydown`, (evt) => {
-        if (evt.keyCode === 13 && evt.metaKey) {
-          this._onAddNewComment(evt);
-        }
-      });
+    this._onNewCommentKeydown();
   }
 
   _onCommentTyping(evt) {
-    this._localComment.comment = evt.target.value;
+    this._localComment.comment = he.encode(evt.target.value);
   }
 
   _onEmojiClick(evt) {
@@ -110,16 +105,20 @@ export default class NewComment extends SmartView {
       date: ``,
       emotion: `smile`,
     });
+    this.getElement().querySelector(`.film-details__comment-input`).disabled = true;
+  }
+
+  _onNewCommentKeydown() {
+    this.getElement()
+      .querySelector(`.film-details__comment-input`)
+      .addEventListener(`keydown`, (evt) => {
+        if (evt.keyCode === 13 && (evt.metaKey || evt.ctrlKey)) {
+          this._onAddNewComment(evt);
+        }
+      });
   }
 
   setOnAddNewComment(callback) {
     this._callback.addNewComment = callback;
-    this.getElement()
-        .querySelector(`.film-details__comment-input`)
-        .addEventListener(`keydown`, (evt) => {
-          if (evt.keyCode === 13 && evt.metaKey) {
-            this._onAddNewComment(evt);
-          }
-        });
   }
 }

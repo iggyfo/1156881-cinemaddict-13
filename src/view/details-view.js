@@ -1,4 +1,4 @@
-import Abstract from "../view/abstract";
+import Abstract from "./abstract-view";
 import dayjs from "dayjs";
 import {parseToMinAndHours} from "../utils/common";
 
@@ -66,7 +66,7 @@ export default class Details extends Abstract {
                 <td class="film-details__cell">${release.releaseCountry}</td>
               </tr>
               <tr class="film-details__row">
-                <td class="film-details__term">Genres</td>
+                <td class="film-details__term">${genres.length > 1 ? `Genres` : `Genre`}</td>
                 <td class="film-details__cell">
                   ${genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join(` `)}
                 </td>

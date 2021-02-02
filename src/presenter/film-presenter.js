@@ -1,5 +1,5 @@
-import FilmCardView from "../view/film-card";
-import DetailsPresenter from "../presenter/details";
+import FilmCardView from "../view/film-card-view";
+import DetailsPresenter from "./details-presenter";
 import {render, RenderPosition, replace, remove} from "../utils/render";
 import {UserAction, UpdateType} from "../const";
 

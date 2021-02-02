@@ -1,4 +1,4 @@
-import SmartView from "./smart";
+import SmartView from "./smart-view";
 import {FilterType} from "../const";
 
 

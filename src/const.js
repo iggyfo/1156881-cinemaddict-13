@@ -43,8 +43,34 @@ const ExstraFilmsList = {
 };
 
 const API_CONFIG = {
-  authorization: `Basic jv12n134edwvsns`,
+  authorization: `Basic jv1a2n134edwvsns`,
   endPoint: `https://13.ecmascript.pages.academy/cinemaddict`,
 };
 
-export {constants, SortType, UserAction, UpdateType, FilterType, ExstraFilmsList, API_CONFIG};
+const MenuItem = {
+  FILMS: `films`,
+  STATS: `stats`,
+};
+
+const RankScore = {
+  NOVICE: {
+    MIN: 1,
+    MAX: 10
+  },
+  FAN: {
+    MIN: 11,
+    MAX: 20
+  }
+};
+
+const RankTitle = {
+  NONE: ``,
+  NOVICE: `Novice`,
+  FAN: `Fan`,
+  MOVIE_BUFF: `Movie Buff`
+};
+
+const SHAKE_ANIMATION_TIMEOUT = 600;
+
+
+export {constants, SortType, UserAction, UpdateType, FilterType, ExstraFilmsList, API_CONFIG, MenuItem, RankScore, RankTitle, SHAKE_ANIMATION_TIMEOUT};

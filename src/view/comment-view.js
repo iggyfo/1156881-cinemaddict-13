@@ -1,4 +1,4 @@
-import Abstract from "./abstract.js";
+import Abstract from "./abstract-view.js";
 import dayjs from "dayjs";
 import {UserAction, UpdateType} from "../const";
 
@@ -30,6 +30,8 @@ export default class Comment extends Abstract {
 
   _onRemoveComment(evt) {
     evt.preventDefault();
+    this.getElement().querySelector(`.film-details__comment-delete`).textContent = `Deleting...`;
+    this.getElement().querySelector(`.film-details__comment-delete`).disabled = true;
     this._callback.removeComment(
         UserAction.DELETE_COMMENT,
         UpdateType.DELETE_COMMENT,

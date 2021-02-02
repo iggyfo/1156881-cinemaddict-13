@@ -1,8 +1,8 @@
-import Abstract from "./abstract.js";
+import Abstract from "./abstract-view.js";
 import dayjs from "dayjs";
 import {parseToMinAndHours} from "../utils/common";
 
-
+const DESCRIPTION_MAX_LENGTH = 139;
 export default class FilmCard extends Abstract {
   constructor(film) {
     super();
@@ -26,7 +26,7 @@ export default class FilmCard extends Abstract {
       <span class="film-card__genre">${genres[0]}</span>
     </p>
     <img src="${poster}" alt="" class="film-card__poster">
-    <p class="film-card__description">${description}</p>
+    <p class="film-card__description">${description.length >= DESCRIPTION_MAX_LENGTH ? `${description.substring(0, DESCRIPTION_MAX_LENGTH)}...` : `${description}`}</p>
     <a class="film-card__comments">${comments.length} comments</a>
     <div class="film-card__controls">
       <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${isWatchlist ? `film-card__controls-item--active` : ``}" type="button">Add to watchlist</button>
