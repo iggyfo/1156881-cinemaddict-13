@@ -47,7 +47,7 @@ export default class FilmListPresenter {
   }
 
   _getFilms() {
-    const filterType = this._filtersModel.getFilter();
+    const filterType = this._filtersModel.getAll();
     if (this._currentfilter !== filterType) {
       this._currentSortType = SortType.DEFAULT;
       this._sortComponent.activeSortType = SortType.DEFAULT;
