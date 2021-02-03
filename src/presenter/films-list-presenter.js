@@ -91,7 +91,7 @@ export default class FilmListPresenter {
   _renderFilms() {
     const films = this._getFilms();
     for (const film of films.slice(this._NUM_RENDERED_CARDS, this._NUM_RENDERED_CARDS + this._NUM_RENDER_CARDS)) {
-      const filmsPresenter = new FilmsPresenter(this._filmsListComponent.filmsContainer, this._onViewAction, this._closePrevDetails);
+      const filmsPresenter = new FilmsPresenter(this._filmsListComponent.getFilmsContainer(), this._onViewAction, this._closePrevDetails);
       filmsPresenter.init(film);
       this._filmsPresenter[film.id] = filmsPresenter;
     }
@@ -158,14 +158,14 @@ export default class FilmListPresenter {
     switch (actionType) {
       case UserAction.UPDATE_FILM:
         this._api.updateFilm(update).then((response) => {
-          this._filmsModel.updateFilm(updateType, response);
+          this._filmsModel.updateAll(updateType, response);
         });
         break;
       case UserAction.ADD_FILM:
-        this._filmsModel.addFilm(updateType, update);
+        this._filmsModel.addAll(updateType, update);
         break;
       case UserAction.DELETE_FILM:
-        this._filmsModel.deleteFilm(updateType, update);
+        this._filmsModel.deleteAll(updateType, update);
         break;
     }
   }

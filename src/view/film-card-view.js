@@ -5,7 +5,7 @@ import {parseToMinAndHours} from "../utils/common";
 const DESCRIPTION_MAX_LENGTH = 140;
 const DESCRIPTION_VISIBLE_LENGTH = 139;
 
-export default class FilmCard extends Abstract {
+export default class FilmCardView extends Abstract {
   constructor(film) {
     super();
     this._film = film;

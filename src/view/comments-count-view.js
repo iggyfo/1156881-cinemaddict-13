@@ -1,7 +1,7 @@
 import Abstract from "./abstract-view.js";
 
 
-export default class CommentCount extends Abstract {
+export default class CommentCountView extends Abstract {
   constructor(numOfcomments) {
     super();
     this._numOfcomments = numOfcomments;

@@ -1,7 +1,7 @@
 import Abstract from "./abstract-view";
 import {FilterType, MenuItem} from "../const";
 
-export default class Filter extends Abstract {
+export default class FilterView extends Abstract {
   constructor(filmsFilter, currentFilterType) {
     super();
     this._filters = filmsFilter;

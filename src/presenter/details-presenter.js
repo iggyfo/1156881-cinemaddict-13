@@ -7,7 +7,7 @@ import {constants} from "../const";
 import {UserAction, UpdateType} from "../const";
 
 
-export default class Details {
+export default class DetailsPresenter {
   constructor(film, changeData, onDetailsClose) {
     this._film = film;
     this._changeData = changeData;
@@ -24,7 +24,7 @@ export default class Details {
     const prevDetailsComponent = this._detailsComponent;
     this._detailsComponent = new DetailsView(this._film);
     this._renderDetailsControls();
-    this._commentListPresenter = new CommentListPresenter(this._detailsComponent.commentWrap, this._film, this._changeData);
+    this._commentListPresenter = new CommentListPresenter(this._detailsComponent.getCommentWrap(), this._film, this._changeData);
     this._commentListPresenter.init();
     this._detailsComponent.setOnCloseBtn(this._closeDetails);
     document.addEventListener(`keydown`, this._onDetailsEscKeydown);
@@ -43,7 +43,7 @@ export default class Details {
   _renderDetailsControls() {
     this._detailsControlsComponent = new DetailsControlsView(this._film);
     this._detailsControlsComponent.setOnDetailsControlsClick(this._onDetailsControlsClick);
-    render(this._detailsComponent.controlsElement, this._detailsControlsComponent, RenderPosition.BEFOREEND);
+    render(this._detailsComponent.getControlsElement(), this._detailsControlsComponent, RenderPosition.BEFOREEND);
   }
 
   _closeDetails() {

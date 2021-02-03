@@ -1,7 +1,7 @@
 import Abstract from "./abstract-view.js";
 
 
-export default class Loading extends Abstract {
+export default class LoadingView extends Abstract {
 
   getTemplate() {
     return `<section class="films-list">

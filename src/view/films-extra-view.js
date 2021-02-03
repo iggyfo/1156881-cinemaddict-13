@@ -1,7 +1,7 @@
 import Abstract from "./abstract-view.js";
 
 
-export default class FilmsExtra extends Abstract {
+export default class FilmsExtraView extends Abstract {
   constructor(listTitle) {
     super();
     this._listTitle = listTitle;

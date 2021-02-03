@@ -2,7 +2,7 @@ import Abstract from "./abstract-view.js";
 import {SortType} from "../const";
 
 
-export default class Sort extends Abstract {
+export default class SortView extends Abstract {
   constructor() {
     super();
 

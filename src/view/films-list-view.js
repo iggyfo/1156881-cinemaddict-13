@@ -1,7 +1,7 @@
 import Abstract from "./abstract-view.js";
 
 
-export default class FilmsList extends Abstract {
+export default class FilmsListView extends Abstract {
 
   getTemplate() {
     return `<section class="films-list">
@@ -10,7 +10,7 @@ export default class FilmsList extends Abstract {
   </section>`;
   }
 
-  get filmsContainer() {
+  getFilmsContainer() {
     return this.getElement().querySelector(`.films-list__container`);
   }
 }

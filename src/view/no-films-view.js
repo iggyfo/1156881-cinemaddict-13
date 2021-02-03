@@ -1,7 +1,7 @@
 import Abstract from "./abstract-view.js";
 
 
-export default class NoFilms extends Abstract {
+export default class NoFilmsView extends Abstract {
 
   getTemplate() {
     return `<section class="films"><section class="films-list">

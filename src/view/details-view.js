@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import {parseToMinAndHours} from "../utils/common";
 
 
-export default class Details extends Abstract {
+export default class DetailsView extends Abstract {
   constructor(film) {
     super();
     this._film = film;
@@ -84,15 +84,12 @@ export default class Details extends Abstract {
   </section>`;
   }
 
-  get controlsElement() {
+  getControlsElement() {
     return this.getElement().querySelector(`.film-details__top-container`);
   }
-  get commentWrap() {
-    return this.getElement().querySelector(`.film-details__comments-wrap`);
-  }
 
-  get commentList() {
-    return this.getElement().querySelector(`.film-details__comments-list`);
+  getCommentWrap() {
+    return this.getElement().querySelector(`.film-details__comments-wrap`);
   }
 
   _onCloseDetails(evt) {

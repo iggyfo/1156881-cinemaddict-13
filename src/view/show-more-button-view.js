@@ -1,7 +1,7 @@
 import Abstract from "./abstract-view.js";
 
 
-export default class MoreButton extends Abstract {
+export default class showMoreButtonView extends Abstract {
   constructor() {
     super();
   }

@@ -1,7 +1,7 @@
 import Abstract from "./abstract-view.js";
 
 
-export default class FooterStatistics extends Abstract {
+export default class FooterStatisticsView extends Abstract {
   constructor(numberOfFilms) {
     super();
     this._numberOfFilms = numberOfFilms;

@@ -4,7 +4,7 @@ import he from "he";
 import dayjs from "dayjs";
 
 
-export default class NewComment extends SmartView {
+export default class NewCommentView extends SmartView {
   constructor() {
     super();
     this._localComment = {
