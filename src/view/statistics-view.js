@@ -35,6 +35,11 @@ export default class StatisticsView extends Smart {
     return this._statisticCtxElement;
   }
 
+  removeElement() {
+    super.removeElement();
+    this._statisticCtxElement = null;
+  }
+
   getTemplate() {
     const statistic = this._getFilmsDataByFilter(this._activeFilter);
     const {watchedFilmsCount, userRank, totalDuration, topGenre, activeFilter} = statistic;
