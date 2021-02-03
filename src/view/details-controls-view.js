@@ -38,10 +38,6 @@ export default class DetailsControls extends SmartView {
     );
   }
 
-  static parseDetailsControlsToFilm() {
-    return this._data;
-  }
-
   restoreHandlers() {
     this._setInnerHandlers();
   }

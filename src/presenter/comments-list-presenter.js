@@ -92,7 +92,7 @@ export default class CommentsListPresenter {
         this._api.deleteComments(update)
         .then(() => {
           this._comments = this._comments.filter((comment) => update !== comment);
-          this._commentsModel.setComments(updateType, this._comments);
+          this._commentsModel.setAll(updateType, this._comments);
           this._onNumCommentsChanged();
         })
         .catch(() => {
@@ -104,7 +104,7 @@ export default class CommentsListPresenter {
       case UserAction.ADD_COMMENT:
         this._api.addComment(update, this._film.id)
           .then((response) => {
-            this._commentsModel.setComments(updateType, response.comments);
+            this._commentsModel.setAll(updateType, response.comments);
           })
           .catch(() => {
             this._shake(this._newCommentComponent.getElement());
@@ -125,7 +125,7 @@ export default class CommentsListPresenter {
         break;
       case UpdateType.ADD_COMMENT:
         this._removeComments();
-        this._comments = this._commentsModel.comments;
+        this._comments = this._commentsModel.getAll();
         this._renderComments();
         break;
     }

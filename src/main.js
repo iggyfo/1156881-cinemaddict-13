@@ -45,12 +45,12 @@ menuComponent.setOnChangeMenu((menuItem) => {
 
 api.getFilms()
   .then((films) => {
-    filmModel.setFilms(UpdateType.INIT, films);
-    render(footerStatisticsElement, new FooterStatisticsView(filmModel.films.length), RenderPosition.BEFOREEND);
+    filmModel.setAll(UpdateType.INIT, films);
+    render(footerStatisticsElement, new FooterStatisticsView(filmModel.getAll().length), RenderPosition.BEFOREEND);
   })
   .catch(() => {
-    filmModel.setFilms(UpdateType.INIT, []);
-    render(footerStatisticsElement, new FooterStatisticsView(filmModel.films.length), RenderPosition.BEFOREEND);
+    filmModel.setAll(UpdateType.INIT, []);
+    render(footerStatisticsElement, new FooterStatisticsView(filmModel.getAll().length), RenderPosition.BEFOREEND);
   });
 
 const filtersPresenter = new FilterPresenter(menuComponent, filtersModel, filmModel);

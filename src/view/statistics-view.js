@@ -23,7 +23,6 @@ export default class StatisticsView extends Smart {
     super();
     this._filmsModel = filmsModel;
     this._activeFilter = StatisticPeriod.ALL_TIME;
-    this._filmsChart = null;
     this._setOnFilterChange = this._setOnFilterChange.bind(this);
     this.restoreHandlers();
   }
@@ -94,7 +93,7 @@ export default class StatisticsView extends Smart {
   }
 
   _getFilmsDataByFilter(activeFilter) {
-    const films = this._filmsModel.films;
+    const films = this._filmsModel.getAll();
     const currentDate = dayjs();
     const weekAgoDate = dayjs().subtract(7, `day`).toDate();
     const monthAgoDate = dayjs().subtract(1, `month`).toDate();
@@ -129,7 +128,7 @@ export default class StatisticsView extends Smart {
     }
 
     const watchedFilmsCount = filmsWatched.length;
-    const userRank = getUserRank(this._filmsModel.films);
+    const userRank = getUserRank(this._filmsModel.getAll());
     const totalDuration = filmsWatched.reduce((count, film) => count + film.runtime, 0);
     const allFilmsGenres = filmsWatched.reduce((allGenres, film) => {
       allGenres.push(...film.genres);

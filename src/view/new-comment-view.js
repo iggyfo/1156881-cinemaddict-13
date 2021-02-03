@@ -15,7 +15,6 @@ export default class NewComment extends SmartView {
     this._onEmojiClick = this._onEmojiClick.bind(this);
     this._onCommentTyping = this._onCommentTyping.bind(this);
     this._onAddNewComment = this._onAddNewComment.bind(this);
-    this._currentScrollTop = 0;
     this._setInnerHandlers();
   }
 
@@ -84,11 +83,7 @@ export default class NewComment extends SmartView {
     this.getElement()
       .querySelectorAll(`.film-details__emoji-item`)
       .forEach((element) => {
-        if (element.value === evt.target.value) {
-          element.checked = true;
-        } else {
-          element.checked = false;
-        }
+        element.checked = element.value === evt.target.value;
       });
   }
 

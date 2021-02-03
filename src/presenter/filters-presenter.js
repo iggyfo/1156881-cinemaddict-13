@@ -50,7 +50,7 @@ export default class FilterPresenter {
   }
 
   _getFilters() {
-    const films = this._filmsModel.films;
+    const films = this._filmsModel.getAll();
 
     return {
       allMovies: filter[FilterType.ALL_MOVIES](films).length,

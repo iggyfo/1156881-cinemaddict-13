@@ -9,7 +9,6 @@ import {UserAction, UpdateType} from "../const";
 
 export default class Details {
   constructor(film, changeData, onDetailsClose) {
-    this._container = document.body;
     this._film = film;
     this._changeData = changeData;
     this._detailsComponent = null;

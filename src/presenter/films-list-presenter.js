@@ -53,7 +53,7 @@ export default class FilmListPresenter {
       this._sortComponent.activeSortType = SortType.DEFAULT;
       this._currentfilter = filterType;
     }
-    const films = this._filmsModel.films;
+    const films = this._filmsModel.getAll();
     const filtredFilms = filter[filterType](films);
 
     switch (this._currentSortType) {
@@ -177,12 +177,12 @@ export default class FilmListPresenter {
     switch (updateType) {
       case UpdateType.PATCH:
         this._filmsPresenter[data.id].init(data);
-        this._userRankComponent.setRank(this._filmsModel.films);
+        this._userRankComponent.setRank(this._filmsModel.getAll());
         break;
       case UpdateType.MINOR:
         this._clearFilmsList();
         this._renderFilmsList();
-        this._userRankComponent.setRank(this._filmsModel.films);
+        this._userRankComponent.setRank(this._filmsModel.getAll());
         break;
       case UpdateType.MAJOR:
         this._clearFilmsList();
@@ -195,7 +195,7 @@ export default class FilmListPresenter {
         remove(this._filmsListComponent);
         remove(this._loadingComponent);
         this._renderFilmsList();
-        this._userRankComponent.setRank(this._filmsModel.films);
+        this._userRankComponent.setRank(this._filmsModel.getAll());
         break;
     }
   }

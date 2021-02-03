@@ -32,9 +32,8 @@ export default class FilmPresenter {
     if (prevFilmComponent === null) {
       render(this._container, this._filmCardComponent, RenderPosition.BEFOREEND);
       return;
-    } else {
-      replace(this._filmCardComponent, prevFilmComponent);
     }
+    replace(this._filmCardComponent, prevFilmComponent);
     remove(prevFilmComponent);
   }
 
