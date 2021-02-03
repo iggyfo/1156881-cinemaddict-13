@@ -22,9 +22,17 @@ export default class StatisticsView extends Smart {
   constructor(filmsModel) {
     super();
     this._filmsModel = filmsModel;
+    this._statisticCtxElement = null;
     this._activeFilter = StatisticPeriod.ALL_TIME;
     this._setOnFilterChange = this._setOnFilterChange.bind(this);
     this.restoreHandlers();
+  }
+
+  get statisticCtxElement() {
+    if (!this._statisticCtxElement) {
+      this._statisticCtxElement = this.getElement().querySelector(`.statistic__chart`);
+    }
+    return this._statisticCtxElement;
   }
 
   getTemplate() {
@@ -224,9 +232,8 @@ export default class StatisticsView extends Smart {
       this._statisticChart = null;
     }
     const BAR_HEIGHT = 50;
-    const statisticCtx = this.getElement().querySelector(`.statistic__chart`);
     const {genresList} = this._getFilmsDataByFilter(this._activeFilter);
-    statisticCtx.height = BAR_HEIGHT * genresList.size;
-    this._renderStatitsicsChart(statisticCtx, genresList);
+    this.statisticCtxElement.height = BAR_HEIGHT * genresList.size;
+    this._renderStatitsicsChart(this.statisticCtxElement, genresList);
   }
 }
